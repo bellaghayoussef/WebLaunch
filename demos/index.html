@@ -1,0 +1,1561 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WebLaunch Agency | Création de Sites Web Modernes & Haute Conversion</title>
+  <meta name="description" content="WebLaunch est l'agence web experte dans la création de sites internet sur-mesure, ultra-rapides et axés sur les résultats. Transformez vos visiteurs en clients.">
+  <meta name="keywords" content="agence web, création site web, landing page, refonte site, développement web, SEO, WebLaunch">
+  
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%236366f1'><path d='M13 2L3 14h9l-1 8 10-12h-9l1-8z'/></svg>">
+
+  <!-- Google Fonts: Outfit & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ==========================================================================
+       DESIGN SYSTEM & RESET
+       ========================================================================== */
+    :root {
+      --bg-dark: #07090e;
+      --bg-card: rgba(17, 24, 39, 0.7);
+      --bg-card-hover: rgba(30, 41, 59, 0.85);
+      --primary: #6366f1;
+      --primary-hover: #4f46e5;
+      --primary-light: #818cf8;
+      --secondary: #06b6d4;
+      --accent: #f43f5e;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --border-color: rgba(255, 255, 255, 0.08);
+      --border-highlight: rgba(99, 102, 241, 0.35);
+      --gradient-brand: linear-gradient(135deg, #6366f1 0%, #06b6d4 100%);
+      --gradient-text: linear-gradient(135deg, #ffffff 20%, #94a3b8 100%);
+      --gradient-accent: linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%);
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-full: 9999px;
+      --shadow-glow: 0 0 50px -12px rgba(99, 102, 241, 0.4);
+      --shadow-card: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+      --transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      overflow-x: hidden;
+      line-height: 1.6;
+      background-image: 
+        radial-gradient(circle at 15% 15%, rgba(99, 102, 241, 0.12) 0%, transparent 45%),
+        radial-gradient(circle at 85% 30%, rgba(6, 182, 212, 0.1) 0%, transparent 40%),
+        radial-gradient(circle at 50% 80%, rgba(139, 92, 246, 0.08) 0%, transparent 50%);
+      background-attachment: fixed;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Outfit', sans-serif;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+      transition: var(--transition);
+    }
+
+    button {
+      font-family: inherit;
+      cursor: pointer;
+      border: none;
+      outline: none;
+      transition: var(--transition);
+    }
+
+    .container {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Gradient Text & Utilities */
+    .text-gradient {
+      background: var(--gradient-brand);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: inline-block;
+    }
+
+    .text-gradient-white {
+      background: linear-gradient(180deg, #ffffff 40%, rgba(255, 255, 255, 0.7) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .glass-panel {
+      background: var(--bg-card);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+    }
+
+    .glass-panel:hover {
+      border-color: var(--border-highlight);
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      font-weight: 600;
+      font-size: 15px;
+      padding: 13px 26px;
+      border-radius: var(--radius-full);
+      transition: var(--transition);
+    }
+
+    .btn-primary {
+      background: var(--gradient-brand);
+      color: #fff;
+      box-shadow: 0 8px 25px -6px rgba(99, 102, 241, 0.5);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px -4px rgba(99, 102, 241, 0.7);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-main);
+      border: 1px solid var(--border-color);
+      backdrop-filter: blur(8px);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.2);
+      transform: translateY(-2px);
+    }
+
+    .btn-whatsapp {
+      background: #25D366;
+      color: #0b2212;
+      font-weight: 700;
+      box-shadow: 0 8px 20px -5px rgba(37, 211, 102, 0.4);
+    }
+
+    .btn-whatsapp:hover {
+      background: #22bf5b;
+      transform: translateY(-2px);
+      box-shadow: 0 12px 25px -4px rgba(37, 211, 102, 0.6);
+    }
+
+    /* Badge */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border-radius: var(--radius-full);
+      background: rgba(99, 102, 241, 0.12);
+      border: 1px solid rgba(99, 102, 241, 0.25);
+      color: var(--primary-light);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+
+    .badge-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #10b981;
+      box-shadow: 0 0 10px #10b981;
+      animation: pulseDot 2s infinite;
+    }
+
+    @keyframes pulseDot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(1.3); }
+    }
+
+    /* ==========================================================================
+       HEADER & NAVIGATION
+       ========================================================================== */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 100;
+      transition: var(--transition);
+      padding: 20px 0;
+    }
+
+    header.scrolled {
+      padding: 12px 0;
+      background: rgba(7, 9, 14, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border-color);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .nav-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 24px;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .logo-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: var(--gradient-brand);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
+      font-size: 14.5px;
+      font-weight: 500;
+    }
+
+    .nav-links a:hover {
+      color: #fff;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .menu-toggle {
+      display: none;
+      background: transparent;
+      color: #fff;
+      font-size: 24px;
+    }
+
+    /* ==========================================================================
+       HERO SECTION
+       ========================================================================== */
+    .hero {
+      padding: 170px 0 100px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      align-items: center;
+      gap: 50px;
+    }
+
+    .hero-content {
+      max-width: 650px;
+    }
+
+    .hero-title {
+      font-size: clamp(38px, 4.5vw, 60px);
+      font-weight: 900;
+      line-height: 1.1;
+      margin: 22px 0 20px;
+    }
+
+    .hero-description {
+      font-size: clamp(16px, 1.2vw, 18px);
+      color: var(--text-muted);
+      line-height: 1.7;
+      margin-bottom: 35px;
+    }
+
+    .hero-cta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 45px;
+    }
+
+    .stats-row {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+      padding-top: 30px;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .stat-item h4 {
+      font-size: 32px;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 2px;
+    }
+
+    .stat-item p {
+      font-size: 13px;
+      color: var(--text-dim);
+      font-weight: 500;
+    }
+
+    /* Hero Mockup Preview Card */
+    .hero-visual {
+      position: relative;
+    }
+
+    .preview-card {
+      background: linear-gradient(145deg, rgba(26, 32, 53, 0.9), rgba(13, 17, 27, 0.95));
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 24px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7), var(--shadow-glow);
+      padding: 24px;
+      position: relative;
+      transition: transform 0.5s ease;
+    }
+
+    .preview-card:hover {
+      transform: translateY(-6px);
+    }
+
+    .preview-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .preview-dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .preview-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .preview-dot.red { background: #ef4444; }
+    .preview-dot.yellow { background: #f59e0b; }
+    .preview-dot.green { background: #10b981; }
+
+    .preview-url {
+      background: rgba(0, 0, 0, 0.4);
+      padding: 4px 14px;
+      border-radius: 20px;
+      font-size: 11px;
+      color: var(--text-dim);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .preview-content {
+      background: #090d16;
+      border-radius: 14px;
+      padding: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .preview-badge-floating {
+      position: absolute;
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border-highlight);
+      border-radius: 14px;
+      padding: 12px 18px;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      z-index: 10;
+      animation: float 4s ease-in-out infinite;
+    }
+
+    .preview-badge-1 {
+      top: -15px;
+      right: -20px;
+    }
+
+    .preview-badge-2 {
+      bottom: -20px;
+      left: -15px;
+      animation-delay: 2s;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+
+    /* ==========================================================================
+       SECTION COMMONS
+       ========================================================================== */
+    section {
+      padding: 100px 0;
+      position: relative;
+    }
+
+    .section-header {
+      text-align: center;
+      max-width: 680px;
+      margin: 0 auto 60px;
+    }
+
+    .section-title {
+      font-size: clamp(30px, 3.5vw, 44px);
+      font-weight: 800;
+      margin: 16px 0 14px;
+    }
+
+    .section-subtitle {
+      font-size: 16px;
+      color: var(--text-muted);
+    }
+
+    /* ==========================================================================
+       SERVICES SECTION
+       ========================================================================== */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 28px;
+    }
+
+    .service-card {
+      padding: 36px 30px;
+      position: relative;
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .service-card:hover {
+      transform: translateY(-8px);
+      background: var(--bg-card-hover);
+      box-shadow: var(--shadow-glow);
+    }
+
+    .service-icon {
+      width: 58px;
+      height: 58px;
+      border-radius: 16px;
+      background: rgba(99, 102, 241, 0.1);
+      border: 1px solid rgba(99, 102, 241, 0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary-light);
+      margin-bottom: 24px;
+      transition: var(--transition);
+    }
+
+    .service-card:hover .service-icon {
+      background: var(--gradient-brand);
+      color: #fff;
+      transform: scale(1.1);
+    }
+
+    .service-title {
+      font-size: 21px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: #fff;
+    }
+
+    .service-desc {
+      color: var(--text-muted);
+      font-size: 14.5px;
+      margin-bottom: 20px;
+      flex-grow: 1;
+    }
+
+    .service-features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding-top: 15px;
+      border-top: 1px solid var(--border-color);
+      font-size: 13.5px;
+      color: var(--text-dim);
+    }
+
+    .service-features li {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .service-features li svg {
+      color: var(--secondary);
+      flex-shrink: 0;
+    }
+
+    /* ==========================================================================
+       WORK / PORTFOLIO SECTION
+       ========================================================================== */
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      gap: 30px;
+    }
+
+    .portfolio-card {
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .portfolio-card:hover {
+      transform: translateY(-8px);
+      border-color: var(--border-highlight);
+      box-shadow: 0 20px 40px -15px rgba(0,0,0,0.7);
+    }
+
+    .portfolio-thumb {
+      height: 220px;
+      background-size: cover;
+      background-position: center;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: flex-end;
+      padding: 16px;
+    }
+
+    .portfolio-thumb::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(7, 9, 14, 0.95) 0%, transparent 80%);
+    }
+
+    .portfolio-tag {
+      position: relative;
+      z-index: 2;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(8px);
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--secondary);
+      border: 1px solid rgba(6, 182, 212, 0.3);
+    }
+
+    .portfolio-info {
+      padding: 24px;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .portfolio-title {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .portfolio-desc {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-bottom: 18px;
+      flex-grow: 1;
+    }
+
+    .portfolio-metrics {
+      display: flex;
+      gap: 16px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border-color);
+      font-size: 13px;
+      color: #10b981;
+      font-weight: 600;
+    }
+
+    /* ==========================================================================
+       WHY US / METHOD
+       ========================================================================== */
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+    }
+
+    .step-item {
+      padding: 30px 22px;
+      position: relative;
+      text-align: center;
+    }
+
+    .step-number {
+      font-family: 'Outfit', sans-serif;
+      font-size: 40px;
+      font-weight: 900;
+      color: rgba(99, 102, 241, 0.25);
+      margin-bottom: 12px;
+    }
+
+    .step-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: #fff;
+    }
+
+    .step-desc {
+      font-size: 13.5px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* ==========================================================================
+       PRICING / PACKAGES
+       ========================================================================== */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+      align-items: stretch;
+    }
+
+    .pricing-card {
+      padding: 40px 32px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      transition: var(--transition);
+    }
+
+    .pricing-card.popular {
+      background: linear-gradient(180deg, rgba(30, 41, 59, 0.9) 0%, rgba(15, 23, 42, 0.95) 100%);
+      border: 2px solid var(--primary);
+      box-shadow: 0 0 40px -10px rgba(99, 102, 241, 0.4);
+      transform: scale(1.04);
+      z-index: 5;
+    }
+
+    .popular-ribbon {
+      position: absolute;
+      top: -14px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--gradient-brand);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 5px 18px;
+      border-radius: var(--radius-full);
+      box-shadow: 0 4px 15px rgba(99, 102, 241, 0.5);
+    }
+
+    .pricing-name {
+      font-size: 22px;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .pricing-desc {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+    }
+
+    .pricing-price {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+      margin-bottom: 28px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .pricing-price .amount {
+      font-size: 38px;
+      font-weight: 900;
+      color: #fff;
+    }
+
+    .pricing-price .period {
+      color: var(--text-dim);
+      font-size: 14px;
+    }
+
+    .pricing-features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-bottom: 35px;
+      flex-grow: 1;
+      font-size: 14px;
+    }
+
+    .pricing-features li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text-main);
+    }
+
+    .pricing-features li svg {
+      color: #10b981;
+      flex-shrink: 0;
+    }
+
+    /* ==========================================================================
+       CONTACT SECTION
+       ========================================================================== */
+    .contact-wrapper {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 40px;
+      padding: 50px;
+      background: linear-gradient(135deg, rgba(20, 26, 46, 0.8), rgba(11, 15, 27, 0.95));
+      border: 1px solid var(--border-color);
+      border-radius: 28px;
+      box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.7);
+    }
+
+    .contact-info {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .contact-info h3 {
+      font-size: 32px;
+      font-weight: 800;
+      margin-bottom: 16px;
+    }
+
+    .contact-info p {
+      color: var(--text-muted);
+      font-size: 15px;
+      margin-bottom: 30px;
+      line-height: 1.7;
+    }
+
+    .contact-methods {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .contact-box {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px 20px;
+      border-radius: var(--radius-md);
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-color);
+      transition: var(--transition);
+    }
+
+    .contact-box:hover {
+      background: rgba(99, 102, 241, 0.1);
+      border-color: var(--border-highlight);
+      transform: translateX(4px);
+    }
+
+    .contact-box-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    .contact-box-icon.whatsapp {
+      background: rgba(37, 211, 102, 0.15);
+      color: #25D366;
+    }
+
+    .contact-box-icon.email {
+      background: rgba(99, 102, 241, 0.15);
+      color: var(--primary-light);
+    }
+
+    .contact-box-label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-dim);
+    }
+
+    .contact-box-value {
+      font-size: 16px;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .form-group label {
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .form-control {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 14px 18px;
+      color: #fff;
+      font-family: inherit;
+      font-size: 14.5px;
+      transition: var(--transition);
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 15px rgba(99, 102, 241, 0.3);
+    }
+
+    textarea.form-control {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    /* ==========================================================================
+       FOOTER
+       ========================================================================== */
+    footer {
+      padding: 60px 0 30px;
+      border-top: 1px solid var(--border-color);
+      background: #05070a;
+    }
+
+    .footer-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--text-dim);
+      font-size: 13.5px;
+      padding-top: 25px;
+    }
+
+    /* Floating WhatsApp Action */
+    .floating-whatsapp {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      z-index: 99;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #25D366;
+      color: #fff;
+      padding: 12px 20px;
+      border-radius: var(--radius-full);
+      box-shadow: 0 10px 25px -4px rgba(37, 211, 102, 0.6);
+      font-weight: 700;
+      font-size: 14.5px;
+      transition: var(--transition);
+      animation: pulseWhatsapp 3s infinite;
+    }
+
+    .floating-whatsapp:hover {
+      transform: scale(1.06) translateY(-2px);
+      box-shadow: 0 15px 30px -4px rgba(37, 211, 102, 0.8);
+      color: #fff;
+    }
+
+    @keyframes pulseWhatsapp {
+      0%, 100% { box-shadow: 0 10px 25px -4px rgba(37, 211, 102, 0.6); }
+      50% { box-shadow: 0 0 35px 4px rgba(37, 211, 102, 0.85); }
+    }
+
+    /* ==========================================================================
+       RESPONSIVE DESIGN
+       ========================================================================== */
+    @media (max-width: 1024px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+      .hero-content {
+        max-width: 100%;
+      }
+      .hero-cta {
+        justify-content: center;
+      }
+      .stats-row {
+        justify-content: center;
+      }
+      .pricing-grid {
+        grid-template-columns: 1fr;
+      }
+      .pricing-card.popular {
+        transform: scale(1);
+      }
+      .steps-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .contact-wrapper {
+        grid-template-columns: 1fr;
+        padding: 32px 24px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+      .menu-toggle {
+        display: block;
+      }
+      .steps-grid {
+        grid-template-columns: 1fr;
+      }
+      .footer-bottom {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+      }
+      .floating-whatsapp span {
+        display: none;
+      }
+      .floating-whatsapp {
+        padding: 16px;
+        border-radius: 50%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating WhatsApp Quick Button -->
+  <a href="https://wa.me/21656818880?text=Bonjour%20WebLaunch,%20je%20souhaite%20lancer%20un%20projet%20web" target="_blank" rel="noopener noreferrer" class="floating-whatsapp" id="floatingWhatsapp" title="Contactez-nous sur WhatsApp">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+    </svg>
+    <span>Discuter en Direct</span>
+  </a>
+
+  <!-- Header -->
+  <header id="navbar">
+    <div class="container">
+      <div class="nav-wrapper">
+        <a href="#" class="logo">
+          <div class="logo-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/>
+              <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/>
+              <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/>
+              <path d="M12 9V4s3.03.55 4 2c1.08 1.62 0 5 0 5"/>
+            </svg>
+          </div>
+          Web<span>Launch</span>
+        </a>
+
+        <ul class="nav-links">
+          <li><a href="#services">Services</a></li>
+          <li><a href="#portfolio">Réalisations</a></li>
+          <li><a href="#method">Notre Méthode</a></li>
+          <li><a href="#pricing">Tarifs</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+
+        <div class="nav-actions">
+          <a href="https://wa.me/21656818880?text=Bonjour%20WebLaunch,%20je%20souhaite%20un%20devis" target="_blank" class="btn btn-whatsapp" style="padding: 10px 20px; font-size: 13.5px;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+            </svg>
+            WhatsApp Direct
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero" id="home">
+    <div class="container">
+      <div class="hero-grid">
+        <div class="hero-content">
+          <div class="badge">
+            <span class="badge-dot"></span>
+            Agence Web Digitale Nouvelle Génération
+          </div>
+          <h1 class="hero-title">
+            Nous propulsons votre business avec des sites web <span class="text-gradient">spectaculaires</span> et vendeurs.
+          </h1>
+          <p class="hero-description">
+            WebLaunch crée des expériences digitales sur-mesure : sites vitrines premium, boutiques e-commerce élégantes et landing pages calibrées pour maximiser vos conversions.
+          </p>
+
+          <div class="hero-cta">
+            <a href="https://wa.me/21656818880?text=Bonjour%20WebLaunch,%20je%20souhaite%20lancer%20un%20projet%20web" target="_blank" class="btn btn-whatsapp">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+              </svg>
+              Démarrer sur WhatsApp (+216 56 818 880)
+            </a>
+            <a href="#contact" class="btn btn-secondary">
+              Demander un Devis Gratuit
+            </a>
+          </div>
+
+          <div class="stats-row">
+            <div class="stat-item">
+              <h4>+98%</h4>
+              <p>Clients Satisfaits</p>
+            </div>
+            <div class="stat-item">
+              <h4>7 Jours</h4>
+              <p>Délai Moyen de Livraison</p>
+            </div>
+            <div class="stat-item">
+              <h4>100%</h4>
+              <p>Optimisé SEO & Mobile</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hero Visual Mockup -->
+        <div class="hero-visual">
+          <div class="preview-badge-floating preview-badge-1">
+            <div style="width:36px;height:36px;border-radius:10px;background:rgba(16,185,129,0.15);display:flex;align-items:center;justify-content:center;color:#10b981;">
+              <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><path d="M22 4L12 14.01l-3-3"></path></svg>
+            </div>
+            <div>
+              <div style="font-size:11px;color:var(--text-dim);font-weight:600;">SCORE PERFORMANCE</div>
+              <div style="font-size:14px;font-weight:800;color:#fff;">99/100 Google PageSpeed</div>
+            </div>
+          </div>
+
+          <div class="preview-card">
+            <div class="preview-header">
+              <div class="preview-dots">
+                <span class="preview-dot red"></span>
+                <span class="preview-dot yellow"></span>
+                <span class="preview-dot green"></span>
+              </div>
+              <div class="preview-url">
+                <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                https://weblaunch.agency/votre-projet
+              </div>
+              <div style="width: 20px;"></div>
+            </div>
+
+            <div class="preview-content">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+                <div style="display:flex;align-items:center;gap:10px;">
+                  <div style="width:28px;height:28px;border-radius:8px;background:var(--gradient-brand);"></div>
+                  <div style="width:70px;height:8px;background:rgba(255,255,255,0.2);border-radius:4px;"></div>
+                </div>
+                <div style="display:flex;gap:10px;">
+                  <div style="width:40px;height:6px;background:rgba(255,255,255,0.1);border-radius:3px;"></div>
+                  <div style="width:40px;height:6px;background:rgba(255,255,255,0.1);border-radius:3px;"></div>
+                </div>
+              </div>
+
+              <div style="height:120px;background:linear-gradient(135deg, rgba(99,102,241,0.25), rgba(6,182,212,0.15));border-radius:10px;padding:18px;display:flex;flex-direction:column;justify-content:center;gap:10px;border:1px solid rgba(255,255,255,0.08);">
+                <div style="width:65%;height:14px;background:#fff;border-radius:6px;"></div>
+                <div style="width:85%;height:8px;background:rgba(255,255,255,0.4);border-radius:4px;"></div>
+                <div style="width:35%;height:22px;background:var(--gradient-brand);border-radius:20px;margin-top:4px;"></div>
+              </div>
+
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px;">
+                <div style="height:65px;background:rgba(255,255,255,0.03);border-radius:10px;border:1px solid rgba(255,255,255,0.06);padding:10px;">
+                  <div style="width:24px;height:24px;border-radius:6px;background:rgba(99,102,241,0.2);margin-bottom:6px;"></div>
+                  <div style="width:50%;height:6px;background:rgba(255,255,255,0.3);border-radius:3px;"></div>
+                </div>
+                <div style="height:65px;background:rgba(255,255,255,0.03);border-radius:10px;border:1px solid rgba(255,255,255,0.06);padding:10px;">
+                  <div style="width:24px;height:24px;border-radius:6px;background:rgba(6,182,212,0.2);margin-bottom:6px;"></div>
+                  <div style="width:50%;height:6px;background:rgba(255,255,255,0.3);border-radius:3px;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="preview-badge-floating preview-badge-2">
+            <div style="width:36px;height:36px;border-radius:10px;background:rgba(99,102,241,0.15);display:flex;align-items:center;justify-content:center;color:var(--primary-light);">
+              <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+            </div>
+            <div>
+              <div style="font-size:11px;color:var(--text-dim);font-weight:600;">CONVERSION & UX</div>
+              <div style="font-size:14px;font-weight:800;color:#fff;">+45% de Prospects Gagnés</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services Section -->
+  <section id="services">
+    <div class="container">
+      <div class="section-header">
+        <div class="badge">Ce que nous faisons de mieux</div>
+        <h2 class="section-title">Solutions digitales conçues pour votre <span class="text-gradient">croissance</span></h2>
+        <p class="section-subtitle">Chaque projet est développé avec passion, combinant design d'élite, rapidité fulgurante et ergonomie irréprochable.</p>
+      </div>
+
+      <div class="services-grid">
+        <!-- Service 1 -->
+        <div class="glass-panel service-card">
+          <div class="service-icon">
+            <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+          </div>
+          <h3 class="service-title">Sites Vitrines Professionnels</h3>
+          <p class="service-desc">Donnez une image haut de gamme à votre entreprise avec un site captivant, clair et optimisé pour asseoir votre notoriété.</p>
+          <ul class="service-features">
+            <li><svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg> Design 100% sur-mesure</li>
+            <li><svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg> Adapté smartphones & tablettes</li>
+            <li><svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg> Formulaire & intégration WhatsApp</li>
+          </ul>
+        </div>
+
+        <!-- Service 2 -->
+        <div class="glass-panel service-card">
+          <div class="service-icon">
+            <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+          </div>
+          <h3 class="service-title">Boutiques E-Commerce</h3>
+          <p class="service-desc">Vendez vos produits 24h/24 avec une plateforme ultra fluide, sécurisée et pensée pour démultiplier votre panier moyen.</p>
+          <ul class="service-features">
+            <li><svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg> Paiement en ligne & livraison</li>
+            <li><svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg> Gestion simple de stock & commandes</li>
+            <li><svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg> Commande directe WhatsApp 1-Clic</li>
+          </ul>
+        </div>
+
+        <!-- Service 3 -->
+        <div class="glass-panel service-card">
+          <div class="service-icon">
+            <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+          </div>
+          <h3 class="service-title">Landing Pages Haute Conversion</h3>
+          <p class="service-desc">Idéales pour vos campagnes publicitaires (Facebook Ads, Google Ads). Un seul objectif : capturer des leads qualifiés.</p>
+          <ul class="service-features">
+            <li><svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg> Copywriting persuasif & accrocheur</li>
+            <li><svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg> Temps de chargement inférieur à 1s</li>
+            <li><svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg> Tracking pixel & analytics intégrés</li>
+          </ul>
+        </div>
+
+        <!-- Service 4 -->
+        <div class="glass-panel service-card">
+          <div class="service-icon">
+            <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+          </div>
+          <h3 class="service-title">Refonte & Modernisation</h3>
+          <p class="service-desc">Votre site actuel est lent ou dépassé ? Donnez-lui une cure de jouvence moderne avec les technologies web les plus récentes.</p>
+          <ul class="service-features">
+            <li><svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg> Audit technique & ergonomique</li>
+            <li><svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg> Migration sans perte de référencement</li>
+            <li><svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg> Look contemporain & attractif</li>
+          </ul>
+        </div>
+
+        <!-- Service 5 -->
+        <div class="glass-panel service-card">
+          <div class="service-icon">
+            <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          </div>
+          <h3 class="service-title">SEO & Visibilité Google</h3>
+          <p class="service-desc">Faites monter votre site sur les premiers résultats de recherche pour attirer des clients prêts à acheter.</p>
+          <ul class="service-features">
+            <li><svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg> Balisage sémantique & métadonnées</li>
+            <li><svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg> Référencement local Google Maps</li>
+            <li><svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg> Indexation rapide & sitemap</li>
+          </ul>
+        </div>
+
+        <!-- Service 6 -->
+        <div class="glass-panel service-card">
+          <div class="service-icon">
+            <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+          </div>
+          <h3 class="service-title">Maintenance & Sécurité VIP</h3>
+          <p class="service-desc">Restez serein : nous protégeons, mettons à jour et sauvegardons votre site au quotidien avec support réactif.</p>
+          <ul class="service-features">
+            <li><svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg> Sauvegardes automatiques quotidiennes</li>
+            <li><svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg> Certificat SSL & protection anti-piratage</li>
+            <li><svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg> Support technique direct 7j/7</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Method Section -->
+  <section id="method" style="background: rgba(10, 14, 23, 0.5);">
+    <div class="container">
+      <div class="section-header">
+        <div class="badge">Efficacité & Clarté</div>
+        <h2 class="section-title">Notre méthode en <span class="text-gradient">4 étapes simples</span></h2>
+        <p class="section-subtitle">Un processus structuré et transparent pour vous livrer un site parfait sans perte de temps.</p>
+      </div>
+
+      <div class="steps-grid">
+        <div class="glass-panel step-item">
+          <div class="step-number">01</div>
+          <h3 class="step-title">Découverte & Stratégie</h3>
+          <p class="step-desc">Nous étudions vos besoins, votre marché cible et définissons l'architecture idéale pour convertir vos visiteurs.</p>
+        </div>
+        <div class="glass-panel step-item">
+          <div class="step-number">02</div>
+          <h3 class="step-title">Design & Maquettage</h3>
+          <p class="step-desc">Création d'une identité visuelle moderne et sur-mesure qui reflète le professionnalisme de votre marque.</p>
+        </div>
+        <div class="glass-panel step-item">
+          <div class="step-number">03</div>
+          <h3 class="step-title">Développement Pro</h3>
+          <p class="step-desc">Codage propre, tests de réactivité sur tous les écrans, optimisation de la vitesse et sécurisation des données.</p>
+        </div>
+        <div class="glass-panel step-item">
+          <div class="step-number">04</div>
+          <h3 class="step-title">Lancement & Succès</h3>
+          <p class="step-desc">Mise en ligne de votre site, configuration du nom de domaine et accompagnement continu pour vos résultats.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Portfolio Section -->
+  <section id="portfolio">
+    <div class="container">
+      <div class="section-header">
+        <div class="badge">Nos Réalisations</div>
+        <h2 class="section-title">Des créations qui font la <span class="text-gradient">différence</span></h2>
+        <p class="section-subtitle">Découvrez quelques exemples de styles et de projets taillés pour l'impact visuel et commercial.</p>
+      </div>
+
+      <div class="portfolio-grid">
+        <!-- Project 1 -->
+        <div class="portfolio-card">
+          <div class="portfolio-thumb" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=700&q=80');">
+            <span class="portfolio-tag">Restauration & Gastronomie</span>
+          </div>
+          <div class="portfolio-info">
+            <h3 class="portfolio-title">Mashawi Al-Arabi Lounge</h3>
+            <p class="portfolio-desc">Site vitrine immersif avec menu digital interactif, réservation en ligne et intégration WhatsApp directe.</p>
+            <div class="portfolio-metrics">
+              <span>🚀 +60% Réservations en ligne</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 2 -->
+        <div class="portfolio-card">
+          <div class="portfolio-thumb" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=700&q=80');">
+            <span class="portfolio-tag">SaaS & Tech</span>
+          </div>
+          <div class="portfolio-info">
+            <h3 class="portfolio-title">NovaFlow Cloud Platform</h3>
+            <p class="portfolio-desc">Landing page haute vélocité avec animations soignées, design dark mode et tunnel d'inscription optimisé.</p>
+            <div class="portfolio-metrics">
+              <span>⚡ Chargement 0.6s</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 3 -->
+        <div class="portfolio-card">
+          <div class="portfolio-thumb" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=700&q=80');">
+            <span class="portfolio-tag">E-Commerce Mode</span>
+          </div>
+          <div class="portfolio-info">
+            <h3 class="portfolio-title">Aura Luxe Collection</h3>
+            <p class="portfolio-desc">Boutique en ligne moderne avec checkout rapide, déclinaisons de produits et commande instantanée via WhatsApp.</p>
+            <div class="portfolio-metrics">
+              <span>📈 +35% Panier Moyen</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing Section -->
+  <section id="pricing">
+    <div class="container">
+      <div class="section-header">
+        <div class="badge">Tarifs Transparents</div>
+        <h2 class="section-title">Des formules adaptées à votre <span class="text-gradient">budget</span></h2>
+        <p class="section-subtitle">Investissez dans un outil rentable qui génère de nouveaux clients dès les premières semaines.</p>
+      </div>
+
+      <div class="pricing-grid">
+        <!-- Pack Starter -->
+        <div class="glass-panel pricing-card">
+          <h3 class="pricing-name">Pack Starter</h3>
+          <p class="pricing-desc">Parfait pour lancer votre présence digitale et rassurer vos futurs clients.</p>
+          <div class="pricing-price">
+            <span class="amount">Sur Devis</span>
+            <span class="period">/ Clé en main</span>
+          </div>
+          <ul class="pricing-features">
+            <li><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg> Site One-Page moderne & responsive</li>
+            <li><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg> Bouton WhatsApp direct & formulaire</li>
+            <li><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg> Optimisation vitesse & mobile</li>
+            <li><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg> Livraison rapide en 5 à 7 jours</li>
+          </ul>
+          <a href="https://wa.me/21656818880?text=Bonjour%20WebLaunch,%20je%20suis%20int%C3%A9ress%C3%A9%20par%20le%20Pack%20Starter" target="_blank" class="btn btn-secondary" style="width:100%;">Choisir le Starter</a>
+        </div>
+
+        <!-- Pack Business (Populaire) -->
+        <div class="glass-panel pricing-card popular">
+          <div class="popular-ribbon">⭐ Le Plus Demandé</div>
+          <h3 class="pricing-name">Pack Business Pro</h3>
+          <p class="pricing-desc">La solution complète pour dominer vos concurrents et maximiser vos ventes.</p>
+          <div class="pricing-price">
+            <span class="amount">Recommandé</span>
+            <span class="period">/ Clé en main</span>
+          </div>
+          <ul class="pricing-features">
+            <li><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg> Jusqu'à 5 pages professionnelles sur-mesure</li>
+            <li><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg> Référencement SEO Google local & mots-clés</li>
+            <li><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg> Animations interactives modernes</li>
+            <li><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg> Intégration Google Maps & Avis clients</li>
+            <li><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg> 1 mois de maintenance & assistance offerts</li>
+          </ul>
+          <a href="https://wa.me/21656818880?text=Bonjour%20WebLaunch,%20je%20souhaite%20commander%20le%20Pack%20Business%20Pro" target="_blank" class="btn btn-primary" style="width:100%;">Commander le Pack Pro</a>
+        </div>
+
+        <!-- Pack E-Commerce / Sur Mesure -->
+        <div class="glass-panel pricing-card">
+          <h3 class="pricing-name">E-Commerce & Sur-Mesure</h3>
+          <p class="pricing-desc">Pour les boutiques ambitieuses et projets avec fonctionnalités avancées.</p>
+          <div class="pricing-price">
+            <span class="amount">Sur Mesure</span>
+            <span class="period">/ Selon Cahier des Charges</span>
+          </div>
+          <ul class="pricing-features">
+            <li><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg> Boutique en ligne illimitée ou App web</li>
+            <li><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg> Paiement en ligne sécurisé & livraisons</li>
+            <li><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg> Panneau d'administration facile</li>
+            <li><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg> Accompagnement stratégique VIP</li>
+          </ul>
+          <a href="https://wa.me/21656818880?text=Bonjour%20WebLaunch,%20je%20souhaite%20un%20devis%20pour%20un%20E-Commerce%20ou%20projet%20sur-mesure" target="_blank" class="btn btn-secondary" style="width:100%;">Discuter de Mon Projet</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact">
+    <div class="container">
+      <div class="contact-wrapper">
+        <div class="contact-info">
+          <div>
+            <div class="badge">Contact Rapide</div>
+            <h3>Parlons de votre <span class="text-gradient">futur site</span></h3>
+            <p>
+              Prêt à accélérer votre visibilité ? Écrivez-nous directement sur WhatsApp pour une réponse immédiate, ou laissez-nous un message par email.
+            </p>
+
+            <div class="contact-methods">
+              <!-- WhatsApp Contact Box -->
+              <a href="https://wa.me/21656818880?text=Bonjour%20WebLaunch,%20je%20vous%20contacte%20depuis%20votre%20site%20web" target="_blank" class="contact-box">
+                <div class="contact-box-icon whatsapp">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+                  </svg>
+                </div>
+                <div>
+                  <div class="contact-box-label">WhatsApp & Téléphone</div>
+                  <div class="contact-box-value">+216 56 818 880</div>
+                </div>
+              </a>
+
+              <!-- Email Contact Box -->
+              <a href="mailto:bellaghayoussef20@gmail.com" class="contact-box">
+                <div class="contact-box-icon email">
+                  <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                </div>
+                <div>
+                  <div class="contact-box-label">Email Professionnel</div>
+                  <div class="contact-box-value">bellaghayoussef20@gmail.com</div>
+                </div>
+              </a>
+            </div>
+          </div>
+
+          <div style="font-size:13px;color:var(--text-dim);">
+            🕒 Réponse garantie sous moins de 2 heures • Disponibilité 7j/7
+          </div>
+        </div>
+
+        <!-- Contact Form -->
+        <form class="contact-form" id="contactForm" onsubmit="handleFormSubmit(event)">
+          <div class="form-group">
+            <label for="name">Votre Nom & Prénom / Entreprise</label>
+            <input type="text" id="name" required class="form-control" placeholder="Ex: Karim Ben Salem / Café Miramar">
+          </div>
+
+          <div class="form-group">
+            <label for="phone">Numéro WhatsApp ou Téléphone</label>
+            <input type="tel" id="phone" required class="form-control" placeholder="Ex: +216 56 818 880">
+          </div>
+
+          <div class="form-group">
+            <label for="service">Type de projet souhaité</label>
+            <select id="service" class="form-control" style="background:#090d16;">
+              <option value="Site Vitrine Professionnel">Site Vitrine Professionnel</option>
+              <option value="Boutique E-Commerce">Boutique E-Commerce</option>
+              <option value="Landing Page Forte Conversion">Landing Page Forte Conversion</option>
+              <option value="Refonte de Site Existant">Refonte de Site Existant</option>
+              <option value="Autre demande">Autre demande spécifique</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="message">Décrivez brièvement votre besoin</label>
+            <textarea id="message" required class="form-control" placeholder="Objectifs, fonctionnalités souhaitées, délais..."></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="width:100%;margin-top:10px;">
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+            Envoyer ma demande de devis
+          </button>
+          <div id="formFeedback" style="display:none;padding:12px;border-radius:8px;font-size:14px;text-align:center;"></div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;padding-bottom:30px;border-bottom:1px solid var(--border-color);">
+        <a href="#" class="logo">
+          <div class="logo-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/>
+              <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/>
+              <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/>
+              <path d="M12 9V4s3.03.55 4 2c1.08 1.62 0 5 0 5"/>
+            </svg>
+          </div>
+          Web<span>Launch</span>
+        </a>
+
+        <div style="display:flex;gap:24px;font-size:14px;color:var(--text-muted);">
+          <a href="mailto:bellaghayoussef20@gmail.com">bellaghayoussef20@gmail.com</a>
+          <span>•</span>
+          <a href="tel:+21656818880">+216 56 818 880</a>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>© <span id="year"></span> WebLaunch Agency. Tous droits réservés.</div>
+        <div>Conçu avec passion pour l'excellence et la conversion.</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script>
+    // Dynamic Year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Header scroll background effect
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 40) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    });
+
+    // Form submission handler
+    function handleFormSubmit(e) {
+      e.preventDefault();
+      const name = document.getElementById('name').value;
+      const phone = document.getElementById('phone').value;
+      const service = document.getElementById('service').value;
+      const message = document.getElementById('message').value;
+
+      const feedback = document.getElementById('formFeedback');
+      feedback.style.display = 'block';
+      feedback.style.background = 'rgba(16, 185, 129, 0.15)';
+      feedback.style.color = '#10b981';
+      feedback.style.border = '1px solid rgba(16, 185, 129, 0.3)';
+      feedback.innerHTML = '✓ Merci ' + name + ' ! Redirection vers WhatsApp pour validation instantanée...';
+
+      // Prepare WhatsApp message
+      const text = `Bonjour WebLaunch ! Je m'appelle ${name} (Tél: ${phone}).%0AJe souhaite un devis pour : ${service}.%0ADétails : ${message}`;
+      const whatsappUrl = `https://wa.me/21656818880?text=${text}`;
+
+      // Open WhatsApp after short delay
+      setTimeout(() => {
+        window.open(whatsappUrl, '_blank');
+      }, 1000);
+    }
+  </script>
+</body>
+</html>
