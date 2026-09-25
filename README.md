@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 🤖 AgentX — Autonomous Claude AI Agent
 
 AgentX est une application d'agent IA autonome alimentée par l'API Claude (via le proxy Anthropic configuré), dotée d'une interface web moderne en **Dark Theme** et d'un mode CLI interactif.
@@ -89,3 +90,6 @@ d:\agentx/
     ├── style.css        # Styles CSS modernes et glassmorphism
     └── app.js           # Client SSE, markdown et animations
 ```
+=======
+# WebLaunch
+>>>>>>> 68b8709d10a8b6605a48ee6b6aa873576cc90fcc

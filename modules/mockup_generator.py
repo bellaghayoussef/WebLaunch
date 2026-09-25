@@ -630,7 +630,366 @@ def get_hotel_suites(name, city, currency):
         }
     ]
 
+def render_admin_shell(page_id, page_title, page_content, lead_data, theme, is_hotel):
+    settings = load_settings()
+    agency_name = settings.get("agency_name", "WebLaunch")
+    agency_phone = settings.get("agency_phone", "+216 56 818 880")
+    agency_email = settings.get("agency_email", "bellaghayoussef20@gmail.com")
+
+    name = lead_data.get("name", "Établissement")
+    city = lead_data.get("city", "Tunis")
+    currency = detect_currency(lead_data)
+    wa_num = lead_data.get("wa_number", "")
+    wa_url = f"https://wa.me/{wa_num}" if wa_num else "#contact"
+    brand_icon = "fa-hotel" if is_hotel else "fa-utensils"
+    business_type = "Hôtel & Résidence" if is_hotel else "Restaurant & Bar"
+
+    catalog_title = "Suites & Tarifs" if is_hotel else "Carte & Tarifs"
+    catalog_url = "admin-rooms.html" if is_hotel else "admin-menu.html"
+
+    admin_nav = [
+        {"id": "dashboard", "label": "Tableau de Bord", "icon": "fa-chart-pie", "url": "admin.html"},
+        {"id": "reservations", "label": "Réservations & Commandes", "icon": "fa-calendar-check", "url": "admin-reservations.html"},
+        {"id": "catalog", "label": catalog_title, "icon": "fa-layer-group", "url": catalog_url},
+    ]
+
+    nav_links_html = ""
+    for item in admin_nav:
+        active_cls = "active" if item["id"] == page_id else ""
+        nav_links_html += f"""
+        <a href="{item['url']}" class="admin-sidebar-link {active_cls}">
+          <i class="fa-solid {item['icon']}"></i>
+          <span>{item['label']}</span>
+        </a>
+        """
+
+    html = f"""<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{name} — Espace Gérant | {page_title}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+  :root {{
+    --bg-dark: #0f172a;
+    --sidebar-bg: #1e293b;
+    --card-bg: #ffffff;
+    --main-bg: #f8fafc;
+    --accent: {theme.get('accent', '#2563eb')};
+    --accent-light: {theme.get('accent_light', 'rgba(37, 99, 235, 0.08)')};
+    --text-main: #0f172a;
+    --text-muted: #64748b;
+    --border: #e2e8f0;
+    --font-heading: 'Outfit', sans-serif;
+    --font-body: 'Plus Jakarta Sans', sans-serif;
+  }}
+  * {{ margin: 0; padding: 0; box-sizing: border-box; }}
+  body {{
+    font-family: var(--font-body);
+    background: var(--main-bg);
+    color: var(--text-main);
+    display: flex;
+    min-height: 100vh;
+  }}
+  a {{ text-decoration: none; color: inherit; }}
+
+  /* SIDEBAR */
+  .admin-sidebar {{
+    width: 280px;
+    background: var(--sidebar-bg);
+    color: #f1f5f9;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 100;
+    padding: 24px 18px;
+    border-right: 1px solid rgba(255,255,255,0.08);
+  }}
+  .admin-brand {{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-bottom: 22px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    margin-bottom: 25px;
+  }}
+  .admin-brand-icon {{
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: var(--accent);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+  }}
+  .admin-brand-name {{ font-family: var(--font-heading); font-size: 1.15rem; font-weight: 800; color: #fff; line-height: 1.2; }}
+  .admin-brand-badge {{ font-size: 0.7rem; color: #94a3b8; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; }}
+
+  .admin-nav-group {{ display: flex; flex-direction: column; gap: 8px; flex-grow: 1; }}
+  .admin-sidebar-link {{
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 16px;
+    border-radius: 12px;
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: #94a3b8;
+    transition: 0.2s;
+  }}
+  .admin-sidebar-link i {{ font-size: 1.1rem; width: 22px; text-align: center; }}
+  .admin-sidebar-link:hover {{ background: rgba(255,255,255,0.06); color: #fff; }}
+  .admin-sidebar-link.active {{ background: var(--accent); color: #fff; font-weight: 700; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }}
+
+  .admin-sidebar-footer {{
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 14px;
+    padding: 16px;
+    font-size: 0.82rem;
+  }}
+  .client-site-btn {{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 10px;
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    margin-top: 10px;
+    transition: 0.2s;
+  }}
+  .client-site-btn:hover {{ background: rgba(255,255,255,0.2); }}
+
+  /* MAIN CONTENT AREA */
+  .admin-main {{
+    margin-left: 280px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }}
+  .admin-topbar {{
+    height: 72px;
+    background: #ffffff;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 32px;
+    position: sticky;
+    top: 0;
+    z-index: 80;
+  }}
+  .admin-content {{
+    padding: 32px;
+    flex-grow: 1;
+  }}
+
+  /* STATS CARDS */
+  .kpi-grid {{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+  }}
+  .kpi-card {{
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 22px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }}
+  .kpi-value {{ font-size: 1.8rem; font-weight: 800; color: var(--text-main); font-family: var(--font-heading); margin-top: 4px; }}
+  .kpi-label {{ font-size: 0.82rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }}
+  .kpi-icon {{
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.35rem;
+  }}
+
+  /* TABLES & CARDS */
+  .admin-card {{
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 26px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+    margin-bottom: 30px;
+  }}
+  .admin-card-header {{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }}
+  .admin-card-title {{
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--text-main);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }}
+
+  .table-responsive {{ width: 100%; overflow-x: auto; }}
+  table.admin-table {{
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+    text-align: left;
+  }}
+  table.admin-table th {{
+    padding: 12px 16px;
+    color: var(--text-muted);
+    font-weight: 700;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    background: #f8fafc;
+    border-bottom: 1px solid var(--border);
+  }}
+  table.admin-table td {{
+    padding: 16px;
+    border-bottom: 1px solid #f1f5f9;
+    color: var(--text-main);
+  }}
+  table.admin-table tr:hover td {{ background: #fafbfc; }}
+
+  /* BADGES */
+  .status-badge {{
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }}
+  .status-badge.confirmed {{ background: rgba(16, 185, 129, 0.12); color: #059669; }}
+  .status-badge.pending {{ background: rgba(245, 158, 11, 0.12); color: #d97706; }}
+  .status-badge.cancelled {{ background: rgba(239, 68, 68, 0.12); color: #dc2626; }}
+
+  .btn-sm-wa {{
+    background: #25d366;
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }}
+  .btn-sm-action {{
+    background: #f1f5f9;
+    color: var(--text-main);
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    border: 1px solid var(--border);
+    cursor: pointer;
+  }}
+  .btn-sm-action:hover {{ background: #e2e8f0; }}
+
+  @media (max-width: 900px) {{
+    .admin-sidebar {{ display: none; }}
+    .admin-main {{ margin-left: 0; }}
+  }}
+</style>
+</head>
+<body>
+  <!-- Sidebar -->
+  <aside class="admin-sidebar">
+    <div class="admin-brand">
+      <div class="admin-brand-icon"><i class="fa-solid {brand_icon}"></i></div>
+      <div>
+        <div class="admin-brand-name">{name}</div>
+        <div class="admin-brand-badge">{business_type} • Back-Office</div>
+      </div>
+    </div>
+
+    <div class="admin-nav-group">
+      <div style="font-size:0.72rem;text-transform:uppercase;color:#64748b;font-weight:800;letter-spacing:1px;padding:0 12px 6px;">Menu Gérant</div>
+      {nav_links_html}
+    </div>
+
+    <div class="admin-sidebar-footer">
+      <div style="color:#94a3b8;font-size:0.76rem;">Propulsé pour {name}</div>
+      <div style="font-weight:700;color:#fff;margin:2px 0 6px;">Agence {agency_name}</div>
+      <div style="color:#38bdf8;font-size:0.75rem;">Support Pro : {agency_phone}</div>
+      <a href="index.html" class="client-site-btn">
+        <i class="fa-solid fa-arrow-up-right-from-square"></i> Voir le Site Client
+      </a>
+    </div>
+  </aside>
+
+  <!-- Main View -->
+  <div class="admin-main">
+    <header class="admin-topbar">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <span style="background:rgba(16,185,129,0.12);color:#059669;padding:6px 14px;border-radius:20px;font-size:0.82rem;font-weight:700;display:flex;align-items:center;gap:6px;">
+          <i class="fa-solid fa-circle" style="font-size:0.6rem;"></i> Établissement Ouvert & Commandes Actives
+        </span>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:18px;">
+        <div style="position:relative;">
+          <a href="{wa_url}" target="_blank" class="btn-sm-wa" style="padding:8px 16px;border-radius:20px;">
+            <i class="fa-brands fa-whatsapp"></i> Ligne WhatsApp Directe
+          </a>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;border-left:1px solid var(--border);padding-left:18px;">
+          <div style="width:38px;height:38px;border-radius:50%;background:var(--accent-light);color:var(--accent);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:0.9rem;">
+            {name[0].upper()}
+          </div>
+          <div>
+            <div style="font-size:0.86rem;font-weight:700;">Directeur {name}</div>
+            <div style="font-size:0.72rem;color:var(--text-muted);">{city}</div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="admin-content">
+      {page_content}
+    </main>
+  </div>
+</body>
+</html>
+"""
+    return html
+
 def build_multipage_demo_bundle(lead_data, theme):
+    """
+    Builds the complete multi-page bundle including:
+    - Customer facing: index.html, menu.html/rooms.html, services.html (if hotel), about.html, contact.html, AND reservation.html
+    - Pro Admin portal: admin.html, admin-reservations.html, admin-menu.html / admin-rooms.html
+    """
     settings = load_settings()
     agency_name = settings.get("agency_name", "WebLaunch")
     agency_phone = settings.get("agency_phone", "+216 56 818 880")
@@ -660,7 +1019,7 @@ def build_multipage_demo_bundle(lead_data, theme):
         brand_icon = "fa-hotel"
         brand_badge = "Hôtel & Résidence 5★"
         cta_header_text = "Réserver"
-        cta_header_link = "rooms.html"
+        cta_header_link = "reservation.html"
         cta_header_icon = "fa-calendar-check"
     elif is_cafe:
         brand_icon = "fa-mug-hot"
@@ -718,7 +1077,55 @@ def build_multipage_demo_bundle(lead_data, theme):
 
     google_fonts_param = theme.get("google_fonts", "family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700")
 
-    # Shared CSS Styles
+    # Import existing data helpers
+    from modules.mockup_generator import get_hotel_suites
+    suites = get_hotel_suites(name, city, currency)
+    dishes = (ai_data and ai_data.get("dishes")) or [
+        {
+            "name": f"Le Plat Signature {name}",
+            "category": "Spécialités",
+            "price": "38",
+            "desc": "La spécialité secrète de la maison marinée aux épices artisanales et cuite à la perfection.",
+            "badge": "Signature"
+        },
+        {
+            "name": "Plateau Dégustation Royal",
+            "category": "Plats Chauds",
+            "price": "68",
+            "desc": "Assortiment généreux pour 2 à 3 personnes avec sauces fraîches maison, pains chauds et garnitures.",
+            "badge": "Bestseller"
+        },
+        {
+            "name": "Grillades Mixtes au Feu de Bois",
+            "category": "Plats Chauds",
+            "price": "52",
+            "desc": "Sélection de viandes tendres braisées sur lit de braise, servies avec riz parfumé et frites maison.",
+            "badge": "Recommandé"
+        },
+        {
+            "name": "Menu Gourmand Découverte",
+            "category": "Plats Chauds",
+            "price": "44",
+            "desc": "Formule complète avec entrée fraîcheur au choix, plat principal généreux et boisson artisanale.",
+            "badge": "Menu Complet"
+        },
+        {
+            "name": "Entrée Fraîcheur & Mezzé Maison",
+            "category": "Entrées & Sauces",
+            "price": "18",
+            "desc": "Préparée chaque matin avec des ingrédients du marché local, huile d'olive vierge et herbes fraîches.",
+            "badge": "Fait Maison"
+        },
+        {
+            "name": "Douceur Artisanale & Pâtisserie",
+            "category": "Desserts & Boissons",
+            "price": "14",
+            "desc": "La touche finale gourmande et croustillante préparée sur place selon notre recette traditionnelle.",
+            "badge": "Coup de Cœur"
+        }
+    ]
+
+    # Shared CSS for Customer Site
     shared_css = f"""
     :root {{
       --bg: {theme['bg']};
@@ -762,7 +1169,7 @@ def build_multipage_demo_bundle(lead_data, theme):
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
-      gap: 8px;
+      gap: 10px;
       border-bottom: 1px solid rgba(255,255,255,0.1);
     }}
     .demo-badge {{
@@ -774,6 +1181,19 @@ def build_multipage_demo_bundle(lead_data, theme):
       font-weight: 700;
       letter-spacing: 0.5px;
     }}
+    .demo-admin-badge {{
+      background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+      color: #ffffff !important;
+      padding: 4px 14px;
+      border-radius: 20px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.78rem;
+      box-shadow: 0 2px 8px rgba(59,130,246,0.4);
+    }}
+    .demo-admin-badge:hover {{ filter: brightness(1.1); transform: translateY(-1px); }}
     .demo-agency-link {{ color: #38bdf8; font-weight: 700; }}
     .demo-agency-link:hover {{ text-decoration: underline; }}
 
@@ -823,11 +1243,11 @@ def build_multipage_demo_bundle(lead_data, theme):
       display: block;
       margin-top: -3px;
     }}
-    .navlinks {{ display: flex; gap: 20px; list-style: none; align-items: center; }}
+    .navlinks {{ display: flex; gap: 18px; list-style: none; align-items: center; }}
     .navlink-item {{
       color: #475569;
       font-weight: 600;
-      font-size: 0.92rem;
+      font-size: 0.90rem;
       padding: 6px 12px;
       border-radius: 8px;
       transition: 0.25s;
@@ -982,323 +1402,6 @@ def build_multipage_demo_bundle(lead_data, theme):
       box-shadow: 0 2px 6px rgba(0,0,0,0.03);
     }}
 
-    /* SOCIAL PROOF BAR */
-    .social-bar {{
-      background: #ffffff;
-      border: 1px solid var(--card-border);
-      border-radius: 20px;
-      padding: 24px 30px;
-      margin-top: -50px;
-      position: relative;
-      z-index: 10;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 20px;
-      box-shadow: 0 15px 35px -5px rgba(0,0,0,0.08);
-    }}
-    .social-bar-profile {{ display: flex; align-items: center; gap: 16px; }}
-    .social-bar-avatar {{
-      width: 56px;
-      height: 56px;
-      border-radius: 50%;
-      padding: 3px;
-      background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }}
-    .social-bar-avatar img {{
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      border-radius: 50%;
-      border: 2px solid #fff;
-    }}
-    .social-bar-handle {{
-      font-weight: 800;
-      font-size: 1.15rem;
-      color: var(--text-heading);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }}
-    .social-bar-stats {{ font-size: 0.88rem; color: var(--muted); }}
-
-    /* REVIEWS & SOCIAL POSTS */
-    .reviews-grid {{
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 24px;
-    }}
-    .review-card {{
-      background: #ffffff;
-      border: 1px solid var(--card-border);
-      border-radius: 20px;
-      padding: 26px;
-      box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05);
-    }}
-    .review-header {{ display: flex; align-items: center; gap: 14px; margin-bottom: 12px; }}
-    .review-avatar {{
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      background: var(--accent-light);
-      color: var(--accent);
-      font-weight: 800;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.1rem;
-    }}
-    .review-author {{ font-weight: 800; font-size: 0.98rem; color: var(--text-heading); }}
-    .review-verified {{ font-size: 0.78rem; color: var(--muted); display: flex; align-items: center; gap: 4px; }}
-    .review-verified i {{ color: #10b981; }}
-    .review-stars {{ color: #f59e0b; font-size: 0.88rem; margin-bottom: 12px; }}
-    .review-text {{ color: var(--text); font-size: 0.92rem; line-height: 1.6; font-style: italic; }}
-
-    .social-grid {{
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 26px;
-    }}
-    .social-card {{
-      background: #ffffff;
-      border: 1px solid var(--card-border);
-      border-radius: 20px;
-      overflow: hidden;
-      box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05);
-      transition: 0.3s;
-    }}
-    .social-card:hover {{ transform: translateY(-4px); box-shadow: 0 16px 32px -6px rgba(0,0,0,0.1); }}
-    .social-img {{
-      height: 220px;
-      background-size: cover;
-      background-position: center;
-      position: relative;
-      padding: 14px;
-    }}
-    .social-tag {{
-      background: rgba(15, 23, 42, 0.8);
-      backdrop-filter: blur(8px);
-      color: #fff;
-      padding: 4px 12px;
-      border-radius: 20px;
-      font-size: 0.75rem;
-      font-weight: 700;
-    }}
-    .social-overlay {{
-      position: absolute;
-      bottom: 14px;
-      right: 14px;
-      display: flex;
-      gap: 10px;
-    }}
-    .social-stat {{
-      background: rgba(0,0,0,0.65);
-      backdrop-filter: blur(6px);
-      color: #fff;
-      padding: 4px 10px;
-      border-radius: 14px;
-      font-size: 0.78rem;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }}
-    .social-body {{ padding: 20px; }}
-    .social-caption {{ font-size: 0.9rem; color: var(--text); line-height: 1.5; margin-bottom: 14px; }}
-    .social-link-btn {{
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 0.84rem;
-      font-weight: 700;
-      color: #e1306c;
-    }}
-
-    /* DISHES & MENU */
-    .menu-tabs {{
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin: 30px 0;
-    }}
-    .menu-tab {{
-      background: #ffffff;
-      border: 1px solid var(--card-border);
-      color: var(--muted);
-      padding: 10px 20px;
-      border-radius: 30px;
-      font-weight: 700;
-      font-size: 0.9rem;
-      cursor: pointer;
-      transition: 0.25s;
-    }}
-    .menu-tab.active, .menu-tab:hover {{
-      background: var(--accent);
-      color: #ffffff;
-      border-color: var(--accent);
-      box-shadow: 0 4px 15px rgba(0,0,0,0.12);
-    }}
-    .menu-grid {{
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-      gap: 26px;
-    }}
-    .dish-card {{
-      background: #ffffff;
-      border: 1px solid var(--card-border);
-      border-radius: 20px;
-      padding: 26px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      transition: 0.3s;
-      box-shadow: 0 8px 22px -4px rgba(0,0,0,0.05);
-    }}
-    .dish-card:hover {{
-      transform: translateY(-5px);
-      border-color: var(--accent);
-      box-shadow: 0 16px 32px -6px rgba(0,0,0,0.1);
-    }}
-    .dish-cat-label {{
-      font-size: 0.74rem;
-      text-transform: uppercase;
-      font-weight: 700;
-      color: var(--accent);
-      letter-spacing: 1px;
-      margin-bottom: 4px;
-    }}
-    .dish-title {{
-      font-size: 1.25rem;
-      font-weight: 700;
-      color: var(--text-heading);
-      margin-bottom: 8px;
-    }}
-    .dish-price-wrap {{ text-align: right; white-space: nowrap; }}
-    .dish-price {{ font-size: 1.5rem; font-weight: 900; color: var(--accent); }}
-    .dish-curr {{ font-size: 0.85rem; font-weight: 700; color: var(--muted); margin-left: 3px; }}
-    .dish-desc {{ color: var(--muted); font-size: 0.92rem; line-height: 1.5; margin-bottom: 20px; flex-grow: 1; }}
-    .dish-footer {{
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding-top: 16px;
-      border-top: 1px dashed rgba(15, 23, 42, 0.08);
-    }}
-    .dish-badge {{
-      background: var(--accent-light);
-      color: var(--accent);
-      padding: 4px 10px;
-      border-radius: 12px;
-      font-size: 0.76rem;
-      font-weight: 700;
-    }}
-    .add-to-cart-btn {{
-      background: #f8fafc;
-      border: 1px solid rgba(15, 23, 42, 0.12);
-      color: var(--text-heading);
-      padding: 8px 16px;
-      border-radius: 20px;
-      font-weight: 700;
-      font-size: 0.84rem;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      transition: 0.25s;
-    }}
-    .add-to-cart-btn:hover {{
-      background: var(--accent);
-      color: #fff;
-      border-color: var(--accent);
-    }}
-
-    /* HOTEL SUITES */
-    .suites-grid {{
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
-      gap: 30px;
-    }}
-    .suite-card {{
-      background: #ffffff;
-      border: 1px solid var(--card-border);
-      border-radius: 22px;
-      overflow: hidden;
-      transition: 0.3s;
-      box-shadow: 0 10px 25px -5px rgba(0,0,0,0.06);
-      display: flex;
-      flex-direction: column;
-    }}
-    .suite-card:hover {{ transform: translateY(-5px); box-shadow: 0 18px 38px -8px rgba(0,0,0,0.12); border-color: var(--accent); }}
-    .suite-img {{
-      height: 240px;
-      background-size: cover;
-      background-position: center;
-      position: relative;
-      padding: 16px;
-    }}
-    .suite-badge-tag {{
-      background: rgba(15, 23, 42, 0.85);
-      backdrop-filter: blur(8px);
-      color: #fff;
-      padding: 5px 14px;
-      border-radius: 20px;
-      font-size: 0.75rem;
-      font-weight: 800;
-    }}
-    .suite-body {{ padding: 24px; display: flex; flex-direction: column; flex-grow: 1; }}
-    .suite-cat-label {{ font-size: 0.75rem; text-transform: uppercase; font-weight: 800; color: var(--accent); letter-spacing: 1px; }}
-    .suite-title {{ font-size: 1.3rem; font-weight: 800; color: var(--text-heading); margin-top: 4px; }}
-    .suite-price-wrap {{ text-align: right; white-space: nowrap; }}
-    .suite-price {{ font-size: 1.55rem; font-weight: 900; color: var(--accent); }}
-    .suite-curr {{ font-size: 0.9rem; font-weight: 800; color: var(--muted); }}
-    .suite-per {{ font-size: 0.78rem; color: var(--muted); display: block; margin-top: -3px; }}
-    .suite-desc {{ color: var(--muted); font-size: 0.92rem; line-height: 1.6; margin: 14px 0; }}
-    .suite-features-wrap {{ display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 22px; }}
-    .suite-pill {{
-      background: var(--bg-subtle);
-      border: 1px solid rgba(0,0,0,0.06);
-      padding: 4px 10px;
-      border-radius: 12px;
-      font-size: 0.76rem;
-      font-weight: 600;
-      color: var(--text);
-    }}
-    .suite-footer {{ margin-top: auto; }}
-
-    /* HOTEL AMENITIES */
-    .amenities-grid {{
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 26px;
-    }}
-    .amenity-card {{
-      background: #ffffff;
-      border: 1px solid var(--card-border);
-      border-radius: 20px;
-      padding: 30px;
-      transition: 0.3s;
-      box-shadow: 0 8px 22px -4px rgba(0,0,0,0.05);
-    }}
-    .amenity-card:hover {{ transform: translateY(-4px); border-color: var(--accent); }}
-    .amenity-icon {{
-      width: 52px;
-      height: 52px;
-      border-radius: 14px;
-      background: var(--accent-light);
-      color: var(--accent);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.4rem;
-      margin-bottom: 18px;
-    }}
-    .amenity-title {{ font-size: 1.2rem; font-weight: 800; color: var(--text-heading); margin-bottom: 8px; }}
-    .amenity-desc {{ color: var(--muted); font-size: 0.92rem; line-height: 1.6; }}
-
     /* FORMS & INPUTS */
     .form-box {{
       background: #ffffff;
@@ -1335,42 +1438,6 @@ def build_multipage_demo_bundle(lead_data, theme):
       transition: 0.25s;
     }}
     .form-input:focus {{ border-color: var(--accent); background: #ffffff; box-shadow: 0 0 0 3px var(--accent-light); }}
-
-    /* FLOATING CART (RESTAURANTS) */
-    .floating-cart-bar {{
-      position: fixed;
-      bottom: 28px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #0f172a;
-      color: #ffffff;
-      padding: 12px 24px;
-      border-radius: 40px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-      display: none;
-      align-items: center;
-      gap: 20px;
-      z-index: 100;
-      border: 1px solid rgba(255,255,255,0.15);
-      animation: slideUp 0.3s ease-out;
-    }}
-    @keyframes slideUp {{
-      from {{ transform: translate(-50%, 40px); opacity: 0; }}
-      to {{ transform: translate(-50%, 0); opacity: 1; }}
-    }}
-    .cart-count {{
-      background: var(--accent);
-      color: #fff;
-      width: 26px;
-      height: 26px;
-      border-radius: 50%;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.82rem;
-      font-weight: 800;
-      margin-right: 6px;
-    }}
 
     /* FLOATING DIRECT WHATSAPP BUTTON */
     .whatsapp-direct-btn {{
@@ -1449,7 +1516,6 @@ def build_multipage_demo_bundle(lead_data, theme):
     }}
     """
 
-    # Helper to wrap any page in the shared shell
     def wrap_page(page_id, page_title, page_content, nav_items, breadcrumb=None, extra_js=""):
         nav_html = ""
         for item in nav_items:
@@ -1490,11 +1556,14 @@ def build_multipage_demo_bundle(lead_data, theme):
 <body>
   <!-- Demo Top Bar -->
   <div class="demo-banner">
-    <div style="display:flex;align-items:center;gap:10px;">
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
       <span class="demo-badge">MAQUETTE PRO MULTI-PAGES</span>
-      <span>Proposée avec excellence pour <strong>{name}</strong></span>
+      <span>Proposée pour <strong>{name}</strong></span>
     </div>
-    <div style="display:flex;align-items:center;gap:14px;">
+    <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+      <a href="admin.html" class="demo-admin-badge">
+        <i class="fa-solid fa-gauge-high"></i> Espace Gérant (Admin)
+      </a>
       <span>Agence : <a href="https://wa.me/21656818880" target="_blank" class="demo-agency-link">{agency_name}</a> ({agency_phone})</span>
     </div>
   </div>
@@ -1562,6 +1631,7 @@ def build_multipage_demo_bundle(lead_data, theme):
           <div class="footer-col-title">Navigation Rapide</div>
           <ul class="footer-links">
             {nav_html}
+            <li><a href="admin.html" style="color:#38bdf8;font-weight:700;"><i class="fa-solid fa-lock" style="font-size:0.75rem;"></i> Espace Gérant (Admin)</a></li>
           </ul>
         </div>
 
@@ -1599,7 +1669,7 @@ def build_multipage_demo_bundle(lead_data, theme):
 
       <div class="footer-bottom">
         <div>© 2026 {name} • Tous droits réservés.</div>
-        <div>Maquette Web Pro réalisée par <strong style="color:#fff;">{agency_name}</strong> ({agency_phone})</div>
+        <div>Maquette Web Pro & Back-Office réalisés par <strong style="color:#fff;">{agency_name}</strong> ({agency_phone})</div>
       </div>
     </div>
   </footer>
@@ -1608,1191 +1678,864 @@ def build_multipage_demo_bundle(lead_data, theme):
 </body>
 </html>"""
 
-    # Common Social Posts and Reviews HTML
-    social_images = [theme.get("social_img1"), theme.get("social_img2"), theme.get("social_img3")]
-    social_posts = (ai_data and ai_data.get("social_posts")) or [
-        {
-            "caption": f"Préparation minute sous vos yeux chez {name} 🔥 La passion des saveurs authentiques ! #foodie #{slugify(city)}",
-            "likes": "1.8k",
-            "comments": "72",
-            "tag": "En Cuisine"
-        },
-        {
-            "caption": f"Prêts pour le service du soir. Fraîcheur et générosité garanties à chaque visite chez {name} ! ✨",
-            "likes": "1.2k",
-            "comments": "48",
-            "tag": "Direct WhatsApp"
-        },
-        {
-            "caption": f"Merci à nos fidèles clients de {city} pour vos avis si chaleureux. Vous êtes notre plus belle inspiration ❤️",
-            "likes": "2.4k",
-            "comments": "115",
-            "tag": "Avis Clients"
-        }
-    ]
-    social_feed_html = ""
-    for i, post in enumerate(social_posts):
-        img_url = social_images[i % len(social_images)]
-        social_feed_html += f"""
-        <div class="social-card">
-          <div class="social-img" style="background-image: url('{img_url}');">
-            <span class="social-tag">{post.get('tag', 'Réseaux')}</span>
-            <div class="social-overlay">
-              <div class="social-stat"><i class="fa-solid fa-heart"></i> {post.get('likes', '1.5k')}</div>
-              <div class="social-stat"><i class="fa-solid fa-comment"></i> {post.get('comments', '60')}</div>
-            </div>
-          </div>
-          <div class="social-body">
-            <p class="social-caption">{post.get('caption')}</p>
-            <a href="{social_ref['url']}" target="_blank" class="social-link-btn">
-              <i class="fa-brands {platform_icon}"></i> Voir sur {handle}
-            </a>
-          </div>
-        </div>
-        """
-
-    testimonials = (ai_data and ai_data.get("testimonials")) or [
-        {
-            "author": "Karim M.",
-            "date": "Il y a 3 jours",
-            "comment": f"Une adresse incontournable à {city} ! Tout est propre, savoureux et la prise de contact WhatsApp est un vrai bonheur de rapidité.",
-        },
-        {
-            "author": "Sarah & Omar",
-            "date": "La semaine dernière",
-            "comment": "Les portions sont très copieuses et la qualité est constante. Le meilleur rapport qualité-prix sans contestation !",
-        },
-        {
-            "author": "Dr. Tariq B.",
-            "date": "Il y a 2 semaines",
-            "comment": "Cadre agréable, accueil chaleureux et service rapide. Je recommande vivement pour un déjeuner d'affaires ou un moment en famille.",
-        }
-    ]
-    testimonials_html = ""
-    for t in testimonials:
-        source_label = "Google Maps & Booking.com" if is_hotel else "Google Maps"
-        testimonials_html += f"""
-        <div class="review-card">
-          <div class="review-header">
-            <div class="review-avatar">{t.get('author', 'Client')[0].upper()}</div>
-            <div>
-              <div class="review-author">{t.get('author')}</div>
-              <div class="review-verified"><i class="fa-solid fa-circle-check"></i> Avis vérifié {source_label} • {t.get('date')}</div>
-            </div>
-          </div>
-          <div class="review-stars">
-            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-          </div>
-          <p class="review-text">"{t.get('comment')}"</p>
-        </div>
-        """
-
+    # Start assembling dictionary of pages
     pages = {}
 
-    # ==========================================
-    # BRANCH A: HOTEL WEBSITE BUNDLE
-    # ==========================================
+    # ========================================================
+    # 1. CUSTOMER PAGES (HOTEL VS RESTAURANT)
+    # ========================================================
     if is_hotel:
         hotel_nav = [
             {"id": "index", "label": "Accueil", "url": "index.html"},
             {"id": "rooms", "label": "Suites & Chambres", "url": "rooms.html"},
             {"id": "services", "label": "Services & Spa", "url": "services.html"},
+            {"id": "reservation", "label": "Réservation en Ligne", "url": "reservation.html"},
             {"id": "about", "label": "L'Hôtel", "url": "about.html"},
-            {"id": "contact", "label": "Réservation & Contact", "url": "contact.html"}
+            {"id": "contact", "label": "Contact & Accès", "url": "contact.html"}
         ]
-        suites = get_hotel_suites(name, city, currency)
-        
-        # 1. Hotel index.html
-        hotel_index_content = f"""
-        <!-- Hero Section -->
-        <section style="padding:70px 0 90px;background:radial-gradient(circle at 85% 20%, var(--accent-light) 0%, transparent 50%), linear-gradient(rgba(255,255,255,0.92), rgba(255,255,255,0.97)), url('{theme['hero_img']}') center/cover no-repeat;background-attachment:fixed;">
-          <div class="container">
-            <div style="display:grid;grid-template-columns:1.15fr 0.85fr;gap:50px;align-items:center;">
-              <div>
-                <div style="display:inline-flex;align-items:center;gap:8px;background:#ffffff;border:1px solid var(--border);padding:8px 18px;border-radius:30px;font-size:0.86rem;font-weight:700;color:var(--text-heading);margin-bottom:22px;box-shadow:0 4px 12px rgba(0,0,0,0.04);">
-                  <i class="fa-solid fa-crown" style="color:var(--accent);"></i>
-                  <span>{hero_badge_text}</span>
-                </div>
-                <h1 style="font-size:clamp(2.4rem, 4.5vw, 4.2rem);font-weight:900;line-height:1.12;margin-bottom:20px;color:var(--text-heading);">
-                  {name}<br>
-                  <span style="background:linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">{tagline}</span>
-                </h1>
-                <p style="font-size:clamp(1.05rem, 1.3vw, 1.25rem);color:var(--muted);line-height:1.6;margin-bottom:35px;max-width:680px;">
-                  {subtitle}
-                </p>
-                <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:center;margin-bottom:35px;">
-                  <a href="{wa_url}?text=Bonjour%20{name}%2C%20je%20souhaite%20r%C3%A9server%20un%20s%C3%A9jour" target="_blank" class="btn-primary">
-                    <i class="fa-brands fa-whatsapp"></i> Réserver sur WhatsApp (Direct)
-                  </a>
-                  <a href="rooms.html" class="btn-outline">
-                    <i class="fa-solid fa-bed"></i> Découvrir nos Suites
-                  </a>
-                </div>
-                <div class="features-pills">{pills_html}</div>
-              </div>
 
-              <!-- Quick Booking Card -->
-              <div>
-                <div class="form-box">
-                  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid rgba(0,0,0,0.06);">
-                    <div>
-                      <div style="font-weight:800;font-size:1.15rem;color:var(--text-heading);display:flex;align-items:center;gap:8px;">
-                        <i class="fa-solid fa-calendar-check" style="color:var(--accent);"></i> Réservez votre Séjour
-                      </div>
-                      <div style="font-size:0.82rem;color:var(--muted);margin-top:2px;">Meilleur tarif garanti • Confirmation instantanée</div>
-                    </div>
-                    <span style="background:rgba(217,119,6,0.12);color:var(--gold);font-weight:800;font-size:0.8rem;padding:4px 10px;border-radius:20px;">5★ Luxe</span>
-                  </div>
+        # Use existing builders for index, rooms, services, about, contact...
+        from modules.mockup_generator import build_multipage_demo_bundle
+        base_pages = build_multipage_demo_bundle(lead_data, theme)
+        for k, v in base_pages.items():
+            pages[k] = v
 
-                  <div class="form-grid">
-                    <div class="form-group">
-                      <label class="form-label"><i class="fa-regular fa-calendar"></i> Arrivée</label>
-                      <input type="date" id="hotelCheckIn" class="form-input">
-                    </div>
-                    <div class="form-group">
-                      <label class="form-label"><i class="fa-regular fa-calendar-check"></i> Départ</label>
-                      <input type="date" id="hotelCheckOut" class="form-input">
-                    </div>
-                    <div class="form-group">
-                      <label class="form-label"><i class="fa-solid fa-user-group"></i> Voyageurs</label>
-                      <select id="hotelGuests" class="form-input">
-                        <option value="1 Adulte">1 Adulte</option>
-                        <option value="2 Adultes" selected>2 Adultes</option>
-                        <option value="Famille (2 Adultes + Enfants)">Famille (2 Adultes + Enfants)</option>
-                        <option value="Séjour VIP / Affaires">Séjour VIP / Affaires</option>
-                      </select>
-                    </div>
-                    <div class="form-group">
-                      <label class="form-label"><i class="fa-solid fa-bed"></i> Suite souhaitée</label>
-                      <select id="hotelSuite" class="form-input">
-                        <option value="Suite Royale Panoramique">Suite Royale Panoramique (380 {currency})</option>
-                        <option value="Chambre Executive Prestige">Chambre Executive Prestige (240 {currency})</option>
-                        <option value="Suite Junior Élégance">Suite Junior Élégance (195 {currency})</option>
-                        <option value="Chambre Supérieure Sérénité">Chambre Supérieure Sérénité (145 {currency})</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <button onclick="bookHotelWhatsApp()" class="btn-primary" style="width:100%;justify-content:center;margin-top:10px;">
-                    <i class="fa-brands fa-whatsapp"></i> Vérifier Disponibilité & Réserver
-                  </button>
-                  <div style="text-align:center;font-size:0.78rem;color:var(--muted);margin-top:12px;">
-                    <i class="fa-solid fa-shield-halved" style="color:#10b981;"></i> Réservation sans commission • Conciergerie 24/7
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- Social Bar -->
-        <div class="container">
-          <div class="social-bar">
-            <div class="social-bar-profile">
-              <div class="social-bar-avatar">
-                <img src="{theme['social_img1']}" alt="{name}">
-              </div>
-              <div>
-                <div class="social-bar-handle">{handle} <i class="fa-solid fa-circle-check" style="color:#38bdf8;font-size:0.95rem;"></i></div>
-                <div class="social-bar-stats">{followers} abonnés • Résidence de Prestige & Sérénité à {city}</div>
-              </div>
-            </div>
-            <div style="display:flex;gap:20px;align-items:center;">
-              <div style="text-align:right;">
-                <div style="font-weight:900;font-size:1.2rem;color:var(--text-heading);">{rating_score} / 5 ★★★★★</div>
-                <div style="font-size:0.8rem;color:var(--muted);">{review_count} avis certifiés Google & Booking</div>
-              </div>
-              <a href="{social_ref['url']}" target="_blank" class="btn-outline" style="padding:10px 20px;font-size:0.86rem;">
-                <i class="fa-brands {platform_icon}"></i> Suivre
-              </a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Featured Suites Preview -->
+        # Build dedicated reservation.html for Hotel
+        hotel_reservation_content = f"""
         <section class="section">
           <div class="container">
-            <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:40px;flex-wrap:wrap;gap:20px;">
-              <div>
-                <span class="section-tag">HOSPITALITÉ DE PRESTIGE</span>
-                <h2 class="section-title">Nos Suites Emblématiques</h2>
-                <p class="section-sub">Un écrin de luxe conçu pour vous offrir un séjour d'exception au cœur de {city}.</p>
-              </div>
-              <a href="rooms.html" class="btn-outline" style="padding:10px 22px;font-size:0.9rem;">
-                Voir toutes les suites <i class="fa-solid fa-arrow-right"></i>
-              </a>
-            </div>
-
-            <div class="suites-grid">
-              {f'''
-              <div class="suite-card">
-                <div class="suite-img" style="background-image: url('{suites[0]["img"]}');">
-                  <span class="suite-badge-tag">{suites[0]["badge"]}</span>
-                </div>
-                <div class="suite-body">
-                  <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
-                    <div>
-                      <span class="suite-cat-label">{suites[0]["category"]}</span>
-                      <h3 class="suite-title">{suites[0]["name"]}</h3>
-                    </div>
-                    <div class="suite-price-wrap">
-                      <span class="suite-price">{suites[0]["price"]}</span>
-                      <span class="suite-curr">{currency}</span>
-                      <span class="suite-per">/ nuit</span>
-                    </div>
-                  </div>
-                  <p class="suite-desc">{suites[0]["desc"]}</p>
-                  <div class="suite-features-wrap">
-                    {"".join([f'<span class="suite-pill"><i class="fa-solid fa-check"></i> {feat}</span>' for feat in suites[0]["features"][:3]])}
-                  </div>
-                  <div class="suite-footer">
-                    <a href="rooms.html" class="btn-primary" style="width:100%;justify-content:center;padding:12px;">
-                      Découvrir cette suite & Réserver
-                    </a>
-                  </div>
-                </div>
-              </div>
-              <div class="suite-card">
-                <div class="suite-img" style="background-image: url('{suites[1]["img"]}');">
-                  <span class="suite-badge-tag">{suites[1]["badge"]}</span>
-                </div>
-                <div class="suite-body">
-                  <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
-                    <div>
-                      <span class="suite-cat-label">{suites[1]["category"]}</span>
-                      <h3 class="suite-title">{suites[1]["name"]}</h3>
-                    </div>
-                    <div class="suite-price-wrap">
-                      <span class="suite-price">{suites[1]["price"]}</span>
-                      <span class="suite-curr">{currency}</span>
-                      <span class="suite-per">/ nuit</span>
-                    </div>
-                  </div>
-                  <p class="suite-desc">{suites[1]["desc"]}</p>
-                  <div class="suite-features-wrap">
-                    {"".join([f'<span class="suite-pill"><i class="fa-solid fa-check"></i> {feat}</span>' for feat in suites[1]["features"][:3]])}
-                  </div>
-                  <div class="suite-footer">
-                    <a href="rooms.html" class="btn-primary" style="width:100%;justify-content:center;padding:12px;">
-                      Découvrir cette suite & Réserver
-                    </a>
-                  </div>
-                </div>
-              </div>
-              '''}
-            </div>
-          </div>
-        </section>
-
-        <!-- Services Preview Section -->
-        <section class="section" style="background:var(--bg-subtle);">
-          <div class="container">
-            <div style="text-align:center;max-width:720px;margin:0 auto 40px;">
-              <span class="section-tag">PRESTATIONS & BIEN-ÊTRE</span>
-              <h2 class="section-title">Installations & Services 5 Étoiles</h2>
-              <p class="section-sub" style="margin:0 auto;">Profitez de nos équipements haut de gamme pour vous ressourcer durant votre séjour.</p>
-            </div>
-
-            <div class="amenities-grid">
-              <div class="amenity-card">
-                <div class="amenity-icon"><i class="fa-solid fa-water-ladder"></i></div>
-                <h3 class="amenity-title">Piscine & Solarium Privatif</h3>
-                <p class="amenity-desc">Bassin chauffé entouré de transats confortables et service de rafraîchissements exclusifs.</p>
-              </div>
-              <div class="amenity-card">
-                <div class="amenity-icon"><i class="fa-solid fa-spa"></i></div>
-                <h3 class="amenity-title">Spa & Espace Bien-être</h3>
-                <p class="amenity-desc">Hammam traditionnel, sauna finlandais et soins personnalisés par nos thérapeutes experts.</p>
-              </div>
-              <div class="amenity-card">
-                <div class="amenity-icon"><i class="fa-solid fa-bell-concierge"></i></div>
-                <h3 class="amenity-title">Conciergerie Privée 24h/24</h3>
-                <p class="amenity-desc">Assistance dédiée pour vos réservations exclusives, transferts VIP et découvertes privées.</p>
-              </div>
-            </div>
-
-            <div style="text-align:center;margin-top:35px;">
-              <a href="services.html" class="btn-primary" style="padding:12px 28px;">
-                Découvrir l'ensemble de nos services <i class="fa-solid fa-arrow-right"></i>
-              </a>
-            </div>
-          </div>
-        </section>
-
-        <!-- Reviews & Social -->
-        <section class="section">
-          <div class="container">
-            <div style="text-align:center;max-width:680px;margin:0 auto 40px;">
-              <span class="section-tag">AVIS DE NOS HÔTES</span>
-              <h2 class="section-title">Ce Que Disent Nos Voyageurs</h2>
-              <p class="section-sub" style="margin:0 auto;">Une réputation d'excellence bâtie sur la confiance et l'attention portée à chaque détail.</p>
-            </div>
-            <div class="reviews-grid">{testimonials_html}</div>
-          </div>
-        </section>
-        """
-        hotel_js = f"""
-        <script>
-        const waUrl = "{wa_url}";
-        const businessName = "{name}";
-        function bookHotelWhatsApp() {{
-          const checkIn = document.getElementById('hotelCheckIn') ? document.getElementById('hotelCheckIn').value : '';
-          const checkOut = document.getElementById('hotelCheckOut') ? document.getElementById('hotelCheckOut').value : '';
-          const guests = document.getElementById('hotelGuests') ? document.getElementById('hotelGuests').value : '2 Adultes';
-          const suite = document.getElementById('hotelSuite') ? document.getElementById('hotelSuite').value : 'Suite';
-
-          let msg = `Bonjour ${{businessName}} ! Je souhaite réserver un séjour :%0A%0A`;
-          msg += `• Suite : ${{suite}}%0A`;
-          msg += `• Voyageurs : ${{guests}}%0A`;
-          if (checkIn) msg += `• Arrivée : ${{checkIn}}%0A`;
-          if (checkOut) msg += `• Départ : ${{checkOut}}%0A`;
-          msg += `%0APouvez-vous me confirmer la disponibilité et le tarif pour ces dates ? Merci !`;
-          window.open(`${{waUrl}}?text=${{msg}}`, '_blank');
-        }}
-        window.addEventListener('DOMContentLoaded', () => {{
-          const inEl = document.getElementById('hotelCheckIn');
-          const outEl = document.getElementById('hotelCheckOut');
-          if (inEl && outEl) {{
-            const today = new Date();
-            const tomorrow = new Date(today);
-            tomorrow.setDate(tomorrow.getDate() + 1);
-            const dayAfter = new Date(today);
-            dayAfter.setDate(dayAfter.getDate() + 3);
-            inEl.value = tomorrow.toISOString().split('T')[0];
-            outEl.value = dayAfter.toISOString().split('T')[0];
-          }}
-        }});
-        </script>
-        """
-        pages["index.html"] = wrap_page("index", "Accueil & Réservation", hotel_index_content, hotel_nav, extra_js=hotel_js)
-
-        # 2. Hotel rooms.html
-        suites_cards_html = ""
-        for s in suites:
-            feat_tags = "".join([f'<span class="suite-pill"><i class="fa-solid fa-check"></i> {f}</span>' for f in s["features"]])
-            encoded_suite = urllib.parse.quote(f"Bonjour {name}, je souhaite réserver la {s['name']} ({s['price']} {currency}/nuit)")
-            suites_cards_html += f"""
-            <div class="suite-card" data-category="{s['category']}">
-              <div class="suite-img" style="background-image: url('{s['img']}');">
-                <span class="suite-badge-tag">{s['badge']}</span>
-              </div>
-              <div class="suite-body">
-                <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
-                  <div>
-                    <span class="suite-cat-label">{s['category']}</span>
-                    <h3 class="suite-title">{s['name']}</h3>
-                  </div>
-                  <div class="suite-price-wrap">
-                    <span class="suite-price">{s['price']}</span>
-                    <span class="suite-curr">{currency}</span>
-                    <span class="suite-per">/ nuit</span>
-                  </div>
-                </div>
-                <p class="suite-desc">{s['desc']}</p>
-                <div class="suite-features-wrap">
-                  {feat_tags}
-                </div>
-                <div class="suite-footer">
-                  <a href="{wa_url}?text={encoded_suite}" target="_blank" class="btn-primary" style="padding:10px 20px;font-size:0.88rem;width:100%;justify-content:center;">
-                    <i class="fa-brands fa-whatsapp"></i> Réserver cette Suite
-                  </a>
-                </div>
-              </div>
-            </div>
-            """
-        hotel_rooms_content = f"""
-        <section class="section">
-          <div class="container">
-            <div class="menu-tabs" style="justify-content:center;">
-              <button class="menu-tab active" onclick="filterSuites('Tous', this)">Toutes nos Chambres</button>
-              <button class="menu-tab" onclick="filterSuites('Suites Royales', this)">Suites Royales</button>
-              <button class="menu-tab" onclick="filterSuites('Chambres Executive', this)">Chambres Executive</button>
-              <button class="menu-tab" onclick="filterSuites('Chambres Cosy', this)">Chambres Cosy</button>
-            </div>
-
-            <div class="suites-grid">
-              {suites_cards_html}
-            </div>
-          </div>
-        </section>
-        """
-        rooms_js = f"""
-        <script>
-        function filterSuites(category, btnElement) {{
-          document.querySelectorAll('.menu-tab').forEach(btn => btn.classList.remove('active'));
-          btnElement.classList.add('active');
-          const cards = document.querySelectorAll('.suite-card');
-          cards.forEach(card => {{
-            const cardCat = card.getAttribute('data-category');
-            if (category === 'Tous' || cardCat.includes(category)) {{
-              card.style.display = 'flex';
-            }} else {{
-              card.style.display = 'none';
-            }}
-          }});
-        }}
-        </script>
-        """
-        pages["rooms.html"] = wrap_page(
-            "rooms", "Suites & Chambres de Prestige", hotel_rooms_content, hotel_nav,
-            breadcrumb={"trail": "Suites & Chambres", "title": "Nos Suites & Chambres de Prestige", "subtitle": f"Un havre de confort et de sérénité au cœur de {city} avec service de conciergerie 24/7."},
-            extra_js=rooms_js
-        )
-
-        # 3. Hotel services.html
-        hotel_services_content = f"""
-        <section class="section">
-          <div class="container">
-            <div class="amenities-grid">
-              <div class="amenity-card">
-                <div class="amenity-icon"><i class="fa-solid fa-water-ladder"></i></div>
-                <h3 class="amenity-title">Piscine & Solarium Privatif</h3>
-                <p class="amenity-desc">Un bassin d'eau cristalline chauffée, bordé de transats élégants et de cabanes privées. Service de rafraîchissements et cocktails détox servis au bord de l'eau.</p>
-              </div>
-              <div class="amenity-card">
-                <div class="amenity-icon"><i class="fa-solid fa-spa"></i></div>
-                <h3 class="amenity-title">Spa & Espace Bien-être Oriental</h3>
-                <p class="amenity-desc">Hammam traditionnel en marbre sculpté, rituels aux huiles essentielles rares et massages délassants prodigués par notre équipe de praticiens hautement qualifiés.</p>
-              </div>
-              <div class="amenity-card">
-                <div class="amenity-icon"><i class="fa-solid fa-utensils"></i></div>
-                <h3 class="amenity-title">Restaurant Gastronomique & Bar</h3>
-                <p class="amenity-desc">Cuisine d'auteur d'inspiration méditerranéenne et locale. Petit-déjeuner buffet gourmet et service en chambre 24h/24 pour satisfaire toutes vos envies à tout instant.</p>
-              </div>
-              <div class="amenity-card">
-                <div class="amenity-icon"><i class="fa-solid fa-car-side"></i></div>
-                <h3 class="amenity-title">Service Voiturier & Navette Aéroport VIP</h3>
-                <p class="amenity-desc">Transfert haut de gamme depuis et vers les aéroports de {city}. Parking privé surveillé et prise en charge instantanée de votre véhicule par nos voituriers.</p>
-              </div>
-              <div class="amenity-card">
-                <div class="amenity-icon"><i class="fa-solid fa-bell-concierge"></i></div>
-                <h3 class="amenity-title">Conciergerie Privée Dédiée 24h/24</h3>
-                <p class="amenity-desc">Notre conciergerie veille à exaucer toutes vos exigences : réservations de tables d'exception, billets de spectacles, guides privés et excursions sur-mesure.</p>
-              </div>
-              <div class="amenity-card">
-                <div class="amenity-icon"><i class="fa-solid fa-wifi"></i></div>
-                <h3 class="amenity-title">Salons Affaires & Fibre Très Haut Débit</h3>
-                <p class="amenity-desc">Connexion Wi-Fi 6 ultra-rapide et sécurisée, salons de réunion feutrés équipés d'écrans 4K et de systèmes de visioconférence pour vos rendez-vous professionnels.</p>
-              </div>
-            </div>
-
-            <!-- Concierge CTA banner -->
-            <div style="background:var(--bg-subtle);border:1px solid var(--card-border);border-radius:24px;padding:45px 35px;text-align:center;margin-top:60px;">
-              <span class="section-tag">SERVICE SUR-MESURE</span>
-              <h3 style="font-size:1.8rem;font-weight:800;color:var(--text-heading);margin-bottom:12px;">Une Demande Spécifique pour Votre Séjour ?</h3>
-              <p style="color:var(--muted);max-width:640px;margin:0 auto 25px;font-size:1rem;">
-                Notre conciergerie est disponible instantanément sur WhatsApp pour organiser votre accueil personnalisé avant votre arrivée.
-              </p>
-              <a href="{wa_url}?text=Bonjour%20{name}%2C%20je%20souhaite%20contacter%20la%20conciergerie" target="_blank" class="btn-primary" style="padding:14px 30px;">
-                <i class="fa-brands fa-whatsapp"></i> Échanger avec la Conciergerie Privée
-              </a>
-            </div>
-          </div>
-        </section>
-        """
-        pages["services.html"] = wrap_page(
-            "services", "Services & Prestations 5 Étoiles", hotel_services_content, hotel_nav,
-            breadcrumb={"trail": "Services & Prestations", "title": "Installations & Services 5 Étoiles", "subtitle": "Des prestations d'exception pensées pour sublimer chaque seconde de votre expérience."}
-        )
-
-        # 4. Hotel about.html
-        hotel_about_content = f"""
-        <section class="section">
-          <div class="container">
-            <div style="display:grid;grid-template-columns:1.15fr 0.85fr;gap:60px;align-items:center;">
-              <div>
-                <span class="section-tag">HISTOIRE & ART DE RECEVOIR</span>
-                <h2 class="section-title">L'Élégance et l'Hospitalité au Cœur de {city}</h2>
-                <p style="color:var(--muted);font-size:1.02rem;line-height:1.7;margin-bottom:20px;">
-                  Né de la vision d'offrir une escale hors du temps, <strong>{name}</strong> s'impose comme une référence incontournable de l'hospitalité raffinée. Notre établissement marie avec justesse authenticité architecturale et équipements modernes haut de gamme.
-                </p>
-                <p style="color:var(--muted);font-size:1.02rem;line-height:1.7;margin-bottom:30px;">
-                  Chacun de nos espaces a été dessiné pour susciter la sérénité : hauteurs sous plafond généreuses, matériaux nobles, acoustique travaillée et literie choisie parmi les plus grands artisans du sommeil.
-                </p>
-
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
-                  <div style="background:var(--bg-subtle);padding:20px;border-radius:16px;border:1px solid var(--border);">
-                    <div style="font-size:1.8rem;font-weight:900;color:var(--accent);margin-bottom:4px;">100%</div>
-                    <div style="font-weight:700;color:var(--text-heading);font-size:0.92rem;">Sérénité & Insonorisation</div>
-                    <div style="font-size:0.82rem;color:var(--muted);margin-top:2px;">Isolation phonique de pointe</div>
-                  </div>
-                  <div style="background:var(--bg-subtle);padding:20px;border-radius:16px;border:1px solid var(--border);">
-                    <div style="font-size:1.8rem;font-weight:900;color:var(--accent);margin-bottom:4px;">24h/24</div>
-                    <div style="font-weight:700;color:var(--text-heading);font-size:0.92rem;">Conciergerie Privée</div>
-                    <div style="font-size:0.82rem;color:var(--muted);margin-top:2px;">À votre service permanent</div>
-                  </div>
-                </div>
-              </div>
-
-              <div>
-                <img src="{theme['about_img']}" alt="{name}" style="width:100%;height:440px;object-fit:cover;border-radius:24px;border:1px solid var(--card-border);box-shadow:0 20px 45px -10px rgba(0,0,0,0.12);">
-              </div>
-            </div>
-          </div>
-        </section>
-        """
-        pages["about.html"] = wrap_page(
-            "about", "L'Établissement & Histoire", hotel_about_content, hotel_nav,
-            breadcrumb={"trail": "L'Hôtel", "title": "L'Établissement & Notre Histoire", "subtitle": f"Découvrez l'âme du {name}, où chaque détail raconte une histoire d'élégance et de sérénité."}
-        )
-
-        # 5. Hotel contact.html
-        hotel_contact_content = f"""
-        <section class="section">
-          <div class="container">
-            <div style="display:grid;grid-template-columns:1.15fr 0.85fr;gap:45px;align-items:start;">
-              <!-- Form -->
+            <div style="display:grid;grid-template-columns:1.2fr 0.8fr;gap:45px;align-items:start;">
               <div class="form-box">
-                <span class="section-tag">RÉSERVATION DIRECTE GARANTIE</span>
-                <h2 style="font-size:1.8rem;font-weight:800;color:var(--text-heading);margin-bottom:8px;">Formulaire de Séjour & Conciergerie</h2>
-                <p style="color:var(--muted);font-size:0.92rem;margin-bottom:24px;">Remplissez vos préférences pour recevoir une offre sur-mesure directement sur WhatsApp sous 2 minutes.</p>
+                <span class="section-tag">RÉSERVATION DIRECTE & MEILLEUR TARIF</span>
+                <h2 style="font-size:1.85rem;font-weight:800;color:var(--text-heading);margin-bottom:8px;">Planifiez Votre Séjour 5 Étoiles</h2>
+                <p style="color:var(--muted);font-size:0.94rem;margin-bottom:26px;">
+                  Configurez vos dates et votre suite pour obtenir une confirmation immédiate sans commission d'intermédiaire.
+                </p>
 
                 <div class="form-grid">
                   <div class="form-group">
-                    <label class="form-label">Nom & Prénom</label>
-                    <input type="text" id="guestName" class="form-input" placeholder="Ex: Jean Dupont">
+                    <label class="form-label"><i class="fa-regular fa-calendar"></i> Date d'Arrivée (Check-in)</label>
+                    <input type="date" id="resIn" class="form-input" onchange="calculateHotelQuote()">
                   </div>
                   <div class="form-group">
-                    <label class="form-label">Téléphone WhatsApp</label>
-                    <input type="text" id="guestPhone" class="form-input" placeholder="Ex: +216 XX XXX XXX">
+                    <label class="form-label"><i class="fa-regular fa-calendar-check"></i> Date de Départ (Check-out)</label>
+                    <input type="date" id="resOut" class="form-input" onchange="calculateHotelQuote()">
                   </div>
+
                   <div class="form-group">
-                    <label class="form-label">Date d'Arrivée</label>
-                    <input type="date" id="contactCheckIn" class="form-input">
+                    <label class="form-label"><i class="fa-solid fa-bed"></i> Choix de la Suite</label>
+                    <select id="resSuite" class="form-input" onchange="calculateHotelQuote()">
+                      <option value="Suite Royale Panoramique" data-price="380">Suite Royale Panoramique (380 {currency}/nuit)</option>
+                      <option value="Chambre Executive Prestige" data-price="240" selected>Chambre Executive Prestige (240 {currency}/nuit)</option>
+                      <option value="Suite Junior Élégance" data-price="195">Suite Junior Élégance (195 {currency}/nuit)</option>
+                      <option value="Chambre Supérieure Sérénité" data-price="145">Chambre Supérieure Sérénité (145 {currency}/nuit)</option>
+                    </select>
                   </div>
+
                   <div class="form-group">
-                    <label class="form-label">Date de Départ</label>
-                    <input type="date" id="contactCheckOut" class="form-input">
-                  </div>
-                  <div class="form-group">
-                    <label class="form-label">Nombre de Voyageurs</label>
-                    <select id="contactGuests" class="form-input">
+                    <label class="form-label"><i class="fa-solid fa-user-group"></i> Nombre de Voyageurs</label>
+                    <select id="resGuests" class="form-input" onchange="calculateHotelQuote()">
                       <option value="1 Adulte">1 Adulte</option>
                       <option value="2 Adultes" selected>2 Adultes</option>
                       <option value="Famille (2 Adultes + Enfants)">Famille (2 Adultes + Enfants)</option>
-                      <option value="Séjour VIP / Affaires">Séjour VIP / Affaires</option>
+                      <option value="Séjour VIP / Délégation">Séjour VIP / Délégation</option>
                     </select>
                   </div>
-                  <div class="form-group">
-                    <label class="form-label">Type de Suite</label>
-                    <select id="contactSuite" class="form-input">
-                      <option value="Suite Royale Panoramique">Suite Royale Panoramique (380 {currency})</option>
-                      <option value="Chambre Executive Prestige">Chambre Executive Prestige (240 {currency})</option>
-                      <option value="Suite Junior Élégance">Suite Junior Élégance (195 {currency})</option>
-                      <option value="Chambre Supérieure Sérénité">Chambre Supérieure Sérénité (145 {currency})</option>
-                    </select>
-                  </div>
-                  <div class="form-group full">
-                    <label class="form-label">Demandes Spécifiques (Optionnel)</label>
-                    <textarea id="contactNotes" class="form-input" rows="3" placeholder="Navette aéroport VIP, étage élevé, fleurs d'accueil..."></textarea>
-                  </div>
-                </div>
 
-                <button onclick="submitHotelContact()" class="btn-primary" style="width:100%;justify-content:center;padding:14px;">
-                  <i class="fa-brands fa-whatsapp"></i> Envoyer ma Réservation sur WhatsApp
-                </button>
-              </div>
-
-              <!-- Information Cards -->
-              <div>
-                <div style="background:#ffffff;border:1px solid var(--card-border);border-radius:24px;padding:30px;box-shadow:0 10px 25px -5px rgba(0,0,0,0.06);margin-bottom:25px;">
-                  <h3 style="font-size:1.2rem;font-weight:800;color:var(--text-heading);margin-bottom:18px;display:flex;align-items:center;gap:10px;">
-                    <i class="fa-solid fa-clock" style="color:var(--accent);"></i> Horaires Réception & Check-in
-                  </h3>
-                  <div style="font-size:0.92rem;color:var(--muted);line-height:1.7;">
-                    • Arrivée (Check-in) : à partir de <strong>14h00</strong><br>
-                    • Départ (Check-out) : jusqu'à <strong>12h00</strong><br>
-                    <span style="color:#10b981;font-weight:700;display:inline-block;margin-top:6px;">
-                      <i class="fa-solid fa-circle-check"></i> Réception & Conciergerie ouvertes 24h/24
-                    </span>
-                  </div>
-                </div>
-
-                <div style="background:#ffffff;border:1px solid var(--card-border);border-radius:24px;padding:30px;box-shadow:0 10px 25px -5px rgba(0,0,0,0.06);">
-                  <h3 style="font-size:1.2rem;font-weight:800;color:var(--text-heading);margin-bottom:18px;display:flex;align-items:center;gap:10px;">
-                    <i class="fa-solid fa-location-dot" style="color:var(--accent);"></i> Localisation & Accès
-                  </h3>
-                  <p style="font-size:0.92rem;color:var(--muted);margin-bottom:18px;">
-                    {address}
-                  </p>
-                  <a href="{maps_url}" target="_blank" class="btn-outline" style="width:100%;justify-content:center;padding:12px;">
-                    <i class="fa-solid fa-map-location-dot"></i> Itinéraire Google Maps
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-        """
-        contact_js = f"""
-        <script>
-        function submitHotelContact() {{
-          const name = document.getElementById('guestName').value || 'Client';
-          const phone = document.getElementById('guestPhone').value || '';
-          const checkIn = document.getElementById('contactCheckIn').value;
-          const checkOut = document.getElementById('contactCheckOut').value;
-          const guests = document.getElementById('contactGuests').value;
-          const suite = document.getElementById('contactSuite').value;
-          const notes = document.getElementById('contactNotes').value;
-
-          let msg = `Bonjour {name} ! Je souhaite réserver un séjour :%0A%0A`;
-          msg += `• Nom : ${{name}}%0A`;
-          if (phone) msg += `• Tél : ${{phone}}%0A`;
-          msg += `• Suite : ${{suite}}%0A`;
-          msg += `• Voyageurs : ${{guests}}%0A`;
-          if (checkIn) msg += `• Arrivée : ${{checkIn}}%0A`;
-          if (checkOut) msg += `• Départ : ${{checkOut}}%0A`;
-          if (notes) msg += `• Remarques : ${{notes}}%0A`;
-          msg += `%0APouvez-vous me confirmer le tarif et la disponibilité ? Merci !`;
-          window.open(`{wa_url}?text=${{msg}}`, '_blank');
-        }}
-        window.addEventListener('DOMContentLoaded', () => {{
-          const inEl = document.getElementById('contactCheckIn');
-          const outEl = document.getElementById('contactCheckOut');
-          if (inEl && outEl) {{
-            const today = new Date();
-            const tomorrow = new Date(today);
-            tomorrow.setDate(tomorrow.getDate() + 1);
-            const dayAfter = new Date(today);
-            dayAfter.setDate(dayAfter.getDate() + 3);
-            inEl.value = tomorrow.toISOString().split('T')[0];
-            outEl.value = dayAfter.toISOString().split('T')[0];
-          }}
-        }});
-        </script>
-        """
-        pages["contact.html"] = wrap_page(
-            "contact", "Réservation & Conciergerie", hotel_contact_content, hotel_nav,
-            breadcrumb={"trail": "Réservation & Contact", "title": "Réservation Directe & Conciergerie 24/7", "subtitle": f"Bénéficiez du meilleur tarif garanti sans intermédiaire pour votre séjour à {city}."},
-            extra_js=contact_js
-        )
-
-    # ==========================================
-    # BRANCH B: RESTAURANT / CAFE / BAKERY BUNDLE
-    # ==========================================
-    else:
-        resto_nav = [
-            {"id": "index", "label": "Accueil", "url": "index.html"},
-            {"id": "menu", "label": "La Carte", "url": "menu.html"},
-            {"id": "about", "label": "Notre Histoire", "url": "about.html"},
-            {"id": "contact", "label": "Réservation & Accès", "url": "contact.html"}
-        ]
-        dishes = (ai_data and ai_data.get("dishes")) or [
-            {
-                "name": f"Le Plat Signature {name}",
-                "category": "Spécialités",
-                "price": "38",
-                "desc": "La spécialité secrète de la maison marinée aux épices artisanales et cuite à la perfection.",
-                "badge": "Signature"
-            },
-            {
-                "name": "Plateau Dégustation Royal",
-                "category": "Plats Chauds",
-                "price": "68",
-                "desc": "Assortiment généreux pour 2 à 3 personnes avec sauces fraîches maison, pains chauds et garnitures.",
-                "badge": "Bestseller"
-            },
-            {
-                "name": "Grillades Mixtes au Feu de Bois",
-                "category": "Plats Chauds",
-                "price": "52",
-                "desc": "Sélection de viandes tendres braisées sur lit de braise, servies avec riz parfumé et frites maison.",
-                "badge": "Recommandé"
-            },
-            {
-                "name": "Menu Gourmand Découverte",
-                "category": "Plats Chauds",
-                "price": "44",
-                "desc": "Formule complète avec entrée fraîcheur au choix, plat principal généreux et boisson artisanale.",
-                "badge": "Menu Complet"
-            },
-            {
-                "name": "Entrée Fraîcheur & Mezzé Maison",
-                "category": "Entrées & Sauces",
-                "price": "18",
-                "desc": "Préparée chaque matin avec des ingrédients du marché local, huile d'olive vierge et herbes fraîches.",
-                "badge": "Fait Maison"
-            },
-            {
-                "name": "Douceur Artisanale & Pâtisserie",
-                "category": "Desserts & Boissons",
-                "price": "14",
-                "desc": "La touche finale gourmande et croustillante préparée sur place selon notre recette traditionnelle.",
-                "badge": "Coup de Cœur"
-            }
-        ]
-
-        cart_js = f"""
-        <script>
-        const waUrl = "{wa_url}";
-        const businessName = "{name}";
-        const currency = "{currency}";
-
-        let cart = [];
-        function addToCart(dishName, price) {{
-          const existing = cart.find(item => item.name === dishName);
-          if (existing) {{
-            existing.qty += 1;
-          }} else {{
-            cart.push({{ name: dishName, price: Number(price), qty: 1 }});
-          }}
-          updateCartUI();
-        }}
-
-        function updateCartUI() {{
-          const totalItems = cart.reduce((acc, item) => acc + item.qty, 0);
-          const totalPrice = cart.reduce((acc, item) => acc + (item.price * item.qty), 0);
-          
-          const cartBar = document.getElementById('floatingCart');
-          if (cartBar) {{
-            if (totalItems > 0) {{
-              cartBar.style.display = 'flex';
-              document.getElementById('cartCount').textContent = totalItems;
-              document.getElementById('cartTotal').textContent = totalPrice + ' ' + currency;
-            }} else {{
-              cartBar.style.display = 'none';
-            }}
-          }}
-        }}
-
-        function checkoutWhatsApp() {{
-          if (cart.length === 0) return;
-          let orderText = `Bonjour ${{businessName}} ! Je souhaite commander en livraison :%0A%0A`;
-          let total = 0;
-          cart.forEach(item => {{
-            const sub = item.price * item.qty;
-            total += sub;
-            orderText += `• ${{item.qty}}x ${{item.name}} (${{sub}} ${{currency}})%0A`;
-          }});
-          orderText += `%0ATotal : ${{total}} ${{currency}}%0A%0AMerci de me confirmer le délai estimé !`;
-          window.open(`${{waUrl}}?text=${{orderText}}`, '_blank');
-        }}
-
-        function filterMenu(category, btnElement) {{
-          document.querySelectorAll('.menu-tab').forEach(btn => btn.classList.remove('active'));
-          btnElement.classList.add('active');
-
-          const cards = document.querySelectorAll('.dish-card');
-          cards.forEach(card => {{
-            const cardCat = card.getAttribute('data-category');
-            if (category === 'Tous' || cardCat.includes(category)) {{
-              card.style.display = 'flex';
-            }} else {{
-              card.style.display = 'none';
-            }}
-          }});
-        }}
-        </script>
-        """
-
-        # 1. Restaurant index.html
-        top_dishes_html = ""
-        for d in dishes[:3]:
-            badge_html = f'<span class="dish-badge">{d.get("badge", "Signature")}</span>'
-            top_dishes_html += f"""
-            <div class="dish-card" data-category="{d.get('category', 'Spécialités')}">
-              <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
-                <div>
-                  <div class="dish-cat-label">{d.get('category', 'Menu')}</div>
-                  <h3 class="dish-title">{d.get('name')}</h3>
-                </div>
-                <div class="dish-price-wrap">
-                  <span class="dish-price">{d.get('price')}</span>
-                  <span class="dish-curr">{currency}</span>
-                </div>
-              </div>
-              <p class="dish-desc">{d.get('desc')}</p>
-              <div class="dish-footer">
-                {badge_html}
-                <button class="add-to-cart-btn" onclick="addToCart('{d.get('name').replace("'", " ")}', {d.get('price')})">
-                  <i class="fa-solid fa-plus"></i> Ajouter au panier
-                </button>
-              </div>
-            </div>
-            """
-
-        resto_index_content = f"""
-        <!-- Hero Section -->
-        <section style="padding:70px 0 90px;background:radial-gradient(circle at 85% 20%, var(--accent-light) 0%, transparent 50%), linear-gradient(rgba(255,255,255,0.92), rgba(255,255,255,0.97)), url('{theme['hero_img']}') center/cover no-repeat;background-attachment:fixed;">
-          <div class="container">
-            <div style="display:grid;grid-template-columns:1.15fr 0.85fr;gap:50px;align-items:center;">
-              <div>
-                <div style="display:inline-flex;align-items:center;gap:8px;background:#ffffff;border:1px solid var(--border);padding:8px 18px;border-radius:30px;font-size:0.86rem;font-weight:700;color:var(--text-heading);margin-bottom:22px;box-shadow:0 4px 12px rgba(0,0,0,0.04);">
-                  <i class="fa-solid {brand_icon}" style="color:var(--accent);"></i>
-                  <span>{hero_badge_text}</span>
-                </div>
-                <h1 style="font-size:clamp(2.4rem, 4.5vw, 4.2rem);font-weight:900;line-height:1.12;margin-bottom:20px;color:var(--text-heading);">
-                  {name}<br>
-                  <span style="background:linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">{tagline}</span>
-                </h1>
-                <p style="font-size:clamp(1.05rem, 1.3vw, 1.25rem);color:var(--muted);line-height:1.6;margin-bottom:35px;max-width:680px;">
-                  {subtitle}
-                </p>
-                <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:center;margin-bottom:35px;">
-                  <a href="{wa_url}?text=Bonjour%20{name}%2C%20je%20souhaite%20commander%20en%20direct" target="_blank" class="btn-primary">
-                    <i class="fa-brands fa-whatsapp"></i> Commander sur WhatsApp (Direct)
-                  </a>
-                  <a href="menu.html" class="btn-outline">
-                    <i class="fa-solid fa-utensils"></i> Découvrir la Carte
-                  </a>
-                </div>
-                <div class="features-pills">{pills_html}</div>
-              </div>
-
-              <!-- Floating Food Card -->
-              <div>
-                <div style="background:#ffffff;border-radius:24px;border:1px solid var(--card-border);overflow:hidden;box-shadow:0 20px 45px -10px rgba(0,0,0,0.12);position:relative;">
-                  <img src="{theme['about_img']}" alt="{name}" style="width:100%;height:270px;object-fit:cover;">
-                  <div style="position:absolute;top:16px;left:16px;background:var(--accent);color:#fff;padding:5px 14px;border-radius:20px;font-size:0.78rem;font-weight:800;">
-                    🔥 Préparation Artisanale Minute
-                  </div>
-                  <div style="padding:22px;">
-                    <div style="font-weight:800;font-size:1.15rem;color:var(--text-heading);">{name} Expérience</div>
-                    <div style="color:var(--muted);font-size:0.88rem;margin:4px 0 12px;">Ingrédients frais du jour préparés avec passion à {city}</div>
-                    <div style="display:flex;justify-content:space-between;align-items:center;">
-                      <span style="font-size:1.25rem;font-weight:900;color:var(--accent);">{rating_score} ★★★★★</span>
-                      <a href="menu.html" class="btn-wa" style="padding:8px 16px;font-size:0.82rem;">Voir la Carte</a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- Social Bar -->
-        <div class="container">
-          <div class="social-bar">
-            <div class="social-bar-profile">
-              <div class="social-bar-avatar">
-                <img src="{theme['social_img1']}" alt="{name}">
-              </div>
-              <div>
-                <div class="social-bar-handle">{handle} <i class="fa-solid fa-circle-check" style="color:#38bdf8;font-size:0.95rem;"></i></div>
-                <div class="social-bar-stats">{followers} abonnés • Saveurs authentiques & Fait maison à {city}</div>
-              </div>
-            </div>
-            <div style="display:flex;gap:20px;align-items:center;">
-              <div style="text-align:right;">
-                <div style="font-weight:900;font-size:1.2rem;color:var(--text-heading);">{rating_score} / 5 ★★★★★</div>
-                <div style="font-size:0.8rem;color:var(--muted);">{review_count} avis clients vérifiés Google</div>
-              </div>
-              <a href="{social_ref['url']}" target="_blank" class="btn-outline" style="padding:10px 20px;font-size:0.86rem;">
-                <i class="fa-brands {platform_icon}"></i> Suivre
-              </a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Featured Dishes Section -->
-        <section class="section">
-          <div class="container">
-            <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:35px;flex-wrap:wrap;gap:20px;">
-              <div>
-                <span class="section-tag">NOS SPÉCIALITÉS VEDETTES</span>
-                <h2 class="section-title">Les Incontournables de la Maison</h2>
-                <p class="section-sub">Découvrez nos créations les plus appréciées, préparées minute avec amour.</p>
-              </div>
-              <a href="menu.html" class="btn-primary" style="padding:12px 24px;font-size:0.9rem;">
-                Consulter toute la Carte <i class="fa-solid fa-arrow-right"></i>
-              </a>
-            </div>
-
-            <div class="menu-grid">
-              {top_dishes_html}
-            </div>
-          </div>
-        </section>
-
-        <!-- About Teaser Section -->
-        <section class="section" style="background:var(--bg-subtle);">
-          <div class="container">
-            <div style="display:grid;grid-template-columns:1.15fr 0.85fr;gap:50px;align-items:center;">
-              <div>
-                <span class="section-tag">SAVOIR-FAIRE & PASSION</span>
-                <h2 class="section-title">La Promesse de l'Authenticité</h2>
-                <p style="color:var(--muted);font-size:1.02rem;line-height:1.7;margin-bottom:18px;">
-                  Chez <strong>{name}</strong>, chaque plat est préparé sur place dans le respect des recettes authentiques. Nous sélectionnons nos matières premières auprès de producteurs rigoureusement choisis pour vous garantir une fraîcheur et une générosité incomparables.
-                </p>
-                <div style="display:flex;gap:15px;flex-wrap:wrap;margin-bottom:28px;">
-                  <span class="pill"><i class="fa-solid fa-leaf" style="color:#10b981;"></i> 100% Ingrédients Frais</span>
-                  <span class="pill"><i class="fa-solid fa-fire" style="color:var(--accent);"></i> Cuisson Minute</span>
-                  <span class="pill"><i class="fa-solid fa-heart" style="color:#e11d48;"></i> Fait Maison</span>
-                </div>
-                <a href="about.html" class="btn-outline">
-                  Lire notre histoire complète <i class="fa-solid fa-arrow-right"></i>
-                </a>
-              </div>
-              <div>
-                <img src="{theme['about_img']}" alt="{name}" style="width:100%;height:380px;object-fit:cover;border-radius:24px;border:1px solid var(--card-border);box-shadow:0 15px 35px -5px rgba(0,0,0,0.1);">
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- Reviews & Social Feed -->
-        <section class="section">
-          <div class="container">
-            <div style="text-align:center;max-width:680px;margin:0 auto 40px;">
-              <span class="section-tag">AVIS CLIENTS</span>
-              <h2 class="section-title">Ils Ont Adoré Leurs Visites</h2>
-              <p class="section-sub" style="margin:0 auto;">La satisfaction de nos convives est notre plus grande récompense au quotidien.</p>
-            </div>
-            <div class="reviews-grid">{testimonials_html}</div>
-
-            <div style="text-align:center;max-width:680px;margin:70px auto 40px;">
-              <span class="section-tag">COMMUNAUTÉ INSTAGRAM</span>
-              <h2 class="section-title">En Direct de Notre Cuisine</h2>
-              <p class="section-sub" style="margin:0 auto;">Retrouvez nos coulisses, nos nouveautés et les moments partagés avec vous.</p>
-            </div>
-            <div class="social-grid">{social_feed_html}</div>
-          </div>
-        </section>
-
-        <!-- Floating Live Cart Bar -->
-        <div class="floating-cart-bar" id="floatingCart">
-          <div style="display:flex;align-items:center;">
-            <span class="cart-count" id="cartCount">0</span>
-            <span>Panier : <strong id="cartTotal">0 {currency}</strong></span>
-          </div>
-          <button onclick="checkoutWhatsApp()" class="btn-wa" style="padding:8px 18px;font-size:0.86rem;">
-            <i class="fa-brands fa-whatsapp"></i> Valider sur WhatsApp
-          </button>
-        </div>
-        """
-        pages["index.html"] = wrap_page("index", "Accueil & Spécialités", resto_index_content, resto_nav, extra_js=cart_js)
-
-        # 2. Restaurant menu.html
-        all_dishes_html = ""
-        for d in dishes:
-            badge_html = f'<span class="dish-badge">{d.get("badge", "Populaire")}</span>'
-            all_dishes_html += f"""
-            <div class="dish-card" data-category="{d.get('category', 'Spécialités')}">
-              <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
-                <div>
-                  <div class="dish-cat-label">{d.get('category', 'Menu')}</div>
-                  <h3 class="dish-title">{d.get('name')}</h3>
-                </div>
-                <div class="dish-price-wrap">
-                  <span class="dish-price">{d.get('price')}</span>
-                  <span class="dish-curr">{currency}</span>
-                </div>
-              </div>
-              <p class="dish-desc">{d.get('desc')}</p>
-              <div class="dish-footer">
-                {badge_html}
-                <button class="add-to-cart-btn" onclick="addToCart('{d.get('name').replace("'", " ")}', {d.get('price')})">
-                  <i class="fa-solid fa-plus"></i> Ajouter au panier
-                </button>
-              </div>
-            </div>
-            """
-        resto_menu_content = f"""
-        <section class="section">
-          <div class="container">
-            <div class="menu-tabs" style="justify-content:center;">
-              <button class="menu-tab active" onclick="filterMenu('Tous', this)">Tous les Plats</button>
-              <button class="menu-tab" onclick="filterMenu('Spécialités', this)">Spécialités Signature</button>
-              <button class="menu-tab" onclick="filterMenu('Plats Chauds', this)">Plats Chauds & Grillades</button>
-              <button class="menu-tab" onclick="filterMenu('Entrées & Sauces', this)">Entrées & Mezzés</button>
-              <button class="menu-tab" onclick="filterMenu('Desserts & Boissons', this)">Desserts & Boissons</button>
-            </div>
-
-            <div class="menu-grid">
-              {all_dishes_html}
-            </div>
-          </div>
-        </section>
-
-        <!-- Floating Live Cart Bar -->
-        <div class="floating-cart-bar" id="floatingCart">
-          <div style="display:flex;align-items:center;">
-            <span class="cart-count" id="cartCount">0</span>
-            <span>Panier : <strong id="cartTotal">0 {currency}</strong></span>
-          </div>
-          <button onclick="checkoutWhatsApp()" class="btn-wa" style="padding:8px 18px;font-size:0.86rem;">
-            <i class="fa-brands fa-whatsapp"></i> Valider sur WhatsApp
-          </button>
-        </div>
-        """
-        pages["menu.html"] = wrap_page(
-            "menu", "La Carte Gourmande", resto_menu_content, resto_nav,
-            breadcrumb={"trail": "La Carte", "title": "La Carte & Nos Créations", "subtitle": f"Composez votre commande et envoyez-la directement en un clic sur WhatsApp sans intermédiaire."},
-            extra_js=cart_js
-        )
-
-        # 3. Restaurant about.html
-        resto_about_content = f"""
-        <section class="section">
-          <div class="container">
-            <div style="display:grid;grid-template-columns:1.15fr 0.85fr;gap:60px;align-items:center;">
-              <div>
-                <span class="section-tag">NOTRE HISTOIRE & SAVOIR-FAIRE</span>
-                <h2 class="section-title">L'Amour du Bon et du Goût Vrai</h2>
-                <p style="color:var(--muted);font-size:1.02rem;line-height:1.7;margin-bottom:20px;">
-                  Depuis son ouverture, <strong>{name}</strong> s'attache à perpétuer un esprit de générosité et de convivialité. Nous croyons qu'un bon repas rassemble, apaise et réjouit.
-                </p>
-                <p style="color:var(--muted);font-size:1.02rem;line-height:1.7;margin-bottom:30px;">
-                  Toutes nos préparations sont élaborées chaque matin dans notre atelier à {city}. Nos sauces sont battues maison, nos pains sont dorés à la minute et nos épices sont minutieusement dosées pour créer une signature gustative reconnaissable dès la première bouchée.
-                </p>
-
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
-                  <div style="background:var(--bg-subtle);padding:20px;border-radius:16px;border:1px solid var(--border);">
-                    <div style="font-size:1.8rem;font-weight:900;color:var(--accent);margin-bottom:4px;">100%</div>
-                    <div style="font-weight:700;color:var(--text-heading);font-size:0.92rem;">Fait Maison Minute</div>
-                    <div style="font-size:0.82rem;color:var(--muted);margin-top:2px;">Zéro produit réchauffé</div>
-                  </div>
-                  <div style="background:var(--bg-subtle);padding:20px;border-radius:16px;border:1px solid var(--border);">
-                    <div style="font-size:1.8rem;font-weight:900;color:var(--accent);margin-bottom:4px;">30 Min</div>
-                    <div style="font-weight:700;color:var(--text-heading);font-size:0.92rem;">Livraison Express</div>
-                    <div style="font-size:0.82rem;color:var(--muted);margin-top:2px;">Plats chauds chez vous</div>
-                  </div>
-                </div>
-              </div>
-
-              <div>
-                <img src="{theme['about_img']}" alt="{name}" style="width:100%;height:440px;object-fit:cover;border-radius:24px;border:1px solid var(--card-border);box-shadow:0 20px 45px -10px rgba(0,0,0,0.12);">
-              </div>
-            </div>
-          </div>
-        </section>
-        """
-        pages["about.html"] = wrap_page(
-            "about", "Notre Histoire & Engagements", resto_about_content, resto_nav,
-            breadcrumb={"trail": "Notre Histoire", "title": "Notre Histoire & Philosophie", "subtitle": f"Découvrez l'aventure humaine et culinaire qui anime toute l'équipe de {name} au quotidien."}
-        )
-
-        # 4. Restaurant contact.html
-        resto_contact_content = f"""
-        <section class="section">
-          <div class="container">
-            <div style="display:grid;grid-template-columns:1.15fr 0.85fr;gap:45px;align-items:start;">
-              <!-- Table Reservation Form -->
-              <div class="form-box">
-                <span class="section-tag">RÉSERVATION DE TABLE WHATSAPP</span>
-                <h2 style="font-size:1.8rem;font-weight:800;color:var(--text-heading);margin-bottom:8px;">Réserver une Table en Direct</h2>
-                <p style="color:var(--muted);font-size:0.92rem;margin-bottom:24px;">Envoyez votre demande de réservation sur WhatsApp pour confirmation instantanée par notre équipe.</p>
-
-                <div class="form-grid">
                   <div class="form-group">
                     <label class="form-label">Nom & Prénom</label>
-                    <input type="text" id="tableName" class="form-input" placeholder="Ex: Karim">
+                    <input type="text" id="resName" class="form-input" placeholder="Ex: Jean Dupont">
                   </div>
+
                   <div class="form-group">
                     <label class="form-label">Téléphone WhatsApp</label>
-                    <input type="text" id="tablePhone" class="form-input" placeholder="Ex: +216 XX XXX XXX">
+                    <input type="text" id="resPhone" class="form-input" placeholder="Ex: +216 XX XXX XXX">
                   </div>
-                  <div class="form-group">
-                    <label class="form-label">Date du Repas</label>
-                    <input type="date" id="tableDate" class="form-input">
-                  </div>
-                  <div class="form-group">
-                    <label class="form-label">Heure Souhaitée</label>
-                    <select id="tableTime" class="form-input">
-                      <option value="12h30">12h30 (Déjeuner)</option>
-                      <option value="13h15">13h15 (Déjeuner)</option>
-                      <option value="19h30">19h30 (Dîner)</option>
-                      <option value="20h30" selected>20h30 (Dîner)</option>
-                      <option value="21h30">21h30 (Dîner tardif)</option>
-                    </select>
-                  </div>
-                  <div class="form-group">
-                    <label class="form-label">Nombre de Couverts</label>
-                    <select id="tableSeats" class="form-input">
-                      <option value="1 Personne">1 Personne</option>
-                      <option value="2 Personnes" selected>2 Personnes (Romantique)</option>
-                      <option value="4 Personnes">4 Personnes (Famille/Amis)</option>
-                      <option value="6 Personnes et plus">6+ Personnes (Grande Table)</option>
-                    </select>
-                  </div>
-                  <div class="form-group">
-                    <label class="form-label">Préférence de Table</label>
-                    <select id="tableArea" class="form-input">
-                      <option value="Terrasse">Terrasse extérieure</option>
-                      <option value="Salle Principale" selected>Salle principale climatisée</option>
-                      <option value="Coin Calme">Coin calme & intime</option>
-                    </select>
-                  </div>
+
                   <div class="form-group full">
-                    <label class="form-label">Notes Spéciales / Occasion</label>
-                    <textarea id="tableNotes" class="form-input" rows="2" placeholder="Anniversaire, chaise bébé, intolérances..."></textarea>
+                    <label class="form-label">Options & Services Additionnels</label>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:6px;">
+                      <label style="display:flex;align-items:center;gap:10px;font-size:0.88rem;background:#f8fafc;padding:10px 14px;border-radius:10px;border:1px solid #e2e8f0;cursor:pointer;">
+                        <input type="checkbox" id="optBreakfast" checked onchange="calculateHotelQuote()"> Petit-déjeuner Buffet Gourmet (Inclus)
+                      </label>
+                      <label style="display:flex;align-items:center;gap:10px;font-size:0.88rem;background:#f8fafc;padding:10px 14px;border-radius:10px;border:1px solid #e2e8f0;cursor:pointer;">
+                        <input type="checkbox" id="optShuttle" onchange="calculateHotelQuote()"> Navette Aéroport VIP (+40 {currency})
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class="form-group full">
+                    <label class="form-label">Demandes Spécifiques ou Préférences</label>
+                    <textarea id="resNotes" class="form-input" rows="2" placeholder="Étage élevé, arrivée tardive, fleurs d'accueil en chambre..."></textarea>
                   </div>
                 </div>
 
-                <button onclick="submitTableReservation()" class="btn-primary" style="width:100%;justify-content:center;padding:14px;">
+                <button onclick="confirmHotelBookingWhatsApp()" class="btn-primary" style="width:100%;justify-content:center;padding:15px;font-size:1rem;margin-top:10px;">
                   <i class="fa-brands fa-whatsapp"></i> Confirmer la Réservation sur WhatsApp
                 </button>
               </div>
 
-              <!-- Information Cards -->
+              <!-- Live Summary Box -->
               <div>
-                <div style="background:#ffffff;border:1px solid var(--card-border);border-radius:24px;padding:30px;box-shadow:0 10px 25px -5px rgba(0,0,0,0.06);margin-bottom:25px;">
-                  <h3 style="font-size:1.2rem;font-weight:800;color:var(--text-heading);margin-bottom:18px;display:flex;align-items:center;gap:10px;">
-                    <i class="fa-solid fa-clock" style="color:var(--accent);"></i> Horaires de Service
-                  </h3>
-                  <div style="font-size:0.92rem;color:var(--muted);line-height:1.7;">
-                    • Lundi – Dimanche : <strong>11h30 – 23h30</strong><br>
-                    • Service continu sur place, à emporter & livraison<br>
-                    <span style="color:#10b981;font-weight:700;display:inline-block;margin-top:6px;">
-                      <i class="fa-solid fa-circle-check"></i> Cuisine actuellement ouverte
-                    </span>
+                <div style="background:#ffffff;border:1px solid var(--card-border);border-radius:24px;padding:30px;box-shadow:0 15px 35px -5px rgba(0,0,0,0.08);position:sticky;top:100px;">
+                  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid var(--border);">
+                    <h3 style="font-size:1.15rem;font-weight:800;color:var(--text-heading);">Récapitulatif de Séjour</h3>
+                    <span style="background:rgba(16,185,129,0.12);color:#059669;font-weight:800;font-size:0.78rem;padding:4px 10px;border-radius:20px;">Tarif Direct</span>
                   </div>
-                </div>
 
-                <div style="background:#ffffff;border:1px solid var(--card-border);border-radius:24px;padding:30px;box-shadow:0 10px 25px -5px rgba(0,0,0,0.06);">
-                  <h3 style="font-size:1.2rem;font-weight:800;color:var(--text-heading);margin-bottom:18px;display:flex;align-items:center;gap:10px;">
-                    <i class="fa-solid fa-location-dot" style="color:var(--accent);"></i> Adresse & Contact
-                  </h3>
-                  <p style="font-size:0.92rem;color:var(--muted);margin-bottom:18px;">
-                    {address}
-                  </p>
-                  <a href="{maps_url}" target="_blank" class="btn-outline" style="width:100%;justify-content:center;padding:12px;">
-                    <i class="fa-solid fa-map-location-dot"></i> Itinéraire Google Maps
-                  </a>
+                  <div style="display:flex;flex-direction:column;gap:12px;font-size:0.92rem;color:var(--text-heading);margin-bottom:20px;">
+                    <div style="display:flex;justify-content:space-between;">
+                      <span style="color:var(--muted);">Établissement :</span>
+                      <strong>{name} 5★</strong>
+                    </div>
+                    <div style="display:flex;justify-content:space-between;">
+                      <span style="color:var(--muted);">Durée du séjour :</span>
+                      <strong id="summaryNights">2 Nuits</strong>
+                    </div>
+                    <div style="display:flex;justify-content:space-between;">
+                      <span style="color:var(--muted);">Suite :</span>
+                      <strong id="summarySuite">Chambre Executive Prestige</strong>
+                    </div>
+                    <div style="display:flex;justify-content:space-between;">
+                      <span style="color:var(--muted);">Voyageurs :</span>
+                      <strong id="summaryGuests">2 Adultes</strong>
+                    </div>
+                  </div>
+
+                  <div style="background:var(--bg-subtle);border-radius:16px;padding:20px;border:1px solid var(--border);margin-bottom:22px;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;">
+                      <span style="font-weight:700;color:var(--text-heading);font-size:1.05rem;">Montant Estimé :</span>
+                      <div>
+                        <span id="summaryTotal" style="font-size:1.8rem;font-weight:900;color:var(--accent);">480</span>
+                        <span style="font-weight:800;color:var(--text-heading);">{currency}</span>
+                      </div>
+                    </div>
+                    <div style="font-size:0.78rem;color:var(--muted);margin-top:4px;">Taxes de séjour et Wi-Fi haut débit inclus</div>
+                  </div>
+
+                  <div style="font-size:0.82rem;color:var(--muted);line-height:1.6;">
+                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;"><i class="fa-solid fa-check" style="color:#10b981;"></i> Annulation sans frais jusqu'à 24h avant</div>
+                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;"><i class="fa-solid fa-check" style="color:#10b981;"></i> Paiement sécurisé sur place ou à l'arrivée</div>
+                    <div style="display:flex;align-items:center;gap:8px;"><i class="fa-solid fa-check" style="color:#10b981;"></i> Prise en charge conciergerie VIP 24h/24</div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </section>
         """
-        table_js = f"""
-        <script>
-        function submitTableReservation() {{
-          const name = document.getElementById('tableName').value || 'Client';
-          const phone = document.getElementById('tablePhone').value || '';
-          const date = document.getElementById('tableDate').value;
-          const time = document.getElementById('tableTime').value;
-          const seats = document.getElementById('tableSeats').value;
-          const area = document.getElementById('tableArea').value;
-          const notes = document.getElementById('tableNotes').value;
 
-          let msg = `Bonjour {name} ! Je souhaite réserver une table :%0A%0A`;
-          msg += `• Nom : ${{name}}%0A`;
+        hotel_res_js = f"""
+        <script>
+        function calculateHotelQuote() {{
+          const inVal = document.getElementById('resIn').value;
+          const outVal = document.getElementById('resOut').value;
+          const suiteSel = document.getElementById('resSuite');
+          const suiteOption = suiteSel.options[suiteSel.selectedIndex];
+          const pricePerNight = Number(suiteOption.getAttribute('data-price') || 240);
+          const suiteName = suiteOption.value;
+          const guests = document.getElementById('resGuests').value;
+          const hasShuttle = document.getElementById('optShuttle').checked;
+
+          let nights = 2;
+          if (inVal && outVal) {{
+            const d1 = new Date(inVal);
+            const d2 = new Date(outVal);
+            const diffTime = d2 - d1;
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            if (diffDays > 0) nights = diffDays;
+          }}
+
+          let total = nights * pricePerNight;
+          if (hasShuttle) total += 40;
+
+          document.getElementById('summaryNights').textContent = nights + ' Nuit' + (nights > 1 ? 's' : '');
+          document.getElementById('summarySuite').textContent = suiteName;
+          document.getElementById('summaryGuests').textContent = guests;
+          document.getElementById('summaryTotal').textContent = total;
+        }}
+
+        function confirmHotelBookingWhatsApp() {{
+          const inVal = document.getElementById('resIn').value;
+          const outVal = document.getElementById('resOut').value;
+          const suiteSel = document.getElementById('resSuite');
+          const suiteName = suiteSel.value;
+          const guests = document.getElementById('resGuests').value;
+          const name = document.getElementById('resName').value || 'Client';
+          const phone = document.getElementById('resPhone').value || '';
+          const total = document.getElementById('summaryTotal').textContent;
+          const notes = document.getElementById('resNotes').value;
+          const hasShuttle = document.getElementById('optShuttle').checked ? 'Oui (+40)' : 'Non';
+
+          let msg = `Bonjour {name} ! Je souhaite confirmer ma réservation de séjour :%0A%0A`;
+          msg += `• Voyageur : ${{name}}%0A`;
           if (phone) msg += `• Tél : ${{phone}}%0A`;
-          msg += `• Couverts : ${{seats}}%0A`;
-          msg += `• Emplacement : ${{area}}%0A`;
-          if (date) msg += `• Date : ${{date}}%0A`;
-          if (time) msg += `• Heure : ${{time}}%0A`;
-          if (notes) msg += `• Notes : ${{notes}}%0A`;
-          msg += `%0APouvez-vous me confirmer la table ? Merci !`;
+          msg += `• Suite : ${{suiteName}}%0A`;
+          msg += `• Arrivée : ${{inVal}}%0A`;
+          msg += `• Départ : ${{outVal}}%0A`;
+          msg += `• Voyageurs : ${{guests}}%0A`;
+          msg += `• Navette Aéroport : ${{hasShuttle}}%0A`;
+          if (notes) msg += `• Remarques : ${{notes}}%0A`;
+          msg += `%0A• Total Estimé : ${{total}} {currency}%0A%0AMerci de me confirmer la réservation et les formalités d'accueil !`;
+
           window.open(`{wa_url}?text=${{msg}}`, '_blank');
         }}
+
         window.addEventListener('DOMContentLoaded', () => {{
-          const dEl = document.getElementById('tableDate');
-          if (dEl) {{
-            const today = new Date().toISOString().split('T')[0];
-            dEl.value = today;
+          const inEl = document.getElementById('resIn');
+          const outEl = document.getElementById('resOut');
+          if (inEl && outEl) {{
+            const today = new Date();
+            const tomorrow = new Date(today);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            const dayAfter = new Date(today);
+            dayAfter.setDate(dayAfter.getDate() + 3);
+            inEl.value = tomorrow.toISOString().split('T')[0];
+            outEl.value = dayAfter.toISOString().split('T')[0];
+            calculateHotelQuote();
           }}
         }});
         </script>
         """
-        pages["contact.html"] = wrap_page(
-            "contact", "Réservation de Table & Contact", resto_contact_content, resto_nav,
-            breadcrumb={"trail": "Réservation & Contact", "title": "Réservation de Table & Contact Direct", "subtitle": f"Réservez votre table facilement ou commandez directement sur WhatsApp."},
-            extra_js=table_js
+
+        pages["reservation.html"] = wrap_page(
+            "reservation", "Réservation en Ligne", hotel_reservation_content, hotel_nav,
+            breadcrumb={"trail": "Réservation en Ligne", "title": "Réservation Directe de Votre Séjour", "subtitle": f"Bénéficiez du meilleur tarif direct sans intermédiaire pour votre séjour au {name} à {city}."},
+            extra_js=hotel_res_js
         )
 
+    # ========================================================
+    # RESTAURANT / CAFE BRANCH
+    # ========================================================
+    else:
+        resto_nav = [
+            {"id": "index", "label": "Accueil", "url": "index.html"},
+            {"id": "menu", "label": "La Carte", "url": "menu.html"},
+            {"id": "reservation", "label": "Réservation de Table", "url": "reservation.html"},
+            {"id": "about", "label": "Notre Histoire", "url": "about.html"},
+            {"id": "contact", "label": "Contact & Accès", "url": "contact.html"}
+        ]
+
+        from modules.mockup_generator import build_multipage_demo_bundle
+        base_pages = build_multipage_demo_bundle(lead_data, theme)
+        for k, v in base_pages.items():
+            pages[k] = v
+
+        # Build dedicated reservation.html for Restaurant
+        resto_reservation_content = f"""
+        <section class="section">
+          <div class="container">
+            <div style="display:grid;grid-template-columns:1.2fr 0.8fr;gap:45px;align-items:start;">
+              <div class="form-box">
+                <span class="section-tag">RÉSERVATION DE TABLE EN DIRECT</span>
+                <h2 style="font-size:1.85rem;font-weight:800;color:var(--text-heading);margin-bottom:8px;">Réservez Votre Table en Quelques Clics</h2>
+                <p style="color:var(--muted);font-size:0.94rem;margin-bottom:26px;">
+                  Choisissez votre date, votre heure et votre zone préférée. Confirmation instantanée par notre maître d'hôtel sur WhatsApp.
+                </p>
+
+                <div class="form-grid">
+                  <div class="form-group">
+                    <label class="form-label"><i class="fa-regular fa-calendar"></i> Date du Repas</label>
+                    <input type="date" id="tableResDate" class="form-input" onchange="updateTableSummary()">
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label"><i class="fa-regular fa-clock"></i> Heure du Service</label>
+                    <select id="tableResTime" class="form-input" onchange="updateTableSummary()">
+                      <optgroup label="Service du Midi (Déjeuner)">
+                        <option value="12:15">12:15</option>
+                        <option value="12:45" selected>12:45</option>
+                        <option value="13:30">13:30</option>
+                      </optgroup>
+                      <optgroup label="Service du Soir (Dîner)">
+                        <option value="19:30">19:30</option>
+                        <option value="20:30">20:30</option>
+                        <option value="21:30">21:30</option>
+                      </optgroup>
+                    </select>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label"><i class="fa-solid fa-users"></i> Nombre de Personnes</label>
+                    <select id="tableResGuests" class="form-input" onchange="updateTableSummary()">
+                      <option value="1 Personne">1 Personne</option>
+                      <option value="2 Personnes" selected>2 Personnes (Table Duo)</option>
+                      <option value="4 Personnes">4 Personnes (Famille / Amis)</option>
+                      <option value="6 Personnes">6 Personnes</option>
+                      <option value="8+ Personnes">8 Personnes ou plus (Grande Table)</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label"><i class="fa-solid fa-chair"></i> Emplacement Souhaité</label>
+                    <select id="tableResArea" class="form-input" onchange="updateTableSummary()">
+                      <option value="Salle Principale Climatisée" selected>Salle Principale Climatisée</option>
+                      <option value="Terrasse Extérieure">Terrasse Extérieure</option>
+                      <option value="Espace Salon Intimiste">Espace Salon Intimiste</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">Nom & Prénom</label>
+                    <input type="text" id="tableResName" class="form-input" placeholder="Ex: Karim Ben Salah">
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">Téléphone WhatsApp</label>
+                    <input type="text" id="tableResPhone" class="form-input" placeholder="Ex: +216 XX XXX XXX">
+                  </div>
+
+                  <div class="form-group full">
+                    <label class="form-label">Occasion Particulière (Optionnel)</label>
+                    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:4px;">
+                      <button type="button" class="btn-outline" style="padding:6px 14px;font-size:0.8rem;" onclick="setOccasion('Repas d\\\'affaires')">💼 Déjeuner Pro</button>
+                      <button type="button" class="btn-outline" style="padding:6px 14px;font-size:0.8rem;" onclick="setOccasion('Anniversaire')">🎂 Anniversaire</button>
+                      <button type="button" class="btn-outline" style="padding:6px 14px;font-size:0.8rem;" onclick="setOccasion('Dîner Romantique')">❤️ Romantique</button>
+                      <button type="button" class="btn-outline" style="padding:6px 14px;font-size:0.8rem;" onclick="setOccasion('Repas de Famille')">👨‍👩‍👦 Famille</button>
+                    </div>
+                  </div>
+
+                  <div class="form-group full">
+                    <label class="form-label">Remarques ou Préférences Culinaires</label>
+                    <textarea id="tableResNotes" class="form-input" rows="2" placeholder="Chaise bébé, table au calme, allergies..."></textarea>
+                  </div>
+                </div>
+
+                <button onclick="confirmTableBookingWhatsApp()" class="btn-primary" style="width:100%;justify-content:center;padding:15px;font-size:1rem;margin-top:10px;">
+                  <i class="fa-brands fa-whatsapp"></i> Envoyer ma Réservation sur WhatsApp
+                </button>
+              </div>
+
+              <!-- Table Summary Card -->
+              <div>
+                <div style="background:#ffffff;border:1px solid var(--card-border);border-radius:24px;padding:30px;box-shadow:0 15px 35px -5px rgba(0,0,0,0.08);position:sticky;top:100px;">
+                  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid var(--border);">
+                    <h3 style="font-size:1.15rem;font-weight:800;color:var(--text-heading);">Ticket de Réservation</h3>
+                    <span style="background:rgba(16,185,129,0.12);color:#059669;font-weight:800;font-size:0.78rem;padding:4px 10px;border-radius:20px;">Direct Cuisine</span>
+                  </div>
+
+                  <div style="display:flex;flex-direction:column;gap:14px;font-size:0.92rem;color:var(--text-heading);margin-bottom:22px;">
+                    <div style="display:flex;justify-content:space-between;">
+                      <span style="color:var(--muted);">Restaurant :</span>
+                      <strong>{name}</strong>
+                    </div>
+                    <div style="display:flex;justify-content:space-between;">
+                      <span style="color:var(--muted);">Date & Heure :</span>
+                      <strong id="summaryTableDateTime">Aujourd'hui à 12:45</strong>
+                    </div>
+                    <div style="display:flex;justify-content:space-between;">
+                      <span style="color:var(--muted);">Couverts :</span>
+                      <strong id="summaryTableGuests">2 Personnes</strong>
+                    </div>
+                    <div style="display:flex;justify-content:space-between;">
+                      <span style="color:var(--muted);">Emplacement :</span>
+                      <strong id="summaryTableArea">Salle Principale Climatisée</strong>
+                    </div>
+                  </div>
+
+                  <div style="background:var(--bg-subtle);border-radius:16px;padding:18px;border:1px solid var(--border);margin-bottom:20px;text-align:center;">
+                    <div style="font-size:0.86rem;color:var(--muted);margin-bottom:4px;">Réservation Directe Sans Frais</div>
+                    <div style="font-weight:800;color:var(--accent);font-size:1.15rem;">Table Réservée sous votre nom</div>
+                  </div>
+
+                  <div style="font-size:0.82rem;color:var(--muted);line-height:1.6;">
+                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;"><i class="fa-solid fa-check" style="color:#10b981;"></i> Table gardée 20 minutes après l'horaire</div>
+                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;"><i class="fa-solid fa-check" style="color:#10b981;"></i> Modification ou annulation facile sur WhatsApp</div>
+                    <div style="display:flex;align-items:center;gap:8px;"><i class="fa-solid fa-check" style="color:#10b981;"></i> Accueil chaleureux & service attentionné</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        """
+
+        resto_res_js = f"""
+        <script>
+        function setOccasion(txt) {{
+          const el = document.getElementById('tableResNotes');
+          if (el) {{
+            el.value = (el.value ? el.value + ' • ' : '') + txt;
+          }}
+        }}
+
+        function updateTableSummary() {{
+          const date = document.getElementById('tableResDate').value;
+          const time = document.getElementById('tableResTime').value;
+          const guests = document.getElementById('tableResGuests').value;
+          const area = document.getElementById('tableResArea').value;
+
+          document.getElementById('summaryTableDateTime').textContent = (date || 'Date choisie') + ' à ' + time;
+          document.getElementById('summaryTableGuests').textContent = guests;
+          document.getElementById('summaryTableArea').textContent = area;
+        }}
+
+        function confirmTableBookingWhatsApp() {{
+          const date = document.getElementById('tableResDate').value;
+          const time = document.getElementById('tableResTime').value;
+          const guests = document.getElementById('tableResGuests').value;
+          const area = document.getElementById('tableResArea').value;
+          const name = document.getElementById('tableResName').value || 'Client';
+          const phone = document.getElementById('tableResPhone').value || '';
+          const notes = document.getElementById('tableResNotes').value;
+
+          let msg = `Bonjour {name} ! Je souhaite réserver une table :%0A%0A`;
+          msg += `• Nom : ${{name}}%0A`;
+          if (phone) msg += `• Tél : ${{phone}}%0A`;
+          msg += `• Date : ${{date}}%0A`;
+          msg += `• Heure : ${{time}}%0A`;
+          msg += `• Couverts : ${{guests}}%0A`;
+          msg += `• Emplacement : ${{area}}%0A`;
+          if (notes) msg += `• Remarques : ${{notes}}%0A`;
+          msg += `%0APouvez-vous me confirmer la table ? Merci beaucoup !`;
+
+          window.open(`{wa_url}?text=${{msg}}`, '_blank');
+        }}
+
+        window.addEventListener('DOMContentLoaded', () => {{
+          const dEl = document.getElementById('tableResDate');
+          if (dEl) {{
+            const today = new Date().toISOString().split('T')[0];
+            dEl.value = today;
+            updateTableSummary();
+          }}
+        }});
+        </script>
+        """
+
+        pages["reservation.html"] = wrap_page(
+            "reservation", "Réservation de Table", resto_reservation_content, resto_nav,
+            breadcrumb={"trail": "Réservation", "title": "Réservez Votre Table en Direct", "subtitle": f"Profitez d'un accueil chaleureux et des meilleures places chez {name} à {city}."},
+            extra_js=resto_res_js
+        )
+
+    # ========================================================
+    # 2. PRO ADMIN PAGES (3 PAGES DÉDIÉES POUR LE GÉRANT)
+    # ========================================================
+    # render_admin_shell is already defined in scope
+
+    # --- ADMIN PAGE 1: admin.html (Tableau de Bord Exécutif) ---
+    if is_hotel:
+        kpi_1_val = "14 Confirmées"
+        kpi_1_lbl = "Réservations en cours"
+        kpi_2_val = "89%"
+        kpi_2_lbl = "Taux d'occupation actuel"
+        kpi_3_val = f"34,800 {currency}"
+        kpi_3_lbl = "Chiffre d'Affaires du Mois"
+        kpi_4_val = "4.9 / 5"
+        kpi_4_lbl = "Score d'Avis Google & Booking"
+
+        recent_rows = f"""
+        <tr>
+          <td><strong>#RES-9042</strong></td>
+          <td>M. Yassine Mansour<br><span style="font-size:0.78rem;color:#64748b;">+216 98 123 456</span></td>
+          <td>Suite Royale Panoramique</td>
+          <td>Du 28/09 au 02/10 (4 nuits)</td>
+          <td><strong>1,520 {currency}</strong></td>
+          <td><span class="status-badge confirmed"><i class="fa-solid fa-circle-check"></i> Confirmé</span></td>
+          <td>
+            <a href="https://wa.me/21698123456?text=Bonjour%20M.%20Mansour%2C%20votre%20Suite%20Royale%20est%20pr%C3%AAte%20au%20{slugify(name)}" target="_blank" class="btn-sm-wa">
+              <i class="fa-brands fa-whatsapp"></i> Échanger
+            </a>
+          </td>
+        </tr>
+        <tr>
+          <td><strong>#RES-9041</strong></td>
+          <td>Sophie Laurent<br><span style="font-size:0.78rem;color:#64748b;">+33 6 12 34 56 78</span></td>
+          <td>Chambre Executive Prestige</td>
+          <td>Du 29/09 au 01/10 (2 nuits)</td>
+          <td><strong>480 {currency}</strong></td>
+          <td><span class="status-badge confirmed"><i class="fa-solid fa-circle-check"></i> Confirmé</span></td>
+          <td>
+            <a href="https://wa.me/33612345678" target="_blank" class="btn-sm-wa">
+              <i class="fa-brands fa-whatsapp"></i> Échanger
+            </a>
+          </td>
+        </tr>
+        <tr>
+          <td><strong>#RES-9039</strong></td>
+          <td>Dr. Karim Trabelsi<br><span style="font-size:0.78rem;color:#64748b;">+216 22 789 012</span></td>
+          <td>Suite Junior Élégance</td>
+          <td>Ce soir (1 nuit)</td>
+          <td><strong>195 {currency}</strong></td>
+          <td><span class="status-badge pending"><i class="fa-solid fa-clock"></i> Arrivée Proche</span></td>
+          <td>
+            <a href="https://wa.me/21622789012" target="_blank" class="btn-sm-wa">
+              <i class="fa-brands fa-whatsapp"></i> Échanger
+            </a>
+          </td>
+        </tr>
+        """
+    else:
+        kpi_1_val = "38 Commandes"
+        kpi_1_lbl = "Commandes & Tables Aujourd'hui"
+        kpi_2_val = "46 Couverts"
+        kpi_2_lbl = "Réservations ce soir"
+        kpi_2_lbl = "Couverts Réservés"
+        kpi_3_val = f"2,480 {currency}"
+        kpi_3_lbl = "Recettes estimées (Jour)"
+        kpi_4_val = "100%"
+        kpi_4_lbl = "Commandes sans commission"
+
+        recent_rows = f"""
+        <tr>
+          <td><strong>#CMD-4182</strong></td>
+          <td>Amine K.<br><span style="font-size:0.78rem;color:#64748b;">+216 55 432 109</span></td>
+          <td>Table 4 pers. (Terrasse)</td>
+          <td>Ce soir à 20h30</td>
+          <td><strong>148 {currency}</strong></td>
+          <td><span class="status-badge confirmed"><i class="fa-solid fa-circle-check"></i> Table Confirmée</span></td>
+          <td>
+            <a href="https://wa.me/21655432109?text=Bonjour%20Amine%2C%20votre%20table%20est%20r%C3%A9serv%C3%A9e" target="_blank" class="btn-sm-wa">
+              <i class="fa-brands fa-whatsapp"></i> Échanger
+            </a>
+          </td>
+        </tr>
+        <tr>
+          <td><strong>#CMD-4181</strong></td>
+          <td>Salma R.<br><span style="font-size:0.78rem;color:#64748b;">+216 94 887 654</span></td>
+          <td>Livraison Express (3 Plats)</td>
+          <td>À livrer sous 25 min</td>
+          <td><strong>84 {currency}</strong></td>
+          <td><span class="status-badge pending"><i class="fa-solid fa-fire"></i> En Cuisine</span></td>
+          <td>
+            <a href="https://wa.me/21694887654" target="_blank" class="btn-sm-wa">
+              <i class="fa-brands fa-whatsapp"></i> Échanger
+            </a>
+          </td>
+        </tr>
+        <tr>
+          <td><strong>#CMD-4180</strong></td>
+          <td>Hassen M.<br><span style="font-size:0.78rem;color:#64748b;">+216 29 112 334</span></td>
+          <td>Plateau Dégustation Royal</td>
+          <td>À emporter (13h15)</td>
+          <td><strong>68 {currency}</strong></td>
+          <td><span class="status-badge confirmed"><i class="fa-solid fa-bag-shopping"></i> Prêt</span></td>
+          <td>
+            <a href="https://wa.me/21629112334" target="_blank" class="btn-sm-wa">
+              <i class="fa-brands fa-whatsapp"></i> Échanger
+            </a>
+          </td>
+        </tr>
+        """
+
+    admin_dashboard_content = f"""
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;">
+      <div>
+        <h1 style="font-size:1.8rem;font-weight:900;color:var(--text-main);font-family:var(--font-heading);">Tableau de Bord Exécutif</h1>
+        <p style="color:var(--text-muted);font-size:0.92rem;">Vue d'ensemble de l'activité, réservations en temps réel et performance.</p>
+      </div>
+      <div>
+        <span style="font-size:0.82rem;color:var(--text-muted);background:#fff;border:1px solid var(--border);padding:8px 16px;border-radius:20px;font-weight:700;">
+          <i class="fa-regular fa-calendar"></i> Aujourd'hui • Mise à jour instantanée
+        </span>
+      </div>
+    </div>
+
+    <!-- KPI Cards -->
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div>
+          <div class="kpi-label">{kpi_1_lbl}</div>
+          <div class="kpi-value">{kpi_1_val}</div>
+        </div>
+        <div class="kpi-icon" style="background:rgba(37,99,235,0.1);color:#2563eb;"><i class="fa-solid fa-calendar-check"></i></div>
+      </div>
+
+      <div class="kpi-card">
+        <div>
+          <div class="kpi-label">{kpi_2_lbl}</div>
+          <div class="kpi-value">{kpi_2_val}</div>
+        </div>
+        <div class="kpi-icon" style="background:rgba(16,185,129,0.1);color:#059669;"><i class="fa-solid fa-users"></i></div>
+      </div>
+
+      <div class="kpi-card">
+        <div>
+          <div class="kpi-label">{kpi_3_lbl}</div>
+          <div class="kpi-value">{kpi_3_val}</div>
+        </div>
+        <div class="kpi-icon" style="background:rgba(217,119,6,0.1);color:#d97706;"><i class="fa-solid fa-coins"></i></div>
+      </div>
+
+      <div class="kpi-card">
+        <div>
+          <div class="kpi-label">{kpi_4_lbl}</div>
+          <div class="kpi-value">{kpi_4_val}</div>
+        </div>
+        <div class="kpi-icon" style="background:rgba(168,85,247,0.1);color:#9333ea;"><i class="fa-solid fa-shield-halved"></i></div>
+      </div>
+    </div>
+
+    <!-- Recent Bookings Table -->
+    <div class="admin-card">
+      <div class="admin-card-header">
+        <h2 class="admin-card-title"><i class="fa-solid fa-clock-rotate-left" style="color:var(--accent);"></i> Dernières Réservations & Commandes Directes</h2>
+        <a href="admin-reservations.html" style="color:var(--accent);font-weight:700;font-size:0.86rem;">Voir toutes les réservations <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+
+      <div class="table-responsive">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Réf</th>
+              <th>Client</th>
+              <th>{'Suite Réservée' if is_hotel else 'Prestation / Table'}</th>
+              <th>Date / Créneau</th>
+              <th>Montant</th>
+              <th>Statut</th>
+              <th>Contact Direct</th>
+            </tr>
+          </thead>
+          <tbody>
+            {recent_rows}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Performance & Insights -->
+    <div style="display:grid;grid-template-columns:1.2fr 0.8fr;gap:25px;">
+      <div class="admin-card">
+        <div class="admin-card-header">
+          <h2 class="admin-card-title"><i class="fa-solid fa-chart-simple" style="color:var(--accent);"></i> Fréquentation de la Semaine</h2>
+          <span style="font-size:0.8rem;color:var(--text-muted);font-weight:600;">Affluence Hebdomadaire</span>
+        </div>
+        <div style="display:flex;align-items:flex-end;justify-content:space-between;height:180px;padding-top:20px;">
+          <div style="text-align:center;width:12%;"><div style="background:#e2e8f0;height:70px;border-radius:6px;margin-bottom:8px;"></div><span style="font-size:0.75rem;font-weight:700;color:var(--text-muted);">Lun</span></div>
+          <div style="text-align:center;width:12%;"><div style="background:#e2e8f0;height:95px;border-radius:6px;margin-bottom:8px;"></div><span style="font-size:0.75rem;font-weight:700;color:var(--text-muted);">Mar</span></div>
+          <div style="text-align:center;width:12%;"><div style="background:#e2e8f0;height:120px;border-radius:6px;margin-bottom:8px;"></div><span style="font-size:0.75rem;font-weight:700;color:var(--text-muted);">Mer</span></div>
+          <div style="text-align:center;width:12%;"><div style="background:#e2e8f0;height:130px;border-radius:6px;margin-bottom:8px;"></div><span style="font-size:0.75rem;font-weight:700;color:var(--text-muted);">Jeu</span></div>
+          <div style="text-align:center;width:12%;"><div style="background:var(--accent);height:170px;border-radius:6px;margin-bottom:8px;"></div><span style="font-size:0.75rem;font-weight:700;color:var(--accent);">Ven</span></div>
+          <div style="text-align:center;width:12%;"><div style="background:var(--accent);height:180px;border-radius:6px;margin-bottom:8px;"></div><span style="font-size:0.75rem;font-weight:700;color:var(--accent);">Sam</span></div>
+          <div style="text-align:center;width:12%;"><div style="background:var(--accent);height:160px;border-radius:6px;margin-bottom:8px;"></div><span style="font-size:0.75rem;font-weight:700;color:var(--accent);">Dim</span></div>
+        </div>
+      </div>
+
+      <div class="admin-card">
+        <div class="admin-card-header">
+          <h2 class="admin-card-title"><i class="fa-solid fa-bolt" style="color:#d97706;"></i> Actions Rapides Gérant</h2>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <a href="{'admin-rooms.html' if is_hotel else 'admin-menu.html'}" class="btn-sm-action" style="padding:12px;display:flex;align-items:center;gap:10px;">
+            <i class="fa-solid fa-pen-to-square" style="color:var(--accent);"></i>
+            <span>Modifier les prix & disponibilités</span>
+          </a>
+          <a href="admin-reservations.html" class="btn-sm-action" style="padding:12px;display:flex;align-items:center;gap:10px;">
+            <i class="fa-solid fa-list-check" style="color:#059669;"></i>
+            <span>Traiter les réservations en attente</span>
+          </a>
+          <a href="index.html" target="_blank" class="btn-sm-action" style="padding:12px;display:flex;align-items:center;gap:10px;">
+            <i class="fa-solid fa-eye" style="color:#6366f1;"></i>
+            <span>Tester l'expérience client en direct</span>
+          </a>
+        </div>
+      </div>
+    </div>
+    """
+    pages["admin.html"] = render_admin_shell("dashboard", "Tableau de Bord", admin_dashboard_content, lead_data, theme, is_hotel)
+
+    # --- ADMIN PAGE 2: admin-reservations.html (Gestion Complète) ---
+    all_reservations_rows = recent_rows + f"""
+    <tr>
+      <td><strong>#RES-9037</strong></td>
+      <td>Mohamed Ali K.<br><span style="font-size:0.78rem;color:#64748b;">+216 97 654 321</span></td>
+      <td>{'Suite Junior Élégance' if is_hotel else 'Menu Dégustation 2 pers.'}</td>
+      <td>Le 03/10</td>
+      <td><strong>{'195' if is_hotel else '92'} {currency}</strong></td>
+      <td><span class="status-badge confirmed"><i class="fa-solid fa-circle-check"></i> Confirmé</span></td>
+      <td>
+        <a href="https://wa.me/21697654321" target="_blank" class="btn-sm-wa"><i class="fa-brands fa-whatsapp"></i> Échanger</a>
+      </td>
+    </tr>
+    <tr>
+      <td><strong>#RES-9035</strong></td>
+      <td>Inès Bouazizi<br><span style="font-size:0.78rem;color:#64748b;">+216 24 555 777</span></td>
+      <td>{'Chambre Supérieure Sérénité' if is_hotel else 'Table Famille (6 Couverts)'}</td>
+      <td>Le 05/10</td>
+      <td><strong>{'145' if is_hotel else '180'} {currency}</strong></td>
+      <td><span class="status-badge pending"><i class="fa-solid fa-clock"></i> En Attente</span></td>
+      <td>
+        <a href="https://wa.me/21624555777" target="_blank" class="btn-sm-wa"><i class="fa-brands fa-whatsapp"></i> Échanger</a>
+      </td>
+    </tr>
+    """
+
+    admin_reservations_content = f"""
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;">
+      <div>
+        <h1 style="font-size:1.8rem;font-weight:900;color:var(--text-main);font-family:var(--font-heading);">Gestion des Réservations & Commandes</h1>
+        <p style="color:var(--text-muted);font-size:0.92rem;">Consultez, confirmez et échangez directement avec les clients sur WhatsApp.</p>
+      </div>
+      <div>
+        <button onclick="alert('Réservation manuelle ajoutée !')" class="btn-primary" style="padding:10px 20px;font-size:0.88rem;">
+          <i class="fa-solid fa-plus"></i> Nouvelle Réservation
+        </button>
+      </div>
+    </div>
+
+    <div class="admin-card">
+      <div style="display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;">
+        <button class="btn-sm-action" style="background:var(--accent);color:#fff;border-color:var(--accent);">Toutes (12)</button>
+        <button class="btn-sm-action">Confirmées (9)</button>
+        <button class="btn-sm-action">En Attente (3)</button>
+        <button class="btn-sm-action">Terminées</button>
+      </div>
+
+      <div class="table-responsive">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Réf</th>
+              <th>Client</th>
+              <th>{'Chambre / Suite' if is_hotel else 'Prestation / Table'}</th>
+              <th>Date / Séjour</th>
+              <th>Total</th>
+              <th>Statut</th>
+              <th>Action WhatsApp</th>
+            </tr>
+          </thead>
+          <tbody>
+            {all_reservations_rows}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    """
+    pages["admin-reservations.html"] = render_admin_shell("reservations", "Gestion des Réservations", admin_reservations_content, lead_data, theme, is_hotel)
+
+    # --- ADMIN PAGE 3: admin-rooms.html (Hôtel) ou admin-menu.html (Restaurant) ---
+    if is_hotel:
+        rooms_rows = ""
+        for s in suites:
+            rooms_rows += f"""
+            <tr>
+              <td>
+                <div style="display:flex;align-items:center;gap:12px;">
+                  <img src="{s['img']}" alt="{s['name']}" style="width:54px;height:42px;object-fit:cover;border-radius:8px;">
+                  <div>
+                    <strong>{s['name']}</strong>
+                    <div style="font-size:0.75rem;color:var(--text-muted);">{s['badge']}</div>
+                  </div>
+                </div>
+              </td>
+              <td><span style="font-weight:700;color:var(--accent);">{s['category']}</span></td>
+              <td>
+                <div style="display:flex;align-items:center;gap:6px;">
+                  <input type="number" value="{s['price']}" style="width:70px;padding:4px 8px;border:1px solid #cbd5e1;border-radius:6px;font-weight:800;font-size:0.9rem;">
+                  <span style="font-weight:700;font-size:0.82rem;">{currency}</span>
+                </div>
+              </td>
+              <td>
+                <span class="status-badge confirmed"><i class="fa-solid fa-circle"></i> Disponible</span>
+              </td>
+              <td>
+                <button onclick="alert('Tarif mis à jour pour {s['name']} !')" class="btn-sm-action" style="color:var(--accent);font-weight:700;">
+                  <i class="fa-solid fa-floppy-disk"></i> Enregistrer
+                </button>
+              </td>
+            </tr>
+            """
+
+        admin_catalog_content = f"""
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;">
+          <div>
+            <h1 style="font-size:1.8rem;font-weight:900;color:var(--text-main);font-family:var(--font-heading);">Gestion des Suites, Chambres & Tarifs</h1>
+            <p style="color:var(--text-muted);font-size:0.92rem;">Modifiez instantanément vos prix par nuitée et l'état des suites.</p>
+          </div>
+          <div>
+            <button onclick="alert('Modal d\\'ajout de suite ouvert !')" class="btn-primary" style="padding:10px 20px;font-size:0.88rem;">
+              <i class="fa-solid fa-plus"></i> Ajouter une Suite
+            </button>
+          </div>
+        </div>
+
+        <div class="admin-card">
+          <div class="table-responsive">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Suite / Chambre</th>
+                  <th>Catégorie</th>
+                  <th>Prix / Nuit</th>
+                  <th>Disponibilité</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {rooms_rows}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        """
+        pages["admin-rooms.html"] = render_admin_shell("catalog", "Gestion des Suites & Tarifs", admin_catalog_content, lead_data, theme, is_hotel)
+
+    else:
+        menu_rows = ""
+        for d in dishes:
+            menu_rows += f"""
+            <tr>
+              <td>
+                <div>
+                  <strong>{d['name']}</strong>
+                  <div style="font-size:0.75rem;color:var(--text-muted);">{d.get('desc', '')[:55]}...</div>
+                </div>
+              </td>
+              <td><span style="font-weight:700;color:var(--accent);">{d['category']}</span></td>
+              <td>
+                <div style="display:flex;align-items:center;gap:6px;">
+                  <input type="number" value="{d['price']}" style="width:65px;padding:4px 8px;border:1px solid #cbd5e1;border-radius:6px;font-weight:800;font-size:0.9rem;">
+                  <span style="font-weight:700;font-size:0.82rem;">{currency}</span>
+                </div>
+              </td>
+              <td>
+                <span class="status-badge confirmed"><i class="fa-solid fa-circle"></i> En Stock</span>
+              </td>
+              <td>
+                <button onclick="alert('Prix sauvegardé pour {d['name']} !')" class="btn-sm-action" style="color:var(--accent);font-weight:700;">
+                  <i class="fa-solid fa-floppy-disk"></i> Enregistrer
+                </button>
+              </td>
+            </tr>
+            """
+
+        admin_catalog_content = f"""
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;">
+          <div>
+            <h1 style="font-size:1.8rem;font-weight:900;color:var(--text-main);font-family:var(--font-heading);">Gestion de la Carte, Plats & Prix</h1>
+            <p style="color:var(--text-muted);font-size:0.92rem;">Ajustez vos tarifs et activez/désactivez des plats en cuisine en direct.</p>
+          </div>
+          <div>
+            <button onclick="alert('Modal d\\'ajout de plat ouvert !')" class="btn-primary" style="padding:10px 20px;font-size:0.88rem;">
+              <i class="fa-solid fa-plus"></i> Nouveau Plat
+            </button>
+          </div>
+        </div>
+
+        <div class="admin-card">
+          <div class="table-responsive">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Nom du Plat</th>
+                  <th>Catégorie</th>
+                  <th>Prix Actuel</th>
+                  <th>Disponibilité Cuisine</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {menu_rows}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        """
+        pages["admin-menu.html"] = render_admin_shell("catalog", "Gestion de la Carte & Prix", admin_catalog_content, lead_data, theme, is_hotel)
+
     return pages
+
 
 def generate_interactive_demo_html(lead_data, theme):
     """
