@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>View Restaurant — Espace Gérant | Gestion de la Carte & Prix</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+  :root {
+    --bg-dark: #0f172a;
+    --sidebar-bg: #1e293b;
+    --card-bg: #ffffff;
+    --main-bg: #f8fafc;
+    --accent: #4f46e5;
+    --accent-light: rgba(79, 70, 229, 0.08);
+    --text-main: #0f172a;
+    --text-muted: #64748b;
+    --border: #e2e8f0;
+    --font-heading: 'Outfit', sans-serif;
+    --font-body: 'Plus Jakarta Sans', sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: var(--font-body);
+    background: var(--main-bg);
+    color: var(--text-main);
+    display: flex;
+    min-height: 100vh;
+  }
+  a { text-decoration: none; color: inherit; }
+
+  /* SIDEBAR */
+  .admin-sidebar {
+    width: 280px;
+    background: var(--sidebar-bg);
+    color: #f1f5f9;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 100;
+    padding: 24px 18px;
+    border-right: 1px solid rgba(255,255,255,0.08);
+  }
+  .admin-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-bottom: 22px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    margin-bottom: 25px;
+  }
+  .admin-brand-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: var(--accent);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+  }
+  .admin-brand-name { font-family: var(--font-heading); font-size: 1.15rem; font-weight: 800; color: #fff; line-height: 1.2; }
+  .admin-brand-badge { font-size: 0.7rem; color: #94a3b8; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; }
+
+  .admin-nav-group { display: flex; flex-direction: column; gap: 8px; flex-grow: 1; }
+  .admin-sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 16px;
+    border-radius: 12px;
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: #94a3b8;
+    transition: 0.2s;
+  }
+  .admin-sidebar-link i { font-size: 1.1rem; width: 22px; text-align: center; }
+  .admin-sidebar-link:hover { background: rgba(255,255,255,0.06); color: #fff; }
+  .admin-sidebar-link.active { background: var(--accent); color: #fff; font-weight: 700; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+
+  .admin-sidebar-footer {
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 14px;
+    padding: 16px;
+    font-size: 0.82rem;
+  }
+  .client-site-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 10px;
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    margin-top: 10px;
+    transition: 0.2s;
+  }
+  .client-site-btn:hover { background: rgba(255,255,255,0.2); }
+
+  /* MAIN CONTENT AREA */
+  .admin-main {
+    margin-left: 280px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+  .admin-topbar {
+    height: 72px;
+    background: #ffffff;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 32px;
+    position: sticky;
+    top: 0;
+    z-index: 80;
+  }
+  .admin-content {
+    padding: 32px;
+    flex-grow: 1;
+  }
+
+  /* STATS CARDS */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+  }
+  .kpi-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 22px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .kpi-value { font-size: 1.8rem; font-weight: 800; color: var(--text-main); font-family: var(--font-heading); margin-top: 4px; }
+  .kpi-label { font-size: 0.82rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+  .kpi-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.35rem;
+  }
+
+  /* TABLES & CARDS */
+  .admin-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 26px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+    margin-bottom: 30px;
+  }
+  .admin-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .admin-card-title {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--text-main);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .table-responsive { width: 100%; overflow-x: auto; }
+  table.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+    text-align: left;
+  }
+  table.admin-table th {
+    padding: 12px 16px;
+    color: var(--text-muted);
+    font-weight: 700;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    background: #f8fafc;
+    border-bottom: 1px solid var(--border);
+  }
+  table.admin-table td {
+    padding: 16px;
+    border-bottom: 1px solid #f1f5f9;
+    color: var(--text-main);
+  }
+  table.admin-table tr:hover td { background: #fafbfc; }
+
+  /* BADGES */
+  .status-badge {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .status-badge.confirmed { background: rgba(16, 185, 129, 0.12); color: #059669; }
+  .status-badge.pending { background: rgba(245, 158, 11, 0.12); color: #d97706; }
+  .status-badge.cancelled { background: rgba(239, 68, 68, 0.12); color: #dc2626; }
+
+  .btn-sm-wa {
+    background: #25d366;
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .btn-sm-action {
+    background: #f1f5f9;
+    color: var(--text-main);
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    border: 1px solid var(--border);
+    cursor: pointer;
+  }
+  .btn-sm-action:hover { background: #e2e8f0; }
+
+  @media (max-width: 900px) {
+    .admin-sidebar { display: none; }
+    .admin-main { margin-left: 0; }
+  }
+</style>
+</head>
+<body>
+  <!-- Sidebar -->
+  <aside class="admin-sidebar">
+    <div class="admin-brand">
+      <div class="admin-brand-icon"><i class="fa-solid fa-utensils"></i></div>
+      <div>
+        <div class="admin-brand-name">View Restaurant</div>
+        <div class="admin-brand-badge">Restaurant & Bar • Back-Office</div>
+      </div>
+    </div>
+
+    <div class="admin-nav-group">
+      <div style="font-size:0.72rem;text-transform:uppercase;color:#64748b;font-weight:800;letter-spacing:1px;padding:0 12px 6px;">Menu Gérant</div>
+      
+        <a href="admin.html" class="admin-sidebar-link ">
+          <i class="fa-solid fa-chart-pie"></i>
+          <span>Tableau de Bord</span>
+        </a>
+        
+        <a href="admin-reservations.html" class="admin-sidebar-link ">
+          <i class="fa-solid fa-calendar-check"></i>
+          <span>Réservations & Commandes</span>
+        </a>
+        
+        <a href="admin-menu.html" class="admin-sidebar-link active">
+          <i class="fa-solid fa-layer-group"></i>
+          <span>Carte & Tarifs</span>
+        </a>
+        
+    </div>
+
+    <div class="admin-sidebar-footer">
+      <div style="color:#94a3b8;font-size:0.76rem;">Propulsé pour View Restaurant</div>
+      <div style="font-weight:700;color:#fff;margin:2px 0 6px;">Agence WebLaunch Agency</div>
+      <div style="color:#38bdf8;font-size:0.75rem;">Support Pro : +216 56 818 880</div>
+      <a href="index.html" class="client-site-btn">
+        <i class="fa-solid fa-arrow-up-right-from-square"></i> Voir le Site Client
+      </a>
+    </div>
+  </aside>
+
+  <!-- Main View -->
+  <div class="admin-main">
+    <header class="admin-topbar">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <span style="background:rgba(16,185,129,0.12);color:#059669;padding:6px 14px;border-radius:20px;font-size:0.82rem;font-weight:700;display:flex;align-items:center;gap:6px;">
+          <i class="fa-solid fa-circle" style="font-size:0.6rem;"></i> Établissement Ouvert & Commandes Actives
+        </span>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:18px;">
+        <div style="position:relative;">
+          <a href="https://wa.me/97477500020" target="_blank" class="btn-sm-wa" style="padding:8px 16px;border-radius:20px;">
+            <i class="fa-brands fa-whatsapp"></i> Ligne WhatsApp Directe
+          </a>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;border-left:1px solid var(--border);padding-left:18px;">
+          <div style="width:38px;height:38px;border-radius:50%;background:var(--accent-light);color:var(--accent);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:0.9rem;">
+            V
+          </div>
+          <div>
+            <div style="font-size:0.86rem;font-weight:700;">Directeur View Restaurant</div>
+            <div style="font-size:0.72rem;color:var(--text-muted);">Doha</div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="admin-content">
+      
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;">
+          <div>
+            <h1 style="font-size:1.8rem;font-weight:900;color:var(--text-main);font-family:var(--font-heading);">Gestion de la Carte, Plats & Prix</h1>
+            <p style="color:var(--text-muted);font-size:0.92rem;">Ajustez vos tarifs et activez/désactivez des plats en cuisine en direct.</p>
+          </div>
+          <div>
+            <button onclick="alert('Modal d\'ajout de plat ouvert !')" class="btn-primary" style="padding:10px 20px;font-size:0.88rem;">
+              <i class="fa-solid fa-plus"></i> Nouveau Plat
+            </button>
+          </div>
+        </div>
+
+        <div class="admin-card">
+          <div class="table-responsive">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Nom du Plat</th>
+                  <th>Catégorie</th>
+                  <th>Prix Actuel</th>
+                  <th>Disponibilité Cuisine</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                
+            <tr>
+              <td>
+                <div>
+                  <strong>Le Plat Signature View Restaurant</strong>
+                  <div style="font-size:0.75rem;color:var(--text-muted);">La spécialité secrète de la maison marinée aux épices a...</div>
+                </div>
+              </td>
+              <td><span style="font-weight:700;color:var(--accent);">Spécialités</span></td>
+              <td>
+                <div style="display:flex;align-items:center;gap:6px;">
+                  <input type="number" value="38" style="width:65px;padding:4px 8px;border:1px solid #cbd5e1;border-radius:6px;font-weight:800;font-size:0.9rem;">
+                  <span style="font-weight:700;font-size:0.82rem;">QAR</span>
+                </div>
+              </td>
+              <td>
+                <span class="status-badge confirmed"><i class="fa-solid fa-circle"></i> En Stock</span>
+              </td>
+              <td>
+                <button onclick="alert('Prix sauvegardé pour Le Plat Signature View Restaurant !')" class="btn-sm-action" style="color:var(--accent);font-weight:700;">
+                  <i class="fa-solid fa-floppy-disk"></i> Enregistrer
+                </button>
+              </td>
+            </tr>
+            
+            <tr>
+              <td>
+                <div>
+                  <strong>Plateau Dégustation Royal</strong>
+                  <div style="font-size:0.75rem;color:var(--text-muted);">Assortiment généreux pour 2 à 3 personnes avec sauces f...</div>
+                </div>
+              </td>
+              <td><span style="font-weight:700;color:var(--accent);">Plats Chauds</span></td>
+              <td>
+                <div style="display:flex;align-items:center;gap:6px;">
+                  <input type="number" value="68" style="width:65px;padding:4px 8px;border:1px solid #cbd5e1;border-radius:6px;font-weight:800;font-size:0.9rem;">
+                  <span style="font-weight:700;font-size:0.82rem;">QAR</span>
+                </div>
+              </td>
+              <td>
+                <span class="status-badge confirmed"><i class="fa-solid fa-circle"></i> En Stock</span>
+              </td>
+              <td>
+                <button onclick="alert('Prix sauvegardé pour Plateau Dégustation Royal !')" class="btn-sm-action" style="color:var(--accent);font-weight:700;">
+                  <i class="fa-solid fa-floppy-disk"></i> Enregistrer
+                </button>
+              </td>
+            </tr>
+            
+            <tr>
+              <td>
+                <div>
+                  <strong>Grillades Mixtes au Feu de Bois</strong>
+                  <div style="font-size:0.75rem;color:var(--text-muted);">Sélection de viandes tendres braisées sur lit de braise...</div>
+                </div>
+              </td>
+              <td><span style="font-weight:700;color:var(--accent);">Plats Chauds</span></td>
+              <td>
+                <div style="display:flex;align-items:center;gap:6px;">
+                  <input type="number" value="52" style="width:65px;padding:4px 8px;border:1px solid #cbd5e1;border-radius:6px;font-weight:800;font-size:0.9rem;">
+                  <span style="font-weight:700;font-size:0.82rem;">QAR</span>
+                </div>
+              </td>
+              <td>
+                <span class="status-badge confirmed"><i class="fa-solid fa-circle"></i> En Stock</span>
+              </td>
+              <td>
+                <button onclick="alert('Prix sauvegardé pour Grillades Mixtes au Feu de Bois !')" class="btn-sm-action" style="color:var(--accent);font-weight:700;">
+                  <i class="fa-solid fa-floppy-disk"></i> Enregistrer
+                </button>
+              </td>
+            </tr>
+            
+            <tr>
+              <td>
+                <div>
+                  <strong>Menu Gourmand Découverte</strong>
+                  <div style="font-size:0.75rem;color:var(--text-muted);">Formule complète avec entrée fraîcheur au choix, plat p...</div>
+                </div>
+              </td>
+              <td><span style="font-weight:700;color:var(--accent);">Plats Chauds</span></td>
+              <td>
+                <div style="display:flex;align-items:center;gap:6px;">
+                  <input type="number" value="44" style="width:65px;padding:4px 8px;border:1px solid #cbd5e1;border-radius:6px;font-weight:800;font-size:0.9rem;">
+                  <span style="font-weight:700;font-size:0.82rem;">QAR</span>
+                </div>
+              </td>
+              <td>
+                <span class="status-badge confirmed"><i class="fa-solid fa-circle"></i> En Stock</span>
+              </td>
+              <td>
+                <button onclick="alert('Prix sauvegardé pour Menu Gourmand Découverte !')" class="btn-sm-action" style="color:var(--accent);font-weight:700;">
+                  <i class="fa-solid fa-floppy-disk"></i> Enregistrer
+                </button>
+              </td>
+            </tr>
+            
+            <tr>
+              <td>
+                <div>
+                  <strong>Entrée Fraîcheur & Mezzé Maison</strong>
+                  <div style="font-size:0.75rem;color:var(--text-muted);">Préparée chaque matin avec des ingrédients du marché lo...</div>
+                </div>
+              </td>
+              <td><span style="font-weight:700;color:var(--accent);">Entrées & Sauces</span></td>
+              <td>
+                <div style="display:flex;align-items:center;gap:6px;">
+                  <input type="number" value="18" style="width:65px;padding:4px 8px;border:1px solid #cbd5e1;border-radius:6px;font-weight:800;font-size:0.9rem;">
+                  <span style="font-weight:700;font-size:0.82rem;">QAR</span>
+                </div>
+              </td>
+              <td>
+                <span class="status-badge confirmed"><i class="fa-solid fa-circle"></i> En Stock</span>
+              </td>
+              <td>
+                <button onclick="alert('Prix sauvegardé pour Entrée Fraîcheur & Mezzé Maison !')" class="btn-sm-action" style="color:var(--accent);font-weight:700;">
+                  <i class="fa-solid fa-floppy-disk"></i> Enregistrer
+                </button>
+              </td>
+            </tr>
+            
+            <tr>
+              <td>
+                <div>
+                  <strong>Douceur Artisanale & Pâtisserie</strong>
+                  <div style="font-size:0.75rem;color:var(--text-muted);">La touche finale gourmande et croustillante préparée su...</div>
+                </div>
+              </td>
+              <td><span style="font-weight:700;color:var(--accent);">Desserts & Boissons</span></td>
+              <td>
+                <div style="display:flex;align-items:center;gap:6px;">
+                  <input type="number" value="14" style="width:65px;padding:4px 8px;border:1px solid #cbd5e1;border-radius:6px;font-weight:800;font-size:0.9rem;">
+                  <span style="font-weight:700;font-size:0.82rem;">QAR</span>
+                </div>
+              </td>
+              <td>
+                <span class="status-badge confirmed"><i class="fa-solid fa-circle"></i> En Stock</span>
+              </td>
+              <td>
+                <button onclick="alert('Prix sauvegardé pour Douceur Artisanale & Pâtisserie !')" class="btn-sm-action" style="color:var(--accent);font-weight:700;">
+                  <i class="fa-solid fa-floppy-disk"></i> Enregistrer
+                </button>
+              </td>
+            </tr>
+            
+              </tbody>
+            </table>
+          </div>
+        </div>
+        
+    </main>
+  </div>
+</body>
+</html>
