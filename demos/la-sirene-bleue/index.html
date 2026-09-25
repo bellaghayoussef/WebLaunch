@@ -1,0 +1,1240 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>La Sirene Bleue | Pêche du Jour & Spécialités Méditerranéennes</title>
+<meta name="description" content="La Sirene Bleue à La Goulette — Commandes en direct sur WhatsApp, carte complète et livraison rapide.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+  :root {
+    --bg: #f0f9ff;
+    --bg-subtle: #e0f2fe;
+    --card: #ffffff;
+    --card-border: rgba(2, 132, 199, 0.16);
+    --card-hover: rgba(0, 0, 0, 0.02);
+    --accent: #0284c7;
+    --accent2: #0369a1;
+    --accent-light: rgba(2, 132, 199, 0.08);
+    --gold: #0284c7;
+    --text: #082f49;
+    --text-heading: #032034;
+    --muted: #475569;
+    --border: rgba(15, 23, 42, 0.08);
+    --border-highlight: #0284c7;
+    --font-heading: 'Playfair Display', Georgia, serif;
+    --font-body: 'Plus Jakarta Sans', sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: var(--font-body);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  h1, h2, h3, h4, h5 {
+    font-family: var(--font-heading);
+    letter-spacing: -0.02em;
+    color: var(--text-heading);
+  }
+  a { color: inherit; text-decoration: none; transition: 0.25s; }
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+  
+  /* TOP ANNOUNCEMENT BAR */
+  .demo-banner {
+    background: linear-gradient(90deg, #0f172a, #1e293b);
+    color: #f8fafc;
+    padding: 8px 16px;
+    font-size: 0.82rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .demo-badge {
+    background: rgba(255,255,255,0.18);
+    border: 1px solid rgba(255,255,255,0.3);
+    color: #ffffff;
+    padding: 2px 10px;
+    border-radius: 20px;
+    font-weight: 700;
+  }
+
+  /* HEADER */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 80;
+    background: rgba(255, 255, 255, 0.94);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+  }
+  nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 74px;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 1.45rem;
+    font-weight: 800;
+    color: var(--text-heading);
+  }
+  .brand-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 1.1rem;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.12);
+  }
+  .navlinks { display: flex; gap: 26px; list-style: none; }
+  .navlinks a {
+    color: #475569;
+    font-weight: 600;
+    font-size: 0.92rem;
+  }
+  .navlinks a:hover { color: var(--accent); }
+
+  .header-actions { display: flex; align-items: center; gap: 14px; }
+  .live-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    background: #ecfdf5;
+    border: 1px solid #a7f3d0;
+    border-radius: 20px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #059669;
+  }
+  .live-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #059669;
+    box-shadow: 0 0 8px #059669;
+    animation: pulseDot 2s infinite;
+  }
+  @keyframes pulseDot { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(1.3); } }
+
+  .btn-wa {
+    background: #25d366;
+    color: #0b2e14;
+    padding: 10px 20px;
+    border-radius: 30px;
+    font-weight: 700;
+    font-size: 0.88rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: 0.25s;
+    box-shadow: 0 4px 14px rgba(37, 211, 102, 0.25);
+  }
+  .btn-wa:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
+    background: #22bf5b;
+  }
+
+  /* HERO */
+  .hero {
+    min-height: 82vh;
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding: 70px 0 90px;
+    background: 
+      radial-gradient(circle at 85% 20%, var(--accent-light) 0%, transparent 50%),
+      radial-gradient(circle at 15% 80%, rgba(255,255,255,0.7) 0%, transparent 50%),
+      linear-gradient(rgba(255,255,255,0.88), rgba(255,255,255,0.96)),
+      url('https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
+    background-attachment: fixed;
+  }
+  .hero-split-grid {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 50px;
+    align-items: center;
+  }
+  .hero-coastal-inner, .hero-boutique-inner {
+    max-width: 860px;
+    margin: 0 auto;
+  }
+  .hero-heritage-inner {
+    max-width: 820px;
+  }
+  .social-proof-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #ffffff;
+    border: 1px solid var(--border);
+    padding: 8px 18px;
+    border-radius: 30px;
+    font-size: 0.86rem;
+    font-weight: 700;
+    color: var(--text-heading);
+    margin-bottom: 22px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+  }
+  .hero-headline {
+    font-size: clamp(2.4rem, 4.5vw, 4.2rem);
+    font-weight: 900;
+    line-height: 1.12;
+    margin-bottom: 20px;
+    color: var(--text-heading);
+  }
+  .hero-highlight {
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .hero-subtext {
+    font-size: clamp(1.05rem, 1.3vw, 1.25rem);
+    color: var(--muted);
+    line-height: 1.6;
+    margin-bottom: 35px;
+    max-width: 680px;
+  }
+  .hero-cta {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-bottom: 35px;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: #fff;
+    padding: 14px 30px;
+    border-radius: 30px;
+    font-weight: 700;
+    font-size: 1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(0,0,0,0.18); }
+  .btn-outline {
+    border: 1px solid rgba(15, 23, 42, 0.15);
+    background: #ffffff;
+    color: var(--text-heading);
+    padding: 14px 26px;
+    border-radius: 30px;
+    font-weight: 700;
+    font-size: 1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.03);
+  }
+  .btn-outline:hover { background: #f8fafc; border-color: var(--accent); color: var(--accent); }
+  .features-pills { display: flex; gap: 12px; flex-wrap: wrap; }
+  .pill {
+    background: #ffffff;
+    border: 1px solid var(--border);
+    padding: 7px 15px;
+    border-radius: 20px;
+    font-size: 0.84rem;
+    font-weight: 600;
+    color: var(--text);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+  }
+  .hero-floating-card {
+    background: #ffffff;
+    border-radius: 24px;
+    border: 1px solid var(--card-border);
+    overflow: hidden;
+    box-shadow: 0 20px 45px -10px rgba(0,0,0,0.12);
+    position: relative;
+    transition: 0.3s;
+  }
+  .hero-floating-card:hover { transform: translateY(-4px); }
+  .hero-card-img { width: 100%; height: 260px; object-fit: cover; }
+  .hero-badge-tag {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    background: var(--accent);
+    color: #fff;
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 0.78rem;
+    font-weight: 800;
+  }
+  .hero-card-info { padding: 22px; }
+
+  /* SECTION STYLING */
+  .section { padding: 90px 0; position: relative; }
+  .section-tag {
+    color: var(--accent);
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-size: 0.78rem;
+    display: block;
+    margin-bottom: 10px;
+  }
+  .section-title {
+    font-size: clamp(2rem, 3.5vw, 2.8rem);
+    font-weight: 800;
+    color: var(--text-heading);
+    margin-bottom: 20px;
+  }
+  .section-sub { color: var(--muted); font-size: 1.05rem; max-width: 650px; }
+
+  /* SOCIAL MEDIA HIGHLIGHTS BAR */
+  .social-bar {
+    background: #ffffff;
+    border: 1px solid var(--card-border);
+    border-radius: 20px;
+    padding: 24px 30px;
+    margin-top: -50px;
+    position: relative;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+    box-shadow: 0 15px 35px -5px rgba(0,0,0,0.08);
+  }
+  .social-bar-profile {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .social-bar-avatar {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    padding: 3px;
+    background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .social-bar-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid #fff;
+  }
+  .social-bar-handle {
+    font-weight: 800;
+    font-size: 1.15rem;
+    color: var(--text-heading);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .social-bar-stats {
+    font-size: 0.88rem;
+    color: var(--muted);
+  }
+
+  /* ABOUT SECTION */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 60px;
+    align-items: center;
+  }
+  .about-img-box {
+    position: relative;
+  }
+  .about-img {
+    width: 100%;
+    height: 420px;
+    object-fit: cover;
+    border-radius: 24px;
+    border: 1px solid var(--card-border);
+    box-shadow: 0 20px 45px -10px rgba(0,0,0,0.12);
+  }
+  .about-badge-floating {
+    position: absolute;
+    bottom: -20px;
+    left: -20px;
+    background: #ffffff;
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    padding: 16px 22px;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  /* MENU SECTION & CATEGORY TABS */
+  .menu-tabs {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin: 35px 0;
+  }
+  .menu-tab {
+    background: #ffffff;
+    border: 1px solid var(--card-border);
+    color: var(--muted);
+    padding: 10px 20px;
+    border-radius: 30px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: 0.25s;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+  }
+  .menu-tab.active, .menu-tab:hover {
+    background: var(--accent);
+    color: #ffffff;
+    border-color: var(--accent);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.12);
+  }
+
+  .menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 26px;
+  }
+  .dish-card {
+    background: #ffffff;
+    border: 1px solid var(--card-border);
+    border-radius: 20px;
+    padding: 26px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: 0.3s;
+    box-shadow: 0 8px 22px -4px rgba(0,0,0,0.05);
+  }
+  .dish-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--accent);
+    box-shadow: 0 16px 32px -6px rgba(0,0,0,0.1);
+  }
+  .dish-cat-label {
+    font-size: 0.74rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+  .dish-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-heading);
+    margin-bottom: 10px;
+  }
+  .dish-price-wrap {
+    text-align: right;
+    white-space: nowrap;
+  }
+  .dish-price {
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: var(--accent);
+  }
+  .dish-curr {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--muted);
+    margin-left: 3px;
+  }
+  .dish-desc {
+    color: var(--muted);
+    font-size: 0.92rem;
+    line-height: 1.5;
+    margin-bottom: 22px;
+    flex-grow: 1;
+  }
+  .dish-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 16px;
+    border-top: 1px solid rgba(0,0,0,0.06);
+    gap: 12px;
+  }
+  .dish-badge {
+    background: var(--accent-light);
+    color: var(--accent);
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 12px;
+    border: 1px solid var(--card-border);
+  }
+  .add-to-cart-btn {
+    background: var(--bg);
+    border: 1px solid rgba(15, 23, 42, 0.12);
+    color: var(--text-heading);
+    padding: 9px 16px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 0.84rem;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: 0.2s;
+  }
+  .add-to-cart-btn:hover {
+    background: #25d366;
+    color: #0b2212;
+    border-color: #25d366;
+  }
+
+  /* SOCIAL FEED SECTION */
+  .social-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 26px;
+    margin-top: 40px;
+  }
+  .social-card {
+    background: #ffffff;
+    border: 1px solid var(--card-border);
+    border-radius: 20px;
+    overflow: hidden;
+    transition: 0.3s;
+    box-shadow: 0 8px 22px -4px rgba(0,0,0,0.05);
+  }
+  .social-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 16px 32px -6px rgba(0,0,0,0.1);
+  }
+  .social-img {
+    height: 240px;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    padding: 16px;
+  }
+  .social-tag {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    background: rgba(0,0,0,0.65);
+    backdrop-filter: blur(8px);
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 20px;
+  }
+  .social-overlay {
+    display: flex;
+    gap: 16px;
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.9rem;
+    background: rgba(0,0,0,0.55);
+    backdrop-filter: blur(8px);
+    padding: 6px 14px;
+    border-radius: 20px;
+  }
+  .social-body {
+    padding: 20px;
+  }
+  .social-caption {
+    color: var(--text);
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin-bottom: 16px;
+  }
+  .social-link-btn {
+    font-size: 0.84rem;
+    font-weight: 700;
+    color: #e1306c;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .social-link-btn:hover { color: var(--accent); }
+
+  /* REVIEWS SECTION */
+  .reviews-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 26px;
+    margin-top: 40px;
+  }
+  .review-card {
+    background: #ffffff;
+    border: 1px solid var(--card-border);
+    border-radius: 20px;
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    box-shadow: 0 8px 22px -4px rgba(0,0,0,0.05);
+  }
+  .review-header { display: flex; align-items: center; gap: 14px; }
+  .review-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 1.1rem;
+  }
+  .review-author { font-weight: 800; font-size: 1rem; color: var(--text-heading); }
+  .review-verified { font-size: 0.78rem; color: #059669; font-weight: 600; display: flex; align-items: center; gap: 4px; }
+  .review-stars { color: #f59e0b; font-size: 0.9rem; }
+  .review-text { color: var(--muted); font-size: 0.92rem; font-style: italic; line-height: 1.6; }
+
+  /* CONTACT / ACCESS */
+  .contact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    margin-top: 35px;
+  }
+  .contact-card {
+    background: #ffffff;
+    border: 1px solid var(--card-border);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 8px 22px -4px rgba(0,0,0,0.05);
+  }
+  .contact-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 14px;
+    background: var(--accent-light);
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    margin-bottom: 18px;
+  }
+  .contact-card h3 { font-size: 1.15rem; margin-bottom: 10px; color: var(--text-heading); }
+  .contact-card p { color: var(--muted); font-size: 0.92rem; line-height: 1.6; }
+
+  /* FLOATING WHATSAPP CART BAR */
+  .floating-cart-bar {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255, 255, 255, 0.96);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(15, 23, 42, 0.12);
+    border-radius: 40px;
+    padding: 12px 24px;
+    display: none;
+    align-items: center;
+    gap: 20px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+    z-index: 95;
+    animation: slideUp 0.3s ease-out;
+  }
+  @keyframes slideUp { from { transform: translate(-50%, 40px); opacity: 0; } to { transform: translate(-50%, 0); opacity: 1; } }
+  .cart-info { display: flex; align-items: center; gap: 10px; font-weight: 700; color: var(--text-heading); font-size: 0.95rem; }
+  .cart-count { background: var(--accent); color: #ffffff; border-radius: 50%; width: 26px; height: 26px; display: inline-flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 800; }
+
+  /* FOOTER */
+  footer {
+    background: #ffffff;
+    border-top: 1px solid var(--border);
+    padding: 60px 0 30px;
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+  .footer-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding-bottom: 30px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* FLOATING DIRECT WHATSAPP BUTTON */
+  .whatsapp-direct-btn {
+    position: fixed;
+    bottom: 26px;
+    right: 26px;
+    width: 62px;
+    height: 62px;
+    border-radius: 50%;
+    background: #25d366;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    box-shadow: 0 10px 25px rgba(37, 211, 102, 0.4);
+    z-index: 90;
+    transition: 0.3s;
+    animation: pulseWa 3s infinite;
+  }
+  .whatsapp-direct-btn:hover { transform: scale(1.1); box-shadow: 0 15px 30px rgba(37, 211, 102, 0.6); }
+  @keyframes pulseWa { 0%, 100% { box-shadow: 0 10px 25px rgba(37, 211, 102, 0.4); } 50% { box-shadow: 0 0 30px rgba(37, 211, 102, 0.7); } }
+
+  @media(max-width: 900px) {
+    .about-grid, .hero-split-grid { grid-template-columns: 1fr; }
+    .about-img { height: 280px; }
+    .about-badge-floating { position: static; margin-top: 20px; }
+    .navlinks { display: none; }
+  }
+</style>
+</head>
+<body>
+
+  <!-- Top Agency / Promo Ribbon -->
+  <div class="demo-banner">
+    <div style="display:flex;align-items:center;gap:8px;">
+      <span class="demo-badge">PROPOSITION DIGITALE</span>
+      <span>🔥 Recommandé à La Goulette • Produits Frais du Jour • Commande WhatsApp Directe</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <span>Conçu par <strong>WebLaunch Agency</strong></span>
+      <button onclick="location.reload()" style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);color:#fff;padding:3px 10px;border-radius:12px;font-size:0.75rem;cursor:pointer;display:inline-flex;align-items:center;gap:5px;" title="Actualiser la maquette">
+        <i class="fa-solid fa-arrows-rotate"></i> Actualiser
+      </button>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header>
+    <div class="container">
+      <nav>
+        <a href="#" class="brand">
+          <div class="brand-icon">
+            <i class="fa-solid fa-utensils"></i>
+          </div>
+          <div>La Sirene Bleue</div>
+        </a>
+
+        <ul class="navlinks">
+          <li><a href="#about">Notre Histoire</a></li>
+          <li><a href="#menu">Carte & Spécialités</a></li>
+          <li><a href="#social">Instagram & Feed</a></li>
+          <li><a href="#avis">Avis Clients</a></li>
+          <li><a href="#contact">Contact & Accès</a></li>
+        </ul>
+
+        <div class="header-actions">
+          <div class="live-status" id="liveStatusBadge">
+            <span class="live-dot"></span>
+            <span>Ouvert actuellement</span>
+          </div>
+          <a href="#contact" target="_blank" class="btn-wa">
+            <i class="fa-brands fa-whatsapp"></i> Commander
+          </a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero Section with Dynamic Distinct Layout -->
+  <section class="hero">
+    <div class="container">
+      
+        <div class="hero-coastal-inner">
+          <div class="social-proof-pill" style="margin:0 auto 22px;">
+            <i class="fa-solid fa-water" style="color:var(--accent);"></i>
+            <span>🌊 Arrivage Frais Quotidien • Pêche Artisanale du Port</span>
+          </div>
+          <h1 class="hero-headline" style="text-align:center;">La Sirene Bleue<br><span class="hero-highlight">Pêche du Jour & Spécialités Méditerranéennes</span></h1>
+          <p class="hero-subtext" style="text-align:center;margin:0 auto 35px;">Poissons sauvages, crevettes royales et fruits de mer cuits à la minute sur lit de braise.</p>
+          <div class="hero-cta" style="justify-content:center;">
+            <a href="#contact?text=Bonjour%20La Sirene Bleue%2C%20je%20souhaite%20r%C3%A9server%20une%20table" target="_blank" class="btn-primary">
+              <i class="fa-brands fa-whatsapp"></i> Réserver / Commander sur WhatsApp
+            </a>
+            <a href="#menu" class="btn-outline">
+              <i class="fa-solid fa-fish"></i> Carte de la Mer & Poissons
+            </a>
+          </div>
+          <div class="features-pills" style="justify-content:center;"><span class="pill">🌊 Pêche Artisanale du Matin</span><span class="pill">🦐 Fruits de Mer Cuits Minute</span><span class="pill">⚡ Commande Directe WhatsApp</span></div>
+        </div>
+        
+    </div>
+  </section>
+
+  <!-- Social Bar Reference -->
+  <div class="container">
+    <div class="social-bar">
+      <div class="social-bar-profile">
+        <div class="social-bar-avatar">
+          <img src="https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=900&q=80" alt="La Sirene Bleue">
+        </div>
+        <div>
+          <div class="social-bar-handle">
+            @la_sirene_bleue_la
+            <i class="fa-solid fa-circle-check" style="color:#38bdf8;font-size:0.9rem;"></i>
+          </div>
+          <div class="social-bar-stats">
+            📸 <strong>16.4k</strong> abonnés sur Instagram • Établissement vérifié à La Goulette
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:12px;align-items:center;">
+        <a href="https://instagram.com/la_sirene_bleue_la" target="_blank" class="btn-outline" style="padding:10px 20px;font-size:0.88rem;">
+          <i class="fa-brands fa-instagram"></i> Suivre sur les réseaux
+        </a>
+        <a href="#contact" target="_blank" class="btn-wa" style="padding:10px 20px;font-size:0.88rem;">
+          <i class="fa-brands fa-whatsapp"></i> Écrire en direct
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- About Section -->
+  <section id="about" class="section">
+    <div class="container about-grid">
+      <div>
+        <span class="section-tag">Authenticité & Savoir-Faire</span>
+        <h2 class="section-title">L'Excellence du Goût à La Goulette</h2>
+        <p style="color:var(--muted);font-size:1.05rem;margin-bottom:18px;line-height:1.7;">Bienvenue chez <strong>La Sirene Bleue</strong>. Depuis notre ouverture, nous nous engageons à offrir à nos clients une expérience gustative inoubliable, mêlant savoir-faire culinaire ancestral et fraîcheur sans compromis.</p>
+        <p style="color:var(--muted);font-size:1.05rem;margin-bottom:28px;line-height:1.7;">Tous nos plats sont élaborés chaque jour à la minute dans notre cuisine à La Goulette. Que ce soit pour partager un repas sur place ou profiter d'une livraison rapide à domicile, nous mettons notre passion au service de votre appétit.</p>
+        <div class="features-pills">
+          <span class="pill"><i class="fa-solid fa-motorcycle" style="color:var(--gold);"></i> Livraison 30-45min</span>
+          <span class="pill"><i class="fa-solid fa-heart" style="color:var(--accent);"></i> Fait Maison</span>
+          <span class="pill"><i class="fa-solid fa-shield-halved" style="color:#10b981;"></i> Hygiène Irréprochable</span>
+        </div>
+      </div>
+
+      <div class="about-img-box">
+        <img src="https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=900&q=80" alt="La Sirene Bleue" class="about-img">
+        <div class="about-badge-floating">
+          <div style="width:42px;height:42px;border-radius:12px;background:rgba(245,158,11,0.15);display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:1.2rem;">
+            <i class="fa-solid fa-award"></i>
+          </div>
+          <div>
+            <div style="font-size:0.78rem;color:var(--muted);font-weight:700;">PROMESSE QUALITÉ</div>
+            <div style="font-size:1rem;font-weight:800;color:var(--text-heading);">100% Ingrédients Sélectionnés</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Menu Section with Categories & Live Cart -->
+  <section id="menu" class="section" style="background:var(--bg-subtle);">
+    <div class="container">
+      <div style="text-align:center;max-width:700px;margin:0 auto;">
+        <span class="section-tag">La Carte & Nos Créations</span>
+        <h2 class="section-title">Nos Spécialités Recommandées</h2>
+        <p class="section-sub" style="margin:0 auto;">Composez votre commande et envoyez-la directement sur WhatsApp en un clic sans commission d'intermédiaire.</p>
+      </div>
+
+      <!-- Categories Filter Tabs -->
+      <div class="menu-tabs" style="justify-content:center;">
+        <button class="menu-tab active" onclick="filterMenu('Tous', this)">Tous les plats</button>
+        <button class="menu-tab" onclick="filterMenu('Spécialités', this)">Spécialités</button>
+        <button class="menu-tab" onclick="filterMenu('Plats Chauds', this)">Plats Principaux</button>
+        <button class="menu-tab" onclick="filterMenu('Entrées & Sauces', this)">Entrées & Sauces</button>
+        <button class="menu-tab" onclick="filterMenu('Desserts & Boissons', this)">Desserts & Boissons</button>
+      </div>
+
+      <!-- Dishes Grid -->
+      <div class="menu-grid" id="dishesGrid">
+        
+        <div class="dish-card" data-category="Spécialités">
+          <div class="dish-header">
+            <div>
+              <div class="dish-cat-label">Spécialités</div>
+              <h3 class="dish-title">Le Plat Signature La Sirene Bleue</h3>
+            </div>
+            <div class="dish-price-wrap">
+              <span class="dish-price">38</span>
+              <span class="dish-curr">TND</span>
+            </div>
+          </div>
+          <p class="dish-desc">La spécialité secrète de la maison, marinée avec nos épices artisanales et servie avec accompagnement au choix.</p>
+          <div class="dish-footer">
+            <span class="dish-badge">Signature</span>
+            <button class="add-to-cart-btn" onclick="addToCart('Le Plat Signature La Sirene Bleue', 38)">
+              <i class="fa-solid fa-plus"></i> Ajouter au panier
+            </button>
+          </div>
+        </div>
+        
+        <div class="dish-card" data-category="Plats Chauds">
+          <div class="dish-header">
+            <div>
+              <div class="dish-cat-label">Plats Chauds</div>
+              <h3 class="dish-title">Plateau Familial Royal</h3>
+            </div>
+            <div class="dish-price-wrap">
+              <span class="dish-price">68</span>
+              <span class="dish-curr">TND</span>
+            </div>
+          </div>
+          <p class="dish-desc">Assortiment généreux pour 2 à 3 personnes avec sauces fraîches, pains chauds et riz parfumé.</p>
+          <div class="dish-footer">
+            <span class="dish-badge">Bestseller</span>
+            <button class="add-to-cart-btn" onclick="addToCart('Plateau Familial Royal', 68)">
+              <i class="fa-solid fa-plus"></i> Ajouter au panier
+            </button>
+          </div>
+        </div>
+        
+        <div class="dish-card" data-category="Plats Chauds">
+          <div class="dish-header">
+            <div>
+              <div class="dish-cat-label">Plats Chauds</div>
+              <h3 class="dish-title">Menu Gourmand Découverte</h3>
+            </div>
+            <div class="dish-price-wrap">
+              <span class="dish-price">46</span>
+              <span class="dish-curr">TND</span>
+            </div>
+          </div>
+          <p class="dish-desc">Formule complète avec entrée maison au choix, plat principal généreux et boisson fraîche.</p>
+          <div class="dish-footer">
+            <span class="dish-badge">Recommandé</span>
+            <button class="add-to-cart-btn" onclick="addToCart('Menu Gourmand Découverte', 46)">
+              <i class="fa-solid fa-plus"></i> Ajouter au panier
+            </button>
+          </div>
+        </div>
+        
+        <div class="dish-card" data-category="Entrées & Sauces">
+          <div class="dish-header">
+            <div>
+              <div class="dish-cat-label">Entrées & Sauces</div>
+              <h3 class="dish-title">Mezzé & Sauces Maison</h3>
+            </div>
+            <div class="dish-price-wrap">
+              <span class="dish-price">18</span>
+              <span class="dish-curr">TND</span>
+            </div>
+          </div>
+          <p class="dish-desc">Toum à l'ail onctueuse, houmous traditionnel et entrées du jour préparées chaque matin.</p>
+          <div class="dish-footer">
+            <span class="dish-badge">Fait Maison</span>
+            <button class="add-to-cart-btn" onclick="addToCart('Mezzé & Sauces Maison', 18)">
+              <i class="fa-solid fa-plus"></i> Ajouter au panier
+            </button>
+          </div>
+        </div>
+        
+        <div class="dish-card" data-category="Desserts & Boissons">
+          <div class="dish-header">
+            <div>
+              <div class="dish-cat-label">Desserts & Boissons</div>
+              <h3 class="dish-title">Douceur Artisanale & Thé Chaud</h3>
+            </div>
+            <div class="dish-price-wrap">
+              <span class="dish-price">14</span>
+              <span class="dish-curr">TND</span>
+            </div>
+          </div>
+          <p class="dish-desc">La note sucrée idéale pour conclure votre dégustation dans les règles de l'art.</p>
+          <div class="dish-footer">
+            <span class="dish-badge">Dessert</span>
+            <button class="add-to-cart-btn" onclick="addToCart('Douceur Artisanale & Thé Chaud', 14)">
+              <i class="fa-solid fa-plus"></i> Ajouter au panier
+            </button>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+  </section>
+
+  <!-- Social Media & Feed Section -->
+  <section id="social" class="section">
+    <div class="container">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:20px;">
+        <div>
+          <span class="section-tag">Communauté & Réseaux</span>
+          <h2 class="section-title">Vu sur les Réseaux Sociaux</h2>
+          <p class="section-sub">Rejoignez nos 16.4k abonnés et suivez les coulisses et nouveautés en direct.</p>
+        </div>
+        <a href="https://instagram.com/la_sirene_bleue_la" target="_blank" class="btn-outline">
+          <i class="fa-brands fa-instagram"></i> Rejoindre @la_sirene_bleue_la
+        </a>
+      </div>
+
+      <div class="social-grid">
+        
+        <div class="social-card">
+          <div class="social-img" style="background-image: url('https://images.unsplash.com/photo-1535400255456-984241443b29?auto=format&fit=crop&w=600&q=80');">
+            <span class="social-tag">Instagram Reel</span>
+            <div class="social-overlay">
+              <div class="social-stat"><i class="fa-solid fa-heart"></i> 1.4k</div>
+              <div class="social-stat"><i class="fa-solid fa-comment"></i> 62</div>
+            </div>
+          </div>
+          <div class="social-body">
+            <p class="social-caption">Préparation en direct chez La Sirene Bleue 🔥 Nos équipes s'activent pour vous régaler !</p>
+            <a href="https://instagram.com/la_sirene_bleue_la" target="_blank" class="social-link-btn">
+              <i class="fa-brands fa-instagram"></i> Voir le post sur @la_sirene_bleue_la
+            </a>
+          </div>
+        </div>
+        
+        <div class="social-card">
+          <div class="social-img" style="background-image: url('https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?auto=format&fit=crop&w=600&q=80');">
+            <span class="social-tag">Story</span>
+            <div class="social-overlay">
+              <div class="social-stat"><i class="fa-solid fa-heart"></i> 980</div>
+              <div class="social-stat"><i class="fa-solid fa-comment"></i> 38</div>
+            </div>
+          </div>
+          <div class="social-body">
+            <p class="social-caption">La fraîcheur avant tout ! Pain tout juste sorti du four et viandes tendres à souhait. À tester d'urgence à La Goulette 🥖</p>
+            <a href="https://instagram.com/la_sirene_bleue_la" target="_blank" class="social-link-btn">
+              <i class="fa-brands fa-instagram"></i> Voir le post sur @la_sirene_bleue_la
+            </a>
+          </div>
+        </div>
+        
+        <div class="social-card">
+          <div class="social-img" style="background-image: url('https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=600&q=80');">
+            <span class="social-tag">Viral</span>
+            <div class="social-overlay">
+              <div class="social-stat"><i class="fa-solid fa-heart"></i> 2.1k</div>
+              <div class="social-stat"><i class="fa-solid fa-comment"></i> 89</div>
+            </div>
+          </div>
+          <div class="social-body">
+            <p class="social-caption">Commandez directement sur WhatsApp en 1 clic pour éviter l'attente et profiter de vos plats bien chauds 🛵</p>
+            <a href="https://instagram.com/la_sirene_bleue_la" target="_blank" class="social-link-btn">
+              <i class="fa-brands fa-instagram"></i> Voir le post sur @la_sirene_bleue_la
+            </a>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+  </section>
+
+  <!-- Verified Google Reviews Section -->
+  <section id="avis" class="section" style="background:var(--bg-subtle);">
+    <div class="container">
+      <div style="text-align:center;max-width:680px;margin:0 auto;">
+        <span class="section-tag">Témoignages Clients</span>
+        <h2 class="section-title">Ce que nos clients disent de nous</h2>
+        <p class="section-sub" style="margin:0 auto;">Noté <strong>4.9/5</strong> d'après plus de 1,250 avis vérifiés.</p>
+      </div>
+
+      <div class="reviews-grid">
+        
+        <div class="review-card">
+          <div class="review-header">
+            <div class="review-avatar">Y</div>
+            <div class="review-meta">
+              <div class="review-author">Yassine K.</div>
+              <div class="review-verified"><i class="fa-solid fa-circle-check"></i> Avis vérifié Google Maps • Il y a 3 jours</div>
+            </div>
+          </div>
+          <div class="review-stars">
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+          </div>
+          <p class="review-text">"Une adresse incontournable à La Goulette ! Tout est propre, savoureux et la commande WhatsApp est un vrai bonheur de rapidité."</p>
+        </div>
+        
+        <div class="review-card">
+          <div class="review-header">
+            <div class="review-avatar">N</div>
+            <div class="review-meta">
+              <div class="review-author">Nadia & Farid</div>
+              <div class="review-verified"><i class="fa-solid fa-circle-check"></i> Avis vérifié Google Maps • Il y a 1 semaine</div>
+            </div>
+          </div>
+          <div class="review-stars">
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+          </div>
+          <p class="review-text">"Les portions sont très copieuses et les viandes parfaitement assaisonnées. Le meilleur rapport qualité-prix du quartier."</p>
+        </div>
+        
+        <div class="review-card">
+          <div class="review-header">
+            <div class="review-avatar">M</div>
+            <div class="review-meta">
+              <div class="review-author">Marc D.</div>
+              <div class="review-verified"><i class="fa-solid fa-circle-check"></i> Avis vérifié Google Maps • Il y a 2 semaines</div>
+            </div>
+          </div>
+          <div class="review-stars">
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+          </div>
+          <p class="review-text">"Service au top, livraison rapide et nourriture encore fumante. Je recommande sans hésiter !"</p>
+        </div>
+        
+      </div>
+    </div>
+  </section>
+
+  <!-- Practical Info & Access -->
+  <section id="contact" class="section">
+    <div class="container">
+      <span class="section-tag">Informations & Commandes</span>
+      <h2 class="section-title">Venez nous rendre visite ou commandez</h2>
+
+      <div class="contact-grid">
+        <div class="contact-card">
+          <div class="contact-icon"><i class="fa-solid fa-location-dot"></i></div>
+          <h3>Localisation</h3>
+          <p>La Goulette</p>
+          <a href="https://maps.google.com/?q=La Sirene Bleue+La Goulette" target="_blank" style="color:var(--gold);font-weight:700;display:inline-block;margin-top:12px;">
+            Itinéraire Google Maps ➔
+          </a>
+        </div>
+
+        <div class="contact-card">
+          <div class="contact-icon"><i class="fa-solid fa-clock"></i></div>
+          <h3>Horaires de Service</h3>
+          <p>Lundi – Dimanche<br><strong>11h30 – 23h30</strong> (Service Continu & Livraison)</p>
+          <div style="font-size:0.82rem;color:#10b981;font-weight:700;margin-top:10px;">🟢 Cuisine Ouverte</div>
+        </div>
+
+        <div class="contact-card">
+          <div class="contact-icon"><i class="fa-brands fa-whatsapp"></i></div>
+          <h3>Contact WhatsApp Direct</h3>
+          <p>Téléphone : +216 71 738 900<br>WhatsApp : Réponse garantie sous 2 minutes</p>
+          <a href="#contact?text=Bonjour%20La Sirene Bleue%2C%20je%20souhaite%20passer%20une%20commande" target="_blank" class="btn-wa" style="margin-top:14px;padding:8px 18px;font-size:0.85rem;">
+            <i class="fa-brands fa-whatsapp"></i> Discuter en direct
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Floating Live Cart Bar -->
+  <div class="floating-cart-bar" id="floatingCart">
+    <div class="cart-info">
+      <span class="cart-count" id="cartCount">0</span>
+      <span>Panier : <strong id="cartTotal">0 TND</strong></span>
+    </div>
+    <button onclick="checkoutWhatsApp()" class="btn-wa" style="padding:8px 18px;font-size:0.86rem;">
+      <i class="fa-brands fa-whatsapp"></i> Valider sur WhatsApp
+    </button>
+  </div>
+
+  <!-- Floating Direct WhatsApp Button -->
+  <a href="#contact?text=Bonjour%20La Sirene Bleue%2C%20je%20souhaite%20des%20renseignements" target="_blank" class="whatsapp-direct-btn" title="Contacter sur WhatsApp">
+    <i class="fa-brands fa-whatsapp"></i>
+  </a>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <div class="brand">
+          <div class="brand-icon"><i class="fa-solid fa-utensils"></i></div>
+          <div>La Sirene Bleue</div>
+        </div>
+
+        <div style="color:var(--muted);font-size:0.88rem;">
+          Instagram : <a href="https://instagram.com/la_sirene_bleue_la" target="_blank" style="color:var(--text-heading);font-weight:700;">@la_sirene_bleue_la</a>
+        </div>
+      </div>
+
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:15px;margin-top:25px;font-size:0.82rem;color:var(--muted);">
+        <div>© 2026 La Sirene Bleue • Tous droits réservés.</div>
+        <div>Modèle professionnel généré par <strong style="color:var(--text-heading);">WebLaunch Agency</strong></div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Interactive Cart & Dynamic Scripts -->
+  <script>
+    // Shopping Cart State
+    let cart = [];
+    const waUrl = "#contact";
+    const restaurantName = "La Sirene Bleue";
+    const currency = "TND";
+
+    function addToCart(dishName, price) {
+      const existing = cart.find(item => item.name === dishName);
+      if (existing) {
+        existing.qty += 1;
+      } else {
+        cart.push({ name: dishName, price: Number(price), qty: 1 });
+      }
+      updateCartUI();
+    }
+
+    function updateCartUI() {
+      const totalItems = cart.reduce((acc, item) => acc + item.qty, 0);
+      const totalPrice = cart.reduce((acc, item) => acc + (item.price * item.qty), 0);
+      
+      const cartBar = document.getElementById('floatingCart');
+      if (totalItems > 0) {
+        cartBar.style.display = 'flex';
+        document.getElementById('cartCount').textContent = totalItems;
+        document.getElementById('cartTotal').textContent = totalPrice + ' ' + currency;
+      } else {
+        cartBar.style.display = 'none';
+      }
+    }
+
+    function checkoutWhatsApp() {
+      if (cart.length === 0) return;
+      let orderText = `Bonjour ${restaurantName} ! Je souhaite commander en livraison :%0A%0A`;
+      let total = 0;
+      cart.forEach(item => {
+        const sub = item.price * item.qty;
+        total += sub;
+        orderText += `• ${item.qty}x ${item.name} (${sub} ${currency})%0A`;
+      });
+      orderText += `%0ATotal : ${total} ${currency}%0A%0AMerci de me confirmer le délai estimé !`;
+      window.open(`${waUrl}?text=${orderText}`, '_blank');
+    }
+
+    // Filter Menu by Category
+    function filterMenu(category, btnElement) {
+      document.querySelectorAll('.menu-tab').forEach(btn => btn.classList.remove('active'));
+      btnElement.classList.add('active');
+
+      const cards = document.querySelectorAll('.dish-card');
+      cards.forEach(card => {
+        const cardCat = card.getAttribute('data-category');
+        if (category === 'Tous' || cardCat.includes(category)) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    // Check Open / Closed Status dynamically
+    function checkOpeningStatus() {
+      const now = new Date();
+      const hour = now.getHours();
+      const badge = document.getElementById('liveStatusBadge');
+      if (hour >= 11 && hour < 24) {
+        badge.innerHTML = '<span class="live-dot"></span><span>Ouvert actuellement</span>';
+      } else {
+        badge.innerHTML = '<span style="width:7px;height:7px;border-radius:50%;background:#f59e0b;display:inline-block;"></span><span style="color:#f59e0b;">Ouvre à 11h30</span>';
+      }
+    }
+    checkOpeningStatus();
+  </script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+{
+  "name": "agentx",
+  "version": "1.0.0",
+  "description": "Autonomous AI Agent powered by Claude with Web Search, Tool Execution, and Dark Theme UI",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "cli": "node cli.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2"
+  },
+  "keywords": [
+    "agent",
+    "claude",
+    "ai",
+    "web-search",
+    "dark-theme"
+  ],
+  "author": "",
+  "license": "ISC"
+}

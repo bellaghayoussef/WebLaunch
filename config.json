@@ -1,0 +1,9 @@
+{
+  "env": {
+    "ANTHROPIC_BASE_URL": "https://api.justwoker.icu",
+    "ANTHROPIC_AUTH_TOKEN": "sk-4oqk40wTjWRc8dIN5s1BjumklytmzBrKOHgND4uljYjoU7me",
+    "ANTHROPIC_MODEL": "claude-opus-4-8"
+  },
+  "fallback_model": "claude-opus-4-8",
+  "theme": "dark"
+}

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}LeadHunter — Google Maps Business Lead Finder{% endblock %}</title>
+  
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <!-- Ambient background glow -->
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+  <div class="bg-grid"></div>
+
+  <div class="app-layout">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <div class="brand-icon">
+          <i class="fa-solid fa-map-location-dot"></i>
+        </div>
+        <div>
+          <h2 class="brand-title">Lead<span class="accent-text">Hunter</span></h2>
+          <span class="brand-subtitle"><i class="fa-solid fa-bolt"></i> PROSPECTION AUTOMATISÉE</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <a href="{{ url_for('index') }}" class="nav-item {% if request.endpoint == 'index' %}active{% endif %}">
+          <i class="fa-solid fa-magnifying-glass-location"></i>
+          <span>Recherche & Prospection</span>
+        </a>
+        <a href="{{ url_for('leads_view') }}" class="nav-item {% if request.endpoint == 'leads_view' %}active{% endif %}">
+          <i class="fa-solid fa-address-book"></i>
+          <span>Gestion des Leads</span>
+        </a>
+        <a href="{{ url_for('settings_view') }}" class="nav-item {% if request.endpoint == 'settings_view' %}active{% endif %}">
+          <i class="fa-solid fa-sliders"></i>
+          <span>Paramètres & SMTP</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="agency-badge">
+          <div class="agency-title">{{ settings.agency_name }}</div>
+          <div class="agency-contact"><i class="fa-brands fa-whatsapp"></i> {{ settings.agency_phone }}</div>
+        </div>
+        <a href="/api/export-csv" class="export-btn" title="Télécharger la base en CSV">
+          <i class="fa-solid fa-file-csv"></i> Exporter CSV
+        </a>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+
+  <!-- Notification Toast Container -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

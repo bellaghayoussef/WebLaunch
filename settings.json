@@ -1,0 +1,17 @@
+{
+  "port": 5055,
+  "theme": "dark",
+  "default_language": "en",
+  "agency_name": "WebLaunch Agency",
+  "agency_phone": "+216 56 818 880",
+  "agency_email": "bellaghayoussef20@gmail.com",
+  "smtp": {
+    "host": "smtp.gmail.com",
+    "port": 587,
+    "user": "bellaghayoussef20@gmail.com",
+    "password": "bbtx qzwm ncws bnya",
+    "from_email": "bellaghayoussef20@gmail.com",
+    "use_tls": true
+  },
+  "google_places_api_key": ""
+}

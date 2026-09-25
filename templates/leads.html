@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+
+{% block title %}LeadHunter — Gestion des Prospects{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+  <header class="topbar">
+    <div>
+      <h1 class="page-title">Carnet de Prospects (CRM)</h1>
+      <p class="page-subtitle">Suivez l'état de vos contacts, relances et clients signés.</p>
+    </div>
+    <div class="topbar-actions">
+      <a href="/api/export-csv" class="btn btn-secondary">
+        <i class="fa-solid fa-file-csv"></i> Télécharger CSV
+      </a>
+      <a href="{{ url_for('index') }}" class="btn btn-primary">
+        <i class="fa-solid fa-plus"></i> Nouvelle Recherche
+      </a>
+    </div>
+  </header>
+
+  <div class="card table-card">
+    <div class="card-header table-header">
+      <div class="card-title">
+        <i class="fa-solid fa-address-book"></i>
+        <span>Prospects Enregistrés</span>
+        <span class="badge-count">{{ leads|length }}</span>
+      </div>
+      <div class="table-filters">
+        <input type="text" id="table-search" class="table-search-input" placeholder="Rechercher par nom, ville, statut...">
+      </div>
+    </div>
+
+    <div class="table-responsive">
+      <table class="leads-table" id="leads-table">
+        <thead>
+          <tr>
+            <th>Établissement</th>
+            <th>Ville & Pays</th>
+            <th>Présence Web</th>
+            <th>WhatsApp / Tél</th>
+            <th>Email</th>
+            <th>Maquette</th>
+            <th>Statut</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="leads-body">
+          {% for lead in leads %}
+          <tr id="row-{{ lead.id }}" data-id="{{ lead.id }}" data-name="{{ lead.name }}">
+            <td>
+              <strong>{{ lead.name }}</strong>
+              <div class="badge-category">{{ lead.category }}</div>
+            </td>
+            <td>
+              <span>{{ lead.city }}</span>
+              <small class="text-muted d-block">{{ lead.country }}</small>
+            </td>
+            <td>
+              {% if not lead.has_website %}
+                <span class="status-pill status-danger">Sans Site</span>
+              {% else %}
+                <span class="status-pill status-success">A un Site</span>
+              {% endif %}
+            </td>
+            <td>
+              {% if lead.formatted_phone %}
+                <a href="{{ lead.wa_link }}" target="_blank" class="phone-link">
+                  <i class="fa-brands fa-whatsapp"></i> {{ lead.formatted_phone }}
+                </a>
+              {% else %}
+                <span class="text-muted">—</span>
+              {% endif %}
+            </td>
+            <td>
+              <span class="text-sm">{{ lead.email or '—' }}</span>
+            </td>
+            <td>
+              {% if lead.mockup_path %}
+                <div style="display:flex;gap:6px;align-items:center;">
+                  <a href="{{ lead.mockup_path }}" target="_blank" class="btn-mockup-view" title="Voir l'image">
+                    <i class="fa-solid fa-eye"></i> Voir
+                  </a>
+                  <button class="btn-mockup-regenerate" onclick="generateMockupForLead('{{ lead.id }}')" title="Régénérer une nouvelle version IA">
+                    <i class="fa-solid fa-arrows-rotate"></i> Régénérer
+                  </button>
+                </div>
+              {% else %}
+                <button class="btn-mockup-generate" onclick="generateMockupForLead('{{ lead.id }}')">
+                  <i class="fa-solid fa-magic"></i> Créer
+                </button>
+              {% endif %}
+            </td>
+            <td>
+              <select class="status-select" onchange="updateLeadStatus('{{ lead.id }}', this.value)">
+                <option value="Not Contacted" {% if lead.outreach_status == 'Not Contacted' %}selected{% endif %}>Non Contacté</option>
+                <option value="Contacted (WA)" {% if lead.outreach_status == 'Contacted (WA)' %}selected{% endif %}>WhatsApp Envoyé</option>
+                <option value="Contacted (Email)" {% if lead.outreach_status == 'Contacted (Email)' %}selected{% endif %}>Email Envoyé</option>
+                <option value="Interested" {% if lead.outreach_status == 'Interested' %}selected{% endif %}>Intéressé ⭐</option>
+                <option value="Client Won" {% if lead.outreach_status == 'Client Won' %}selected{% endif %}>Client Signé 🎉</option>
+              </select>
+            </td>
+            <td>
+              <button class="action-btn-danger" onclick="deleteLead('{{ lead.id }}')">
+                <i class="fa-solid fa-trash"></i>
+              </button>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

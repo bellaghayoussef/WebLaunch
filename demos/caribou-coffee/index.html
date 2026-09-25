@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Caribou Coffee | Contemporary Dining & Culinary Excellence</title>
+<meta name="description" content="Caribou Coffee à Doha — Commandes en direct sur WhatsApp, carte complète et livraison rapide.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+  :root {
+    --bg: #0b0f19;
+    --card: #131b2e;
+    --accent: #00f0ff;
+    --accent2: #0284c7;
+    --gold: #8b5cf6;
+    --text: #f8fafc;
+    --muted: #94a3b8;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  a { color: inherit; text-decoration: none; }
+  .container { max-width: 1140px; margin: 0 auto; padding: 0 24px; }
+  
+  .demo-banner {
+    background: linear-gradient(90deg, var(--gold), var(--accent));
+    color: #0b0f19;
+    text-align: center;
+    padding: 10px 16px;
+    font-weight: 700;
+    font-size: 0.88rem;
+    letter-spacing: 0.3px;
+  }
+
+  /* HEADER */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(11, 15, 25, 0.88);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 72px;
+  }
+  .brand {
+    font-size: 1.45rem;
+    font-weight: 800;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .brand span { color: var(--gold); }
+  .navlinks { display: flex; gap: 28px; }
+  .navlinks a {
+    color: var(--muted);
+    font-weight: 600;
+    font-size: 0.92rem;
+    transition: 0.2s;
+  }
+  .navlinks a:hover { color: var(--gold); }
+  
+  .btn-wa {
+    background: #25d366;
+    color: #fff;
+    padding: 10px 22px;
+    border-radius: 30px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: 0.2s;
+    box-shadow: 0 4px 16px rgba(37, 211, 102, 0.35);
+  }
+  .btn-wa:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(37, 211, 102, 0.5);
+  }
+
+  /* HERO */
+  .hero {
+    min-height: 85vh;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    padding: 80px 0 100px;
+    background: linear-gradient(rgba(11, 15, 25, 0.74), rgba(11, 15, 25, 0.94)),
+                url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
+    position: relative;
+  }
+  .rating-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    padding: 6px 18px;
+    border-radius: 30px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--gold);
+    margin-bottom: 22px;
+    backdrop-filter: blur(8px);
+  }
+  .hero h1 {
+    font-size: 3.6rem;
+    font-weight: 800;
+    line-height: 1.12;
+    margin-bottom: 20px;
+    letter-spacing: -0.5px;
+  }
+  .hero h1 em {
+    color: var(--gold);
+    font-style: normal;
+  }
+  .hero p {
+    font-size: 1.25rem;
+    color: var(--muted);
+    max-width: 680px;
+    margin: 0 auto 34px;
+    line-height: 1.5;
+  }
+  .hero-cta {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: #fff;
+    padding: 13px 28px;
+    border-radius: 30px;
+    font-weight: 700;
+    font-size: 1rem;
+    transition: 0.2s;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  }
+  .btn-primary:hover {
+    background: var(--accent2);
+    transform: translateY(-2px);
+  }
+  .btn-outline {
+    border: 2px solid var(--gold);
+    color: var(--gold);
+    padding: 11px 26px;
+    border-radius: 30px;
+    font-weight: 700;
+    font-size: 1rem;
+    transition: 0.2s;
+  }
+  .btn-outline:hover {
+    background: var(--gold);
+    color: #0b0f19;
+  }
+
+  /* ABOUT SECTION */
+  .section { padding: 90px 0; }
+  .tag {
+    color: var(--gold);
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    display: block;
+    margin-bottom: 8px;
+  }
+  .section-title {
+    font-size: 2.4rem;
+    font-weight: 800;
+    margin-bottom: 24px;
+    letter-spacing: -0.5px;
+  }
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 50px;
+    align-items: center;
+  }
+  .about-img {
+    width: 100%;
+    height: 380px;
+    object-fit: cover;
+    border-radius: 20px;
+    box-shadow: 0 16px 40px rgba(0,0,0,0.6);
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  .about-text p {
+    color: var(--muted);
+    font-size: 1.05rem;
+    margin-bottom: 18px;
+  }
+  .features-pills {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 24px;
+  }
+  .pill {
+    background: var(--card);
+    border: 1px solid rgba(255,255,255,0.08);
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--gold);
+  }
+
+  /* MENU SECTION */
+  .menu-section { background: rgba(0,0,0,0.25); }
+  .menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 24px;
+    margin-top: 40px;
+  }
+  .dish-card {
+    background: var(--card);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 16px;
+    padding: 24px;
+    transition: 0.25s;
+    display: flex;
+    flex-direction: column;
+  }
+  .dish-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--gold);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.4);
+  }
+  .dish-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 10px;
+  }
+  .dish-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+  }
+  .dish-price {
+    color: var(--gold);
+    font-weight: 800;
+    font-size: 1.25rem;
+  }
+  .dish-desc {
+    color: var(--muted);
+    font-size: 0.92rem;
+    flex: 1;
+    margin-bottom: 18px;
+  }
+  .dish-order-btn {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: var(--text);
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: 0.2s;
+  }
+  .dish-card:hover .dish-order-btn {
+    background: #25d366;
+    color: #fff;
+    border-color: #25d366;
+  }
+
+  /* INFO / CONTACT */
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    margin-top: 30px;
+  }
+  .info-card {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 30px;
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+  .info-icon {
+    font-size: 1.8rem;
+    color: var(--gold);
+    margin-bottom: 14px;
+  }
+  .info-card h3 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+  }
+  .info-card p {
+    color: var(--muted);
+    font-size: 0.95rem;
+  }
+
+  /* FOOTER */
+  footer {
+    background: rgba(5, 8, 14, 0.95);
+    padding: 40px 0;
+    text-align: center;
+    color: var(--muted);
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+  .whatsapp-float {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: #25d366;
+    color: #fff;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    box-shadow: 0 8px 25px rgba(37, 211, 102, 0.5);
+    z-index: 100;
+    transition: 0.2s;
+  }
+  .whatsapp-float:hover { transform: scale(1.08); }
+
+  @media(max-width: 768px) {
+    .navlinks { display: none; }
+    .hero h1 { font-size: 2.4rem; }
+    .about-grid { grid-template-columns: 1fr; }
+    .about-img { height: 260px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="demo-banner">✨ MODÈLE DE DÉMONSTRATION — Conçu spécialement pour Caribou Coffee par WebLaunch Agency</div>
+
+<header>
+  <div class="container">
+    <nav>
+      <div class="brand">
+        <i class="fa-solid fa-utensils" style="color:var(--gold)"></i>
+        <div>Caribou Coffee</div>
+      </div>
+      <div class="navlinks">
+        <a href="#about">Notre Histoire</a>
+        <a href="#menu">La Carte</a>
+        <a href="#contact">Contact & Accès</a>
+      </div>
+      <a href="#contact" target="_blank" class="btn-wa">
+        <i class="fa-brands fa-whatsapp"></i> Commander en direct
+      </a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="container">
+    <div class="rating-badge">
+      <i class="fa-solid fa-star"></i> 4.9/5 sur Google Maps • Établissement vérifié à Doha
+    </div>
+    <h1>Caribou Coffee<br><em>Contemporary Dining & Culinary Excellence</em></h1>
+    <p>A blend of rich culinary heritage and modern gastronomy in an intimate setting.</p>
+    <div class="hero-cta">
+      <a href="#contact" target="_blank" class="btn-primary">
+        <i class="fa-brands fa-whatsapp"></i> Commander sur WhatsApp
+      </a>
+      <a href="#menu" class="btn-outline">
+        <i class="fa-solid fa-book-open"></i> Découvrir le Menu
+      </a>
+    </div>
+  </div>
+</section>
+
+<section id="about" class="section">
+  <div class="container about-grid">
+    <div class="about-text">
+      <span class="tag">Authenticité & Passion</span>
+      <h2 class="section-title">Une expérience gustative unique à Doha</h2>
+      <p>Bienvenue chez <strong>Caribou Coffee</strong>. Notre mission est de vous faire voyager à travers des plats savoureux, préparés avec des ingrédients rigoureusement sélectionnés et une passion constante du goût.</p>
+      <p>Que ce soit pour un déjeuner rapide, un repas en famille ou une livraison à domicile, nous vous garantissons fraîcheur, générosité et authenticité dans chaque commande.</p>
+      <div class="features-pills">
+        <span class="pill"><i class="fa-solid fa-fire"></i> Fait Maison</span>
+        <span class="pill"><i class="fa-solid fa-motorcycle"></i> Livraison Rapide</span>
+        <span class="pill"><i class="fa-solid fa-shield-halved"></i> 100% Fraîcheur</span>
+      </div>
+    </div>
+    <img src="https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?auto=format&fit=crop&w=900&q=80" alt="Caribou Coffee" class="about-img">
+  </div>
+</section>
+
+<section id="menu" class="section menu-section">
+  <div class="container">
+    <div style="text-align:center; max-width:600px; margin:0 auto">
+      <span class="tag">Nos Spécialités</span>
+      <h2 class="section-title">Plats Recommandés du Chef</h2>
+      <p style="color:var(--muted)">Commandez directement sur WhatsApp sans intermédiaire ni commission.</p>
+    </div>
+
+    <div class="menu-grid">
+      <div class="dish-card">
+        <div class="dish-header">
+          <h3 class="dish-title">Le Plat Signature Caribou Coffee</h3>
+          <span class="dish-price">38 QAR</span>
+        </div>
+        <p class="dish-desc">La spécialité incontournable de notre maison, marinée avec nos épices secrètes et servie avec accompagnement au choix.</p>
+        <a href="#contact" target="_blank" class="dish-order-btn">
+          <span>Commander ce plat</span>
+          <i class="fa-brands fa-whatsapp"></i>
+        </a>
+      </div>
+
+      <div class="dish-card">
+        <div class="dish-header">
+          <h3 class="dish-title">Menu Dégustation Gourmand</h3>
+          <span class="dish-price">48 QAR</span>
+        </div>
+        <p class="dish-desc">Formule complète incluant entrée artisanale, plat de viande ou spécialité, sauces maison et boisson fraîche.</p>
+        <a href="#contact" target="_blank" class="dish-order-btn">
+          <span>Commander ce plat</span>
+          <i class="fa-brands fa-whatsapp"></i>
+        </a>
+      </div>
+
+      <div class="dish-card">
+        <div class="dish-header">
+          <h3 class="dish-title">Plateau Partage Familial</h3>
+          <span class="dish-price">85 QAR</span>
+        </div>
+        <p class="dish-desc">Idéal pour 2 à 3 personnes. Assortiment généreux de nos meilleures pièces, grillades ou plats mijotés avec pain chaud.</p>
+        <a href="#contact" target="_blank" class="dish-order-btn">
+          <span>Commander ce plat</span>
+          <i class="fa-brands fa-whatsapp"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="section">
+  <div class="container">
+    <span class="tag">Infos Pratiques</span>
+    <h2 class="section-title">Venez nous rendre visite</h2>
+    <div class="info-grid">
+      <div class="info-card">
+        <div class="info-icon"><i class="fa-solid fa-location-dot"></i></div>
+        <h3>Adresse</h3>
+        <p>Doha</p>
+        <a href="https://www.google.com/maps/search/?api=1&query=25.2678803,51.4820047" target="_blank" style="color:var(--gold); font-size:0.85rem; font-weight:700; margin-top:10px; display:inline-block">
+          Voir sur Google Maps ➔
+        </a>
+      </div>
+
+      <div class="info-card">
+        <div class="info-icon"><i class="fa-solid fa-clock"></i></div>
+        <h3>Horaires d'ouverture</h3>
+        <p>Lundi – Dimanche : 11h30 – 23h30<br>Service continu & livraison</p>
+      </div>
+
+      <div class="info-card">
+        <div class="info-icon"><i class="fa-brands fa-whatsapp"></i></div>
+        <h3>Commandes & Contact</h3>
+        <p>Téléphone : <br>WhatsApp : Réponse immédiate</p>
+        <a href="#contact" target="_blank" class="btn-wa" style="margin-top:14px; padding:8px 18px">
+          <i class="fa-brands fa-whatsapp"></i> Envoyer un message
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <p>© 2026 Caribou Coffee • Tous droits réservés.</p>
+    <p style="font-size:0.8rem; margin-top:8px">Site vitrine de démonstration créé par <strong>WebLaunch Agency</strong></p>
+  </div>
+</footer>
+
+<a href="#contact" target="_blank" class="whatsapp-float" title="Commander sur WhatsApp">
+  <i class="fa-brands fa-whatsapp"></i>
+</a>
+
+</body>
+</html>

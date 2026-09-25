@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AgentX — Autonomous Claude AI Agent</title>
+  <meta name="description" content="AgentX: An autonomous AI agent powered by Claude with real-time web search, reasoning tools, and sleek dark aesthetic.">
+  
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome for modern icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Marked for markdown parsing & Prism for syntax highlighting -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Ambient background glow effects -->
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+  <div class="bg-grid"></div>
+
+  <div class="app-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="brand">
+          <div class="brand-icon">
+            <i class="fa-solid fa-brain"></i>
+          </div>
+          <div class="brand-text">
+            <span class="brand-name">Agent<span class="accent-text">X</span></span>
+            <span class="brand-badge"><i class="fa-solid fa-circle pulse-dot"></i> CLAUDE ACTIVE</span>
+          </div>
+        </div>
+        <button class="icon-btn" id="new-chat-btn" title="Nouvelle Session" aria-label="Nouvelle Session">
+          <i class="fa-solid fa-plus"></i>
+        </button>
+      </div>
+
+      <!-- Quick Action / Capability Status -->
+      <div class="sidebar-section">
+        <h4 class="section-title"><i class="fa-solid fa-microchip"></i> AGENT CAPABILITIES</h4>
+        <div class="capabilities-list">
+          <div class="capability-item active">
+            <i class="fa-solid fa-globe cap-icon"></i>
+            <div>
+              <div class="cap-name">Web Search & Fetch</div>
+              <div class="cap-desc">Live internet research & citations</div>
+            </div>
+            <span class="cap-status">Ready</span>
+          </div>
+          <div class="capability-item active">
+            <i class="fa-solid fa-code cap-icon"></i>
+            <div>
+              <div class="cap-name">Code Sandbox</div>
+              <div class="cap-desc">Math & JS execution</div>
+            </div>
+            <span class="cap-status">Ready</span>
+          </div>
+          <div class="capability-item active">
+            <i class="fa-solid fa-folder-tree cap-icon"></i>
+            <div>
+              <div class="cap-name">Workspace Explorer</div>
+              <div class="cap-desc">File reader & writer</div>
+            </div>
+            <span class="cap-status">Ready</span>
+          </div>
+          <div class="capability-item active">
+            <i class="fa-solid fa-clock cap-icon"></i>
+            <div>
+              <div class="cap-name">Temporal Engine</div>
+              <div class="cap-desc">Live time & date sync</div>
+            </div>
+            <span class="cap-status">Ready</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Workspace files inspector preview -->
+      <div class="sidebar-section workspace-section">
+        <div class="section-header-row">
+          <h4 class="section-title"><i class="fa-solid fa-folder"></i> WORKSPACE FILES</h4>
+          <button class="icon-btn-tiny" id="refresh-files-btn" title="Refresh files"><i class="fa-solid fa-rotate"></i></button>
+        </div>
+        <div class="file-tree" id="file-tree-container">
+          <div class="file-item-loading">Loading workspace...</div>
+        </div>
+      </div>
+
+      <!-- System Status & Config info -->
+      <div class="sidebar-footer">
+        <div class="system-stats">
+          <div class="stat-row">
+            <span class="stat-label">Model:</span>
+            <span class="stat-value" id="current-model-tag">claude-opus-4-8</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">Endpoint:</span>
+            <span class="stat-value" id="current-endpoint-tag">justwoker.icu</span>
+          </div>
+        </div>
+        <div class="footer-actions">
+          <button class="footer-btn" id="open-settings-btn">
+            <i class="fa-solid fa-sliders"></i> Paramètres
+          </button>
+          <button class="footer-btn" id="theme-toggle-btn" title="Toggle Theme">
+            <i class="fa-solid fa-moon"></i>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Chat Workspace -->
+    <main class="main-content">
+      <!-- Top Bar -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="icon-btn mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle menu">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+          <div class="session-info">
+            <h2 class="session-title">Autonomous Agent Environment</h2>
+            <p class="session-subtitle">ReAct Architecture: Multi-step Reasoning & Action</p>
+          </div>
+        </div>
+
+        <div class="topbar-right">
+          <div class="model-badge">
+            <span class="status-indicator"></span>
+            <span id="active-model-name">claude-opus-4-8</span>
+          </div>
+          <button class="action-btn" id="clear-chat-btn" title="Clear chat history">
+            <i class="fa-solid fa-trash-can"></i> Effacer
+          </button>
+        </div>
+      </header>
+
+      <!-- Chat Messages Scroll Container -->
+      <div class="chat-container" id="chat-container">
+        <!-- Hero / Welcome message when empty -->
+        <div class="welcome-hero" id="welcome-hero">
+          <div class="hero-avatar">
+            <i class="fa-solid fa-robot"></i>
+          </div>
+          <h1 class="hero-title">Bonjour! Je suis <span class="accent-text">AgentX</span></h1>
+          <p class="hero-desc">
+            Votre agent d'intelligence artificielle autonome propulsé par <strong>Claude</strong>.
+            Donnez-moi un objectif : je peux <strong>rechercher sur le web en temps réel</strong>, 
+            <strong>exécuter des calculs</strong>, <strong>analyser vos fichiers</strong> ou <strong>rédiger du code</strong>.
+          </p>
+
+          <div class="quick-prompts-grid">
+            <button class="quick-prompt-card" data-prompt="Cherche sur le web les dernières nouvelles de SpaceX et résume les missions récentes.">
+              <div class="card-icon"><i class="fa-solid fa-rocket"></i></div>
+              <div class="card-content">
+                <strong>Recherche Web SpaceX</strong>
+                <p>Missions Starship et derniers lancements spatiaux</p>
+              </div>
+            </button>
+
+            <button class="quick-prompt-card" data-prompt="Cherche sur le web qui sont les lauréats du Prix Nobel 2024 et explique leurs découvertes.">
+              <div class="card-icon"><i class="fa-solid fa-award"></i></div>
+              <div class="card-content">
+                <strong>Recherche Web Nobel</strong>
+                <p>Découvertes récentes et analyse détaillée</p>
+              </div>
+            </button>
+
+            <button class="quick-prompt-card" data-prompt="Explore les fichiers du workspace et donne-moi la liste de la structure du projet avec une explication.">
+              <div class="card-icon"><i class="fa-solid fa-folder-open"></i></div>
+              <div class="card-content">
+                <strong>Explorer le Workspace</strong>
+                <p>Inspecter l'arborescence et les fichiers locaux</p>
+              </div>
+            </button>
+
+            <button class="quick-prompt-card" data-prompt="Exécute un calcul avec JavaScript pour simuler un investissement avec intérêts composés de 10000€ à 7% par an pendant 15 ans.">
+              <div class="card-icon"><i class="fa-solid fa-calculator"></i></div>
+              <div class="card-content">
+                <strong>Calcul Sandbox</strong>
+                <p>Simulation financière et calcul précis</p>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <!-- Chat Stream Target -->
+        <div class="messages-list" id="messages-list"></div>
+      </div>
+
+      <!-- Agent Status Banner (displays active tool execution in real-time) -->
+      <div class="agent-activity-banner" id="agent-activity-banner" style="display: none;">
+        <div class="activity-spinner">
+          <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </div>
+        <div class="activity-text" id="activity-text">
+          AgentX réfléchit...
+        </div>
+      </div>
+
+      <!-- Bottom Chat Input Bar -->
+      <footer class="input-section">
+        <form class="input-form" id="chat-form">
+          <div class="input-box-wrapper">
+            <textarea
+              id="prompt-input"
+              class="chat-textarea"
+              placeholder="Donnez une instruction ou demandez une recherche web (ex: 'cherche sur le web...')..."
+              rows="1"
+              autofocus
+            ></textarea>
+            <div class="input-actions">
+              <button type="button" class="tool-shortcut-btn" id="shortcut-search" title="Préfixer par recherche web">
+                <i class="fa-solid fa-magnifying-glass"></i> Recherche
+              </button>
+              <button type="submit" class="send-btn" id="send-btn" title="Envoyer (Entrée)">
+                <i class="fa-solid fa-arrow-up"></i>
+              </button>
+            </div>
+          </div>
+          <div class="input-footer-note">
+            <span>Appuyez sur <kbd>Entrée</kbd> pour envoyer, <kbd>Shift + Entrée</kbd> pour saut de ligne.</span>
+            <span class="live-status"><i class="fa-solid fa-bolt"></i> ReAct Agent v1.0</span>
+          </div>
+        </form>
+      </footer>
+    </main>
+  </div>
+
+  <!-- Settings Modal -->
+  <div class="modal-overlay" id="settings-modal" style="display: none;">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-sliders"></i> Configuration AgentX</h3>
+        <button class="icon-btn-tiny" id="close-settings-btn"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <form id="settings-form" class="modal-body">
+        <div class="form-group">
+          <label for="cfg-baseurl">API Base URL</label>
+          <input type="text" id="cfg-baseurl" class="form-input" placeholder="https://api.justwoker.icu" required>
+        </div>
+        <div class="form-group">
+          <label for="cfg-token">API Auth Token</label>
+          <div class="input-with-toggle">
+            <input type="password" id="cfg-token" class="form-input" placeholder="sk-..." required>
+            <button type="button" class="toggle-pwd-btn" id="toggle-token-vis"><i class="fa-solid fa-eye"></i></button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="cfg-model">Modèle Claude Actif</label>
+          <select id="cfg-model" class="form-select">
+            <option value="claude-opus-4-8">claude-opus-4-8 (Recommandé / Actif)</option>
+            <option value="claude-opus-5">claude-opus-5</option>
+          </select>
+          <small class="form-hint">Le modèle par défaut configuré pour votre jeton d'accès est <code>claude-opus-4-8</code>.</small>
+        </div>
+        <div class="form-group">
+          <label for="cfg-theme">Thème UI</label>
+          <select id="cfg-theme" class="form-select">
+            <option value="dark">Dark Theme (Défaut)</option>
+            <option value="light">Light Theme</option>
+          </select>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" id="cancel-settings-btn">Annuler</button>
+          <button type="submit" class="btn-primary" id="save-settings-btn">Enregistrer les paramètres</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

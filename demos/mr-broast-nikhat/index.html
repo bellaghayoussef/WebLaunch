@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mr. Broast Nikhat | Broast, Biryani & Indian Favourites in Doha</title>
+<meta name="description" content="Mr. Broast Nikhat - crispy broast, rich biryani and Indian favourites in Old Airport, Doha. Order for delivery.">
+<style>
+  :root{--bg:#12100a;--card:#1d1a10;--accent:#f6b210;--accent2:#d99a08;--text:#f7f3e8;--muted:#c2b89d}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+  a{color:inherit;text-decoration:none}
+  .container{max-width:1100px;margin:0 auto;padding:0 20px}
+  header{position:sticky;top:0;z-index:50;background:rgba(18,16,10,.92);backdrop-filter:blur(8px);border-bottom:1px solid #34301f}
+  nav{display:flex;align-items:center;justify-content:space-between;height:70px}
+  .logo{font-size:1.35rem;font-weight:800;color:var(--accent)}
+  .logo span{color:var(--text)}
+  .navlinks{display:flex;gap:26px}
+  .navlinks a{color:var(--muted);font-weight:500;transition:.2s}
+  .navlinks a:hover{color:var(--accent)}
+  .btn{background:var(--accent);color:#12100a;padding:11px 22px;border-radius:8px;font-weight:700;transition:.2s;display:inline-block}
+  .btn:hover{background:var(--accent2);transform:translateY(-2px)}
+  .hero{min-height:88vh;display:flex;align-items:center;text-align:center;background:linear-gradient(rgba(18,16,10,.72),rgba(18,16,10,.94)),url('https://images.unsplash.com/photo-1626082927389-6cd097cee6a6?auto=format&fit=crop&w=1600&q=80') center/cover}
+  .hero h1{font-size:3.5rem;line-height:1.05;margin-bottom:18px}
+  .hero h1 em{color:var(--accent);font-style:normal}
+  .hero p{font-size:1.2rem;color:var(--muted);max-width:600px;margin:0 auto 32px}
+  .badge{display:inline-block;background:var(--accent);color:#12100a;padding:6px 16px;border-radius:20px;font-weight:700;font-size:.85rem;margin-bottom:20px}
+  .cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+  .btn-ghost{border:2px solid var(--accent);color:var(--accent);padding:9px 22px;border-radius:8px;font-weight:700}
+  .btn-ghost:hover{background:var(--accent);color:#12100a}
+  section{padding:80px 0}
+  .tag{color:var(--accent);font-weight:700;letter-spacing:2px;text-transform:uppercase;font-size:.85rem}
+  h2{font-size:2.3rem;margin:8px 0 30px}
+  .about{display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:center}
+  .about img{width:100%;border-radius:16px}
+  .about p{color:var(--muted);margin-bottom:16px}
+  .menu-cat{margin-bottom:40px}
+  .menu-cat h3{color:var(--accent);font-size:1.4rem;margin-bottom:18px;border-bottom:2px solid #34301f;padding-bottom:8px}
+  .menu-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+  .dish{background:var(--card);border:1px solid #34301f;border-radius:12px;padding:18px;transition:.2s}
+  .dish:hover{transform:translateY(-3px);border-color:var(--accent)}
+  .dish .row{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+  .dish h4{font-size:1.05rem}
+  .price{color:var(--accent);font-weight:800;white-space:nowrap}
+  .dish p{color:var(--muted);font-size:.88rem;margin-top:4px}
+  .info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:22px}
+  .info-card{background:var(--card);border-radius:14px;padding:26px;border:1px solid #34301f}
+  .info-card h3{color:var(--accent);margin-bottom:10px}
+  .info-card p{color:var(--muted)}
+  .order-apps{display:flex;gap:12px;flex-wrap:wrap;margin-top:14px}
+  .order-apps span{background:#34301f;padding:8px 16px;border-radius:20px;font-size:.9rem}
+  footer{background:#0c0a06;padding:40px 0;text-align:center;color:var(--muted);border-top:1px solid #34301f}
+  .whatsapp-float{position:fixed;bottom:22px;right:22px;background:#25d366;color:#fff;width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.8rem;box-shadow:0 6px 20px rgba(0,0,0,.4);z-index:60}
+  .demo-banner{background:var(--accent);color:#12100a;text-align:center;padding:8px;font-weight:600;font-size:.9rem}
+  @media(max-width:760px){.navlinks{display:none}.hero h1{font-size:2.3rem}.about{grid-template-columns:1fr}h2{font-size:1.8rem}}
+</style>
+</head>
+<body>
+<div class="demo-banner">✨ DEMO WEBSITE — Prepared for Mr. Broast Nikhat by [Your Name]</div>
+<header>
+  <div class="container">
+    <nav>
+      <div class="logo">Mr. Broast <span>Nikhat</span></div>
+      <div class="navlinks">
+        <a href="#about">About</a>
+        <a href="#menu">Menu</a>
+        <a href="#visit">Visit</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <a href="https://wa.me/97477556602" class="btn">Order Now</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero" style="padding-top:60px">
+  <div class="container">
+    <span class="badge">🍗 Crispy · Juicy · Loaded</span>
+    <h1>Broast, biryani &amp;<br><em>Indian favourites</em></h1>
+    <p>Golden crispy broast and rich, aromatic biryani in Old Airport, Doha — comfort food done right, ready for delivery.</p>
+    <div class="cta">
+      <a href="https://wa.me/97477556602" class="btn">Order on WhatsApp</a>
+      <a href="#menu" class="btn-ghost">See Menu</a>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="container about">
+    <div>
+      <span class="tag">About Us</span>
+      <h2>Big flavour, honest prices</h2>
+      <p>Mr. Broast Nikhat has built a loyal following in Doha for one reason — consistently delicious food. From our signature crispy broast to slow-cooked biryani, every plate is generous and full of flavour.</p>
+      <p>Trusted by delivery regulars across the city. Order in, take away, or get it delivered hot to your door.</p>
+    </div>
+    <img src="https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?auto=format&fit=crop&w=900&q=80" alt="Biryani">
+  </div>
+</section>
+
+<section id="menu" style="background:#0f0d08">
+  <div class="container">
+    <span class="tag">Our Menu</span>
+    <h2>What's cooking</h2>
+    <div class="menu-cat">
+      <h3>🍗 Broast</h3>
+      <div class="menu-grid">
+        <div class="dish"><div class="row"><h4>Broast Quarter</h4><span class="price">QAR 14</span></div><p>Crispy fried chicken with fries &amp; bun.</p></div>
+        <div class="dish"><div class="row"><h4>Broast Half</h4><span class="price">QAR 24</span></div><p>Half chicken broast, loaded plate.</p></div>
+        <div class="dish"><div class="row"><h4>Broast Full</h4><span class="price">QAR 42</span></div><p>Full chicken — great for sharing.</p></div>
+      </div>
+    </div>
+    <div class="menu-cat">
+      <h3>🍚 Biryani & Rice</h3>
+      <div class="menu-grid">
+        <div class="dish"><div class="row"><h4>Chicken Biryani</h4><span class="price">QAR 16</span></div><p>Fragrant spiced rice with tender chicken.</p></div>
+        <div class="dish"><div class="row"><h4>Mutton Biryani</h4><span class="price">QAR 26</span></div><p>Slow-cooked mutton in rich masala.</p></div>
+        <div class="dish"><div class="row"><h4>Veg Biryani</h4><span class="price">QAR 14</span></div><p>Spiced rice with garden vegetables.</p></div>
+      </div>
+    </div>
+    <div class="menu-cat">
+      <h3>🥘 Indian Favourites</h3>
+      <div class="menu-grid">
+        <div class="dish"><div class="row"><h4>Butter Chicken</h4><span class="price">QAR 28</span></div><p>Creamy tomato curry with naan.</p></div>
+        <div class="dish"><div class="row"><h4>Chicken 65</h4><span class="price">QAR 20</span></div><p>Spicy South Indian fried chicken.</p></div>
+        <div class="dish"><div class="row"><h4>Butter Naan</h4><span class="price">QAR 4</span></div><p>Soft tandoori bread.</p></div>
+      </div>
+    </div>
+    <p style="color:var(--muted);font-size:.9rem">* Sample menu &amp; prices for demo — replace with your real items.</p>
+  </div>
+</section>
+
+<section id="visit">
+  <div class="container">
+    <span class="tag">Find Us</span>
+    <h2>Visit &amp; Order</h2>
+    <div class="info-grid">
+      <div class="info-card"><h3>📍 Location</h3><p>Old Airport Road, Doha, Qatar</p></div>
+      <div class="info-card"><h3>🕐 Hours</h3><p>Daily · 11:00 AM – 12:00 AM</p></div>
+      <div class="info-card"><h3>🛵 Order Online</h3><div class="order-apps"><span>Talabat</span><span>Snoonu</span><span>WhatsApp</span></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="contact" style="background:#0f0d08;text-align:center">
+  <div class="container">
+    <span class="tag">Get In Touch</span>
+    <h2>Order now</h2>
+    <p style="color:var(--muted);max-width:500px;margin:0 auto 26px">Message us on WhatsApp to place your order.</p>
+    <a href="https://wa.me/97477556602" class="btn" style="font-size:1.1rem">💬 +974 7755 6602</a>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="logo" style="margin-bottom:10px">Mr. Broast <span>Nikhat</span></div>
+    <p>Old Airport, Doha · +974 7755 6602</p>
+    <p style="margin-top:14px;font-size:.8rem;opacity:.6">Demo website concept — built to show a modern web presence.</p>
+  </div>
+</footer>
+
+<a href="https://wa.me/97477556602" class="whatsapp-float" aria-label="WhatsApp">💬</a>
+</body>
+</html>
