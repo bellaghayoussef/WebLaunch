@@ -2655,7 +2655,7 @@ def generate_mockup(lead_data):
         except Exception as fb_err:
             print(f"[MockupGenerator] Pure fallback failed: {fb_err}")
 
-    demo_url = f"/demo/{slug}"
+    demo_url = f"https://web-launch-two.vercel.app/demos/{slug}"
     mockup_url = f"/static/mockups/{out_filename}"
 
     return {
